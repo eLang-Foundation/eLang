@@ -25,6 +25,10 @@ except:
     print("Usage: elang filename.e")
     exit(1)
 
+if filename == "--version":
+    print("eLang 0.0.1")
+    exit()
+
 contents = ""
 
 # getting the contents of the file
