@@ -1,0 +1,21 @@
+#!/usr/bin/python3
+
+from sys import argv
+
+filename = ""
+
+try:
+    filename = argv[1]
+except:
+    print("Usage: elang filename.e")
+    exit(1)
+
+contents = ""
+
+try:
+    with open(filename, "r") as file:
+        contents = file.read()
+except:
+    raise FileNotFoundError(filename + " wasn't found")
+
+eval(contents)
