@@ -47,6 +47,11 @@ syntax = {"function": "function", "start": "{", "end": "}", "arguments_start": "
 # creating a dictionary that will contain all functions
 functions = {}
 
+# this is a class for functions
+class func:
+    def __init__(self, body):
+        self.body = body
+
 # this function checks if quotes or brackets or a parentheses were closed
 def check_closed(char, char_name="quote"):
     # counting the number of chars in the file
@@ -70,12 +75,11 @@ def check_closed(char, char_name="quote"):
         # raise an error
         raiseError("SyntaxError", "Unclosed " + char_name, ln, line_number)
 
-# all characters that should be a pair
+# all characters that should have a pair
 chars = {"\"": "quote", "'": "quote", "{": "curly bracket", "(": "parentheses", "[": "square brackets"}
 
-# checking each character for a presence of a pair
-for char in chars:
-    check_closed(char, chars[char])
+# a dictionary of elang built-in functions
+elang_functions = {}
 
 def interpret(line):
     # splitting the line into keywords
@@ -83,15 +87,11 @@ def interpret(line):
     # if it is a function
     if words:
         if words[0] == syntax["function"]:
-            # getting the body of the function
             index = len(functions) if functions else 0
-            body = re.findall(r"{}([\w\W]*?){}".format(syntax["start"], syntax["end"]), contents)[index]
             # getting the name of the function
             function_name = re.findall(r"{}\s+(\w+)\s*{}".format(syntax["function"], syntax["arguments_start"].replace("(", "\(")), contents)[index]
-            # creating a class that will store the function code
-            class func:
-                def __init__(self, body):
-                    self.body = body
+            # getting the body of the function
+            body = re.findall(r"{}\s+{}\{}[\w\d\s,]*\{}\s*{}([\w\W]*?){}".format(syntax["function"], function_name, syntax["arguments_start"], syntax["arguments_end"], syntax["start"], syntax["end"]), contents)[0]
             # adding func class to a dictionary
             new_body = ""
             # removing whitespaces and saving the result in new_body
@@ -102,7 +102,7 @@ def interpret(line):
             # saving the function
             functions[function_name] = f
         # if a function was called
-        if re.match(r"\w+\s*\([\w\W]*\)", line):
+        elif re.match(r"\w+\s*\([\w\W]*\)", line):
             # trying to get the name of the function
             function_name = re.findall(r"(\w+)\s*\([\w\W]*\)", line)
             # if the name of the function was provided
@@ -112,9 +112,18 @@ def interpret(line):
                 if function_name in functions:
                     eval(functions[function_name].body)
                 else:
+                    print(lines, line)
                     raiseError("NameError", "name \"" + function_name + "\" is not defined", line, lines.index(line) + 1)
+# main function
+def main():
+    # checking each character for a presence of a pair
+    for char in chars:
+        check_closed(char, chars[char])
+    # cycling through lines
+    for line in lines:
+        interpret(line)
 
-# cycling through lines
-for line in lines:
-    interpret(line)
+# TODO: DO NOT INTERPRET THE CODE INSIDE OF FUNCTIONS UNTIL THE FUNCTION IS CALLED
 
+if __name__ == "__main__":
+    main()
