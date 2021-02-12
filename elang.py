@@ -26,7 +26,7 @@ except:
     exit(1)
 
 if filename == "--version":
-    print("eLang 0.0.1")
+    print("eLang 0.0.2")
     exit()
 
 contents = ""
@@ -81,49 +81,76 @@ chars = {"\"": "quote", "'": "quote", "{": "curly bracket", "(": "parentheses", 
 # a dictionary of elang built-in functions
 elang_functions = {}
 
+function = False
+
 def interpret(line):
+    global function
     # splitting the line into keywords
     words = line.split()
     # if it is a function
     if words:
-        if words[0] == syntax["function"]:
-            index = len(functions) if functions else 0
-            # getting the name of the function
-            function_name = re.findall(r"{}\s+(\w+)\s*{}".format(syntax["function"], syntax["arguments_start"].replace("(", "\(")), contents)[index]
-            # getting the body of the function
-            body = re.findall(r"{}\s+{}\{}[\w\d\s,]*\{}\s*{}([\w\W]*?){}".format(syntax["function"], function_name, syntax["arguments_start"], syntax["arguments_end"], syntax["start"], syntax["end"]), contents)[0]
-            # adding func class to a dictionary
-            new_body = ""
-            # removing whitespaces and saving the result in new_body
-            for line in body.split("\n"):
-                new_body += line.strip()
-            # creating a class
-            f = func(new_body)
-            # saving the function
-            functions[function_name] = f
-        # if a function was called
-        elif re.match(r"\w+\s*\([\w\W]*\)", line):
-            # trying to get the name of the function
-            function_name = re.findall(r"(\w+)\s*\([\w\W]*\)", line)
-            # if the name of the function was provided
-            if function_name:
-                function_name = function_name[0]
-                # if function was already defined
-                if function_name in functions:
-                    eval(functions[function_name].body)
-                else:
-                    print(lines, line)
-                    raiseError("NameError", "name \"" + function_name + "\" is not defined", line, lines.index(line) + 1)
+        if not function:
+            if words[0] == syntax["function"]:
+                index = len(functions) if functions else 0
+                # getting the name of the function
+                function_name = re.findall(r"{}\s+([\w_\d]+)\s*{}".format(syntax["function"], "\\" + syntax["arguments_start"]), contents)[index]
+                # getting the body of the function
+                body = re.findall(r"{}\s+{}\{}[\w\d\s,]*\{}\s*{}([\w\W]*?){}".format(syntax["function"], function_name, syntax["arguments_start"], syntax["arguments_end"], syntax["start"], syntax["end"]), contents)[0]
+                new_body = ""
+                # removing whitespaces and saving the result in new_body
+                for line in body.split("\n"):
+                    new_body += line.strip()
+                # creating a class
+                f = func(new_body)
+                # saving the function
+                functions[function_name] = f
+                function = True
+                if "\n" not in body:
+                    function = False
+            # if a function was called
+            elif re.match(r"\w+\s*\([\w\W]*\)", line):
+                # trying to get the name of the function
+                function_name = re.findall(r"(\w+)\s*\([\w\W]*\)", line)
+                # if the name of the function was provided
+                if function_name:
+                    function_name = function_name[0]
+                    # if function was already defined
+                    if function_name in functions:
+                        eval(functions[function_name].body)
+                    else:                    
+                        raiseError("NameError", "name \"" + function_name + "\" is not defined", line, lines.index(line) + 1)
+            else:
+                try:
+                    eval(line)
+                except: pass
+
+wait = 0
+
 # main function
 def main():
+    global function, wait
+    closed_double_quote = True
+    closed_single_quote = True
+    closed_curly_bracket = True
     # checking each character for a presence of a pair
     for char in chars:
         check_closed(char, chars[char])
     # cycling through lines
     for line in lines:
-        interpret(line)
+        for char in line:
+            if char == "\"" and closed_single_quote and contents[contents.index(char)-1] != "\\":
+                closed_double_quote = not closed_double_quote
+            elif char == "'" and closed_double_quote and contents[contents.index(char)-1] != "\\":
+                closed_single_quote = not closed_single_quote
+            elif char == "{" and closed_single_quote and closed_double_quote:
+                closed_curly_bracket = False
+                if function: wait += 1
+            elif char == "}" and closed_single_quote and closed_double_quote:
+                if wait: wait -= 1
+                else: function = False
+        if not function: interpret(line)
 
-# TODO: DO NOT INTERPRET THE CODE INSIDE OF FUNCTIONS UNTIL THE FUNCTION IS CALLED
-
+# calling the main function
 if __name__ == "__main__":
     main()
+
