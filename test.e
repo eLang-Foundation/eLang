@@ -1,7 +1,3 @@
-function hello() {
-	print("hello, world")
-}
+function hello_world(){print("hello, world")}
 
-hello()
-hello()
-hello()
+hello_world()
