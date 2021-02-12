@@ -26,7 +26,7 @@ except:
     exit(1)
 
 if filename == "--version":
-    print("eLang 0.0.2")
+    print("eLang 0.0.3")
     exit()
 
 contents = ""
