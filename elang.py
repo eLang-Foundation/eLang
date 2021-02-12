@@ -153,7 +153,9 @@ def main():
                     if function: wait += 1
                 elif char == "}" and closed_single_quote and closed_double_quote:
                     if wait: wait -= 1
-                    else: function = False
+                    else:
+                        function = False
+                        closed_curly_bracket = True
         if not function: interpret(line)
 
 # calling the main function
