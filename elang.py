@@ -116,10 +116,12 @@ def interpret(line):
                     function_name = function_name[0]
                     # if function was already defined
                     if function_name in functions:
+                        # trying to execute the block of code with Python, later will be changed to eLang
                         eval(functions[function_name].body)
                     else:                    
                         raiseError("NameError", "name \"" + function_name + "\" is not defined", line, lines.index(line) + 1)
             else:
+                # trying to execute the line of code with Python, later will be changed to eLang
                 try:
                     eval(line)
                 except: pass
@@ -128,7 +130,9 @@ wait = 0
 
 # main function
 def main():
+    # making this variables accessible
     global function, wait
+    # defining variables needed to check if the line of code is inside of a function
     closed_double_quote = True
     closed_single_quote = True
     closed_curly_bracket = True
@@ -137,17 +141,19 @@ def main():
         check_closed(char, chars[char])
     # cycling through lines
     for line in lines:
-        for char in line:
-            if char == "\"" and closed_single_quote and contents[contents.index(char)-1] != "\\":
-                closed_double_quote = not closed_double_quote
-            elif char == "'" and closed_double_quote and contents[contents.index(char)-1] != "\\":
-                closed_single_quote = not closed_single_quote
-            elif char == "{" and closed_single_quote and closed_double_quote:
-                closed_curly_bracket = False
-                if function: wait += 1
-            elif char == "}" and closed_single_quote and closed_double_quote:
-                if wait: wait -= 1
-                else: function = False
+        # checking, if the following code is still inside of a function
+        if function:
+            for char in line:
+                if char == "\"" and closed_single_quote and contents[contents.index(char)-1] != "\\":
+                    closed_double_quote = not closed_double_quote
+                elif char == "'" and closed_double_quote and contents[contents.index(char)-1] != "\\":
+                    closed_single_quote = not closed_single_quote
+                elif char == "{" and closed_single_quote and closed_double_quote:
+                    closed_curly_bracket = False
+                    if function: wait += 1
+                elif char == "}" and closed_single_quote and closed_double_quote:
+                    if wait: wait -= 1
+                    else: function = False
         if not function: interpret(line)
 
 # calling the main function
