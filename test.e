@@ -1,5 +1,7 @@
 function hello_world() {
-	print("hello, world")
+	print("
+	\n
+	hello, world")
 }
 
 hello_world()
