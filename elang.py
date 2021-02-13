@@ -19,7 +19,7 @@ filename = ""
 
 # trying to get the filename
 try:
-    filename = "test.e"
+    filename = argv[1]
 except:
     print("Usage: elang filename.e")
     exit(1)
