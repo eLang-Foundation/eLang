@@ -1,11 +1,7 @@
-function hello_world() {
-	print("
-	\n
-	hello, world")
+function hello(name) {
+	print("Hello, " + name)
 }
 
-hello_world()
+hello("eLang")
 
-hello_world()
-
-hello_world()
+hello("Bekhruz")
