@@ -25,7 +25,7 @@ except:
     exit(1)
 
 if filename == "--version":
-    print("eLang 0.0.4")
+    print("eLang 0.0.5")
     exit()
 
 contents = ""
@@ -101,15 +101,17 @@ def interpret(line):
             if words[0] == syntax["function"]:
                 index = len(functions) if functions else 0
                 # getting the name of the function
-                function_name = re.findall(r"{}\s+([\w_\d]+)\s*{}".format(syntax["function"], "\\" + syntax["arguments_start"]), contents)[index]
+                function_name = re.findall(r"{}\s+([\w_\d]+)\s*".format(syntax["function"]), contents)[index]
                 # getting the body of the function
-                body = re.findall(r"{}\s+{}\{}[\w\d\s,]*\{}\s*{}([\w\W]*?){}".format(syntax["function"], function_name, syntax["arguments_start"], syntax["arguments_end"], syntax["start"], syntax["end"]), contents)[0]
+                try: body = re.findall(r"{}\s+{}[\w\W]*[\w\d\s,]*[\w\W]*\s*{}([\w\W]*?){}".format(syntax["function"], function_name, syntax["start"], syntax["end"]), contents)[0]
+                except: raiseError("SyntaxError", "code block not provided", line, lines.index(line)+1)
                 new_body = ""
                 # removing whitespaces and saving the result in new_body
                 for line in body.split("\n"):
                     new_body += line.strip()
                 # getting the arguments
-                arguments = re.findall(r"{}\s+{}\s*\{}([\w\W]*?)\{}".format(syntax["function"], function_name, syntax["arguments_start"], syntax["arguments_end"]), contents)[0]
+                try: arguments = re.findall(r"{}\s+{}\s*\{}([\w\W]*?)\{}".format(syntax["function"], function_name, syntax["arguments_start"], syntax["arguments_end"]), contents)[0]
+                except: arguments = ""
                 # creating a class
                 f = func(arguments.split(","), new_body)
                 # saving the function
@@ -127,32 +129,36 @@ def interpret(line):
                 # list of arguments will be stored in this variable
                 args = []
 
-                # variables needed to check if the quotes are closed
-                closed_single_quote = True
-                closed_double_quote = True
+                if arguments:
+                    # variables needed to check if the quotes are closed
+                    closed_single_quote = True
+                    closed_double_quote = True
 
-                # this variable will store the argument
-                argument = ""
-                # cycling through each character in arguments
-                for i in range(len(arguments)):
-                    # adding character to argument
-                    if closed_double_quote and closed_single_quote:
-                        if arguments[i] != ",":
-                            argument += arguments[i]
-                    else: argument += arguments[i]
-                    slash = arguments[i-1] == "\\"
+                    # this variable will store the argument
+                    argument = ""
+                    # cycling through each character in arguments
+                    for i in range(len(arguments)):
+                        # adding character to argument
+                        if closed_double_quote and closed_single_quote:
+                            if arguments[i] != ",":
+                                argument += arguments[i]
+                        else: argument += arguments[i]
+                        slash = arguments[i-1] == "\\"
                     
-                    # checking if single quotes are closed
-                    if not slash and arguments[i] == "'" and closed_double_quote:
-                        closed_single_quote = not closed_single_quote
-                    # checking if double quotes are closed
-                    if not slash and arguments[i] == "\"" and closed_single_quote:
-                        closed_double_quote = not closed_double_quote
-                    # adding argument to arguments list
-                    if closed_double_quote and closed_single_quote: 
-                        if arguments[i] == "," or i == len(arguments)-1:
-                            args.append(argument.strip())
-                            argument = ""
+                        # checking if single quotes are closed
+                        if not slash and arguments[i] == "'" and closed_double_quote:
+                            closed_single_quote = not closed_single_quote
+                        # checking if double quotes are closed
+                        if not slash and arguments[i] == "\"" and closed_single_quote:
+                            closed_double_quote = not closed_double_quote
+                        # adding argument to arguments list
+                        if closed_double_quote and closed_single_quote: 
+                            if arguments[i] == "," or i == len(arguments)-1:
+                                args.append(argument.strip())
+                                argument = ""
+                            if arguments[i] == "+":
+                                for char in contents:
+                                    pass
                 # if the name of the function was provided
                 if function_name:
                     function_name = function_name[0]
@@ -164,11 +170,12 @@ def interpret(line):
                         body = function.body
                         # replacing the argument variables with given arguments
                         for arg in function.arguments:
-                            argument = args[function.arguments.index(arg)]
-                            for index in list(find_all(body, arg)):
-                                body_until_index = body[:index]
-                                if body_until_index.count("\"") % 2 == 0 and body_until_index.count("'") % 2 == 0:
-                                    body = body.replace(arg, argument)
+                            if arg:
+                                argument = args[function.arguments.index(arg)]
+                                for index in list(find_all(body, arg)):
+                                    body_until_index = body[:index]
+                                    if body_until_index.count("\"") % 2 == 0 and body_until_index.count("'") % 2 == 0:
+                                        body = body.replace(arg, argument)
                         # trying to execute the block of code
                         for line in body.split("\n"):
                             interpret(line)
@@ -180,7 +187,7 @@ def interpret(line):
                                 for argument in args:
                                     if argument[0] == "\"" or argument[0] == "'" and argument[0] == "\"" or argument[0] == "'":
                                         string += argument[1:-1] + " "
-                                print(string, end="")
+                                print(string.strip(), end="")
                             print()
                     # if this function is not an elang function and it was not defined by the user
                     else:
@@ -188,7 +195,8 @@ def interpret(line):
             else:
                 # trying to execute the line of code
                 try:
-                    eval(line)
+                    pass
+                    # eval(line)
                 except: pass
 
 # main function
