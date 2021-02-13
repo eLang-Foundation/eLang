@@ -1,5 +1,6 @@
-function hello(name) {
-	print("Hello,", name, name, name, name)
+function hello
+{
+	print("hello, world")
 }
 
-hello("eLang")
+hello()
