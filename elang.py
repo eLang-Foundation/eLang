@@ -12,7 +12,6 @@ def raiseError(errorType, error, line="", line_number=""):
         print("File \"" + filename, end="\"")
         print(", line " + str(line_number))
         print("    " + line)
-        print()
     print(errorType + ": " + error)
     exit(1)
 
@@ -88,7 +87,7 @@ def find_all(a_str, sub):
 chars = {"\"": "quote", "'": "quote", "{": "curly bracket", "(": "parentheses", "[": "square brackets"}
 
 # a dictionary of elang built-in functions
-elang_functions = {}
+elang_functions = {"print": "print"}
 
 ignore = False
 
@@ -123,11 +122,37 @@ def interpret(line):
                 # trying to get the name of the function
                 function_name = re.findall(r"(\w+)\s*\([\w\W]*\)", line)
                 # getting the arguments
-                arguments = re.findall(r"{}\{}([\w\W]*?)\{}".format(function_name, syntax["arguments_start"], syntax["arguments_end"]), line)[0].split(",")
+                arguments = re.findall(r"{}\{}([\w\W]*?)\{}".format(function_name, syntax["arguments_start"], syntax["arguments_end"]), line)[0]
+                
+                # list of arguments will be stored in this variable
                 args = []
-                for argument in arguments:
-                    argument = argument.strip()
-                    args.append(argument)
+
+                # variables needed to check if the quotes are closed
+                closed_single_quote = True
+                closed_double_quote = True
+
+                # this variable will store the argument
+                argument = ""
+                # cycling through each character in arguments
+                for i in range(len(arguments)):
+                    # adding character to argument
+                    if closed_double_quote and closed_single_quote:
+                        if arguments[i] != ",":
+                            argument += arguments[i]
+                    else: argument += arguments[i]
+                    slash = arguments[i-1] == "\\"
+                    
+                    # checking if single quotes are closed
+                    if not slash and arguments[i] == "'" and closed_double_quote:
+                        closed_single_quote = not closed_single_quote
+                    # checking if double quotes are closed
+                    if not slash and arguments[i] == "\"" and closed_single_quote:
+                        closed_double_quote = not closed_double_quote
+                    # adding argument to arguments list
+                    if closed_double_quote and closed_single_quote: 
+                        if arguments[i] == "," or i == len(arguments)-1:
+                            args.append(argument.strip())
+                            argument = ""
                 # if the name of the function was provided
                 if function_name:
                     function_name = function_name[0]
@@ -144,12 +169,24 @@ def interpret(line):
                                 body_until_index = body[:index]
                                 if body_until_index.count("\"") % 2 == 0 and body_until_index.count("'") % 2 == 0:
                                     body = body.replace(arg, argument)
-                        # trying to execute the block of code with Python, later will be changed to eLang
-                        eval(body)
+                        # trying to execute the block of code
+                        for line in body.split("\n"):
+                            interpret(line)
+                    # if this functions is a elang built-in function
                     elif function_name in elang_functions:
-                        pass
+                        if elang_functions[function_name] == "print":
+                            if arguments:
+                                string = ""
+                                for argument in args:
+                                    if argument[0] == "\"" or argument[0] == "'" and argument[0] == "\"" or argument[0] == "'":
+                                        string += argument[1:-1] + " "
+                                print(string, end="")
+                            print()
+                    # if this function is not an elang function and it was not defined by the user
+                    else:
+                        raiseError("NameError", "name \"" + function_name + "\" is not defined", line, lines.index(line))
             else:
-                # trying to execute the line of code with Python, later will be changed to eLang
+                # trying to execute the line of code
                 try:
                     eval(line)
                 except: pass
