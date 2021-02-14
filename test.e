@@ -1,10 +1,8 @@
-function hello_world
-{
+function hello_world {
 	print("hello, world")
 }
 
-function 123(name)
-{
+function 123(name) {
 	print("
 		Hello,
 	", name)
