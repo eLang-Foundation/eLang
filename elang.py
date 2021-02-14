@@ -19,13 +19,13 @@ filename = ""
 
 # trying to get the filename
 try:
-    filename = argv[1]
+    filename = "test.e"
 except:
     print("Usage: elang filename.e")
     exit(1)
 
 if filename == "--version":
-    print("eLang 0.0.5")
+    print("eLang 0.0.6")
     exit()
 
 contents = ""
@@ -43,6 +43,9 @@ lines = contents.split("\n")
 # a dictionary of eLang syntax
 syntax = {"function": "function", "start": "{", "end": "}", "arguments_start": "(", "arguments_end": ")"}
 
+# characters in eLang that should have a pair
+chars = {"\"": "quote", "'": "quote", syntax["start"]: "curly bracket", syntax["end"]: "close curly bracket", syntax["arguments_start"]: "parentheses", syntax["arguments_end"]: "close parentheses", "[": "square brackets", "]": "close square brackets"}
+
 # creating a dictionary that will contain all functions
 functions = {}
 
@@ -55,15 +58,13 @@ class func:
 # this function checks if quotes or brackets or a parentheses were closed
 def check_closed(char, char_name="quote"):
     # counting the number of chars in the file
-    count = contents.count(char)
-    if char == "{":
-        count += contents.count("}")
-    elif char == "(":
-        count += contents.count(")")
-    elif char == "[":
-        count += contents.count("]")
+    counter = contents.count(char)
+    try:
+        counter += contents.count(list(chars.keys())[list(chars.values()).index("close " + char_name)])
+    except: pass
     # if the number is not even
-    if count % 2 != 0:
+    if counter % 2 != 0:
+        # getting the line to display the error
         ln = ""
         line_number = None
         # get the line
@@ -72,9 +73,10 @@ def check_closed(char, char_name="quote"):
                 line_number = lines.index(line) + 1
                 ln = line
                 break
-        # raise an error
         raiseError("SyntaxError", "Unclosed " + char_name, ln, line_number)
 
+# this function finds indexes at which the given string is places in the given string
+# (I have no idea how this code works because I just copied it from StackOverflow https://stackoverflow.com/a/4665027)
 def find_all(a_str, sub):
     start = 0
     while True:
@@ -83,8 +85,28 @@ def find_all(a_str, sub):
         yield start
         start += len(sub)
 
-# all characters that should have a pair
-chars = {"\"": "quote", "'": "quote", "{": "curly bracket", "(": "parentheses", "[": "square brackets"}
+# this function returnes true if the character at given index inside of given string is a string
+def inside_quotes(index, line):
+    # sorry for my terrible English
+    # if there are no double or single quotes they are closed
+    closed_single_quote = True
+    closed_double_quote = True
+    # cycling through each character in the given string until the given index
+    for i in range(len(line[:index])):
+        slash = line[i-1] == "\\"
+        # if char is equal to " and it is not inside of a string and it doesn't have a slash before it
+        if line[i] == "\"" and closed_single_quote and not slash:
+            # the double quotes are opened if they were closed and they are closed if they were opened
+            closed_double_quote = not closed_double_quote
+        # if char is equal to ' and it is not inside of a string and it doesn't have a slash before it
+        if line[i] == "'" and closed_double_quote and not slash:
+            # the signgle quotes are opened if they were closed and they are closed if they were opened
+            closed_double_quote = not closed_double_quote
+    # if single quotes and double quotes are closed
+    if closed_single_quote and closed_double_quote:
+        return False
+    # if not
+    return True
 
 # a dictionary of elang built-in functions
 elang_functions = {"print": "print"}
@@ -121,7 +143,7 @@ def interpret(line):
             # if a function was called
             elif re.match(r"\w+\s*\([\w\W]*\)", line):
                 # trying to get the name of the function
-                function_name = re.findall(r"([\w_\d]+)\s*\([\w\W]*\)", line)[0]
+                function_name = re.findall(r"([\w_\d]+)\s*\{}[\w\W]*\{}".format(syntax["arguments_start"], syntax["arguments_end"]), line)[0]
                 # getting the arguments
                 arguments = re.findall(r"{}\{}([\w\W]*?)\{}".format(function_name, syntax["arguments_start"], syntax["arguments_end"]), line)[0]
                 
@@ -129,38 +151,18 @@ def interpret(line):
                 args = []
 
                 if arguments:
-                    # variables needed to check if the quotes are closed
-                    closed_single_quote = True
-                    closed_double_quote = True
-
                     # this variable will store the argument
                     argument = ""
                     # cycling through each character in arguments
                     for i in range(len(arguments)):
-                        # adding character to argument
-                        if closed_double_quote and closed_single_quote:
-                            if arguments[i] != ",":
-                                argument += arguments[i]
-                        else: argument += arguments[i]
-                        slash = arguments[i-1] == "\\"
-                    
-                        # checking if single quotes are closed
-                        if not slash and arguments[i] == "'" and closed_double_quote:
-                            closed_single_quote = not closed_single_quote
-                        # checking if double quotes are closed
-                        if not slash and arguments[i] == "\"" and closed_single_quote:
-                            closed_double_quote = not closed_double_quote
-                        # adding argument to arguments list
-                        if closed_double_quote and closed_single_quote: 
-                            if arguments[i] == "," or i == len(arguments)-1:
-                                args.append(argument.strip())
-                                argument = ""
-                            if arguments[i] == "+":
-                                for char in contents:
-                                    pass
+                        if not(not inside_quotes(i, arguments) and arguments[i] == ","):
+                            argument += arguments[i]
+                        if (not inside_quotes(i, arguments) and arguments[i] == ",") or i == len(arguments)-1:
+                            args.append(argument.strip())
+                            argument = ""
                 # if the name of the function was provided
                 if function_name:
-                    # if function was already defined
+                    # if function was defined by the user
                     if function_name in functions:
                         # getting the function
                         function = functions[function_name]
@@ -168,24 +170,36 @@ def interpret(line):
                         body = function.body
                         # replacing the argument variables with given arguments
                         for arg in function.arguments:
+                            # if argument is not an empty string
                             if arg:
+                                # getting the given argument
                                 argument = args[function.arguments.index(arg)]
+                                # the following code is replacing variables in code with the arguments
                                 for index in list(find_all(body, arg)):
-                                    body_until_index = body[:index]
-                                    if body_until_index.count("\"") % 2 == 0 and body_until_index.count("'") % 2 == 0:
+                                    # if variable is not inside of quotes
+                                    if not inside_quotes(index, body):
+                                        # replacing it with the argument
                                         body = body.replace(arg, argument)
                         # trying to execute the block of code
                         for line in body.split("\n"):
                             interpret(line)
                     # if this functions is a elang built-in function
                     elif function_name in elang_functions:
+                        # if the function is print
                         if elang_functions[function_name] == "print":
+                            # if arguments were given
                             if arguments:
+                                # creating an empty string variable to which we'll be adding arguments
                                 string = ""
+                                # cycling through each argument in arguments
                                 for argument in args:
+                                    # if argument is a string
                                     if argument[0] == "\"" or argument[0] == "'" and argument[0] == "\"" or argument[0] == "'":
+                                        # adding the argument to the string and removing the quotes
                                         string += argument[1:-1] + " "
-                                print(string.strip(), end="")
+                                # printing out the string
+                                print(string.strip().replace(r"\n", "\n").replace(r"\t", "\t").replace(r"\r", "\r").replace(r"\"", "\""), end="")
+                            # printing the new line
                             print()
                     # if this function is not an elang function and it was not defined by the user
                     else:
@@ -200,31 +214,22 @@ def interpret(line):
 def main():
     # making this variables accessible
     global ignore
-    # defining variables needed to check if the line of code is inside of a function
-    closed_double_quote = True
-    closed_single_quote = True
-    closed_curly_bracket = True
     # checking each character for a presence of a pair
     for char in chars:
-        check_closed(char, chars[char])
+        if not chars[char].startswith("close"): check_closed(char, chars[char])
     # cycling through lines
     for line in lines:
         wait = 0
         # checking, if the following code is still inside of a function
         if ignore:
-            for char in line:
-                if char == "\"" and closed_single_quote and contents[contents.index(char)-1] != "\\":
-                    closed_double_quote = not closed_double_quote
-                elif char == "'" and closed_double_quote and contents[contents.index(char)-1] != "\\":
-                    closed_single_quote = not closed_single_quote
-                elif char == syntax["start"] and closed_single_quote and closed_double_quote:
+            for i in range(len(line)):
+                # if the character represents the start of a code block and it is not a string
+                if line[i] == syntax["start"] and not inside_quotes(i, line):
                     closed_curly_bracket = False
                     wait += 1
-                elif char == syntax["end"] and closed_single_quote and closed_double_quote:
+                if line[i] == syntax["end"] and not inside_quotes(i, line):
                     if wait: wait -= 1
-                    else:
-                        ignore = False
-                        closed_curly_bracket = True
+                    else: ignore = False        
         interpret(line)
 
 # calling the main function
