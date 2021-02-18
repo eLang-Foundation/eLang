@@ -1,12 +1,12 @@
-function hello_world {
-	print("hello, world")
+function greet (
+	firstName, middleName, lastName
+) {
+	print("Hello,", firstName, middleName, lastName)
 }
 
-function 123(name) {
-	print("
-		Hello,
-	", name)
+function sayHello {
+	print("Hello, world")
 }
 
-123("eLang")
-hello_world()
+sayHello()
+greet("Bekhruz", "S.", "Niyazov")
