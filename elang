@@ -6,14 +6,16 @@ from sys import argv
 # importing re
 import re
 
+
 # function for raising errors
-def raiseError(errorType, error, line="", line_number=""):
+def raiseError(errorType, error, line="", line_number=None):
     if line:
         print("File \"" + filename, end="\"")
         print(", line " + str(line_number))
         print("    " + line)
     print(errorType + ": " + error)
     exit(1)
+
 
 filename = ""
 
@@ -44,7 +46,9 @@ lines = contents.split("\n")
 syntax = {"function": "function", "start": "{", "end": "}", "arguments_start": "(", "arguments_end": ")"}
 
 # characters in eLang that should have a pair
-chars = {"\"": "quote", "'": "quote", syntax["start"]: "curly bracket", syntax["end"]: "close curly bracket", syntax["arguments_start"]: "parentheses", syntax["arguments_end"]: "close parentheses", "[": "square brackets", "]": "close square brackets"}
+chars = {"\"": "quote", "'": "quote", syntax["start"]: "curly bracket", syntax["end"]: "close curly bracket",
+         syntax["arguments_start"]: "parentheses", syntax["arguments_end"]: "close parentheses", "[": "square brackets",
+         "]": "close square brackets"}
 
 # a dictionary of elang built-in functions
 elang_functions = {"print": "print"}
@@ -52,11 +56,13 @@ elang_functions = {"print": "print"}
 # creating a dictionary that will contain all functions
 functions = {}
 
+
 # this is a class for functions
 class func:
     def __init__(self, arguments, body):
         self.arguments = arguments
         self.body = body
+
 
 # this function checks if quotes or brackets or a parentheses were closed
 def check_closed(char, char_name="quote"):
@@ -64,7 +70,8 @@ def check_closed(char, char_name="quote"):
     counter = contents.count(char)
     try:
         counter += contents.count(list(chars.keys())[list(chars.values()).index("close " + char_name)])
-    except: pass
+    except:
+        pass
     # if the number is not even
     if counter % 2 != 0:
         # getting the line to display the error
@@ -78,6 +85,7 @@ def check_closed(char, char_name="quote"):
                 break
         raiseError("SyntaxError", "Unclosed " + char_name, ln, line_number)
 
+
 # this function finds indexes at which the given string is places in the given string
 # (I have no idea how this code works because I just copied it from StackOverflow https://stackoverflow.com/a/4665027)
 def find_all(a_str, sub):
@@ -88,7 +96,8 @@ def find_all(a_str, sub):
         yield start
         start += len(sub)
 
-# this function returnes true if the character at given index inside of given string is a string
+
+# this function returns true if the character at given index inside of given string is a string
 def inside_quotes(index, line):
     # sorry for my terrible English
     # if there are no double or single quotes they are closed
@@ -96,14 +105,14 @@ def inside_quotes(index, line):
     closed_double_quote = True
     # cycling through each character in the given string until the given index
     for i in range(len(line[:index])):
-        slash = line[i-1] == "\\"
+        slash = line[i - 1] == "\\"
         # if char is equal to " and it is not inside of a string and it doesn't have a slash before it
         if line[i] == "\"" and closed_single_quote and not slash:
             # the double quotes are opened if they were closed and they are closed if they were opened
             closed_double_quote = not closed_double_quote
         # if char is equal to ' and it is not inside of a string and it doesn't have a slash before it
         if line[i] == "'" and closed_double_quote and not slash:
-            # the signgle quotes are opened if they were closed and they are closed if they were opened
+            # the single quotes are opened if they were closed and they are closed if they were opened
             closed_double_quote = not closed_double_quote
     # if single quotes and double quotes are closed
     if closed_single_quote and closed_double_quote:
@@ -111,12 +120,13 @@ def inside_quotes(index, line):
     # if not
     return True
 
+
 # this function returns the contents of a code block or a list or a dictionary or a string
-def get_contents(index, contents):
+def get_contents(index, code):
     # getting the code we'll be working with
-    code = contents[index+1:]
+    code = code[index + 1:]
     # getting the character
-    character = contents[index]
+    character = code[index + 1]
     # initializing return_value variable
     return_value = ""
     # if character indicates that this is a string
@@ -144,18 +154,25 @@ def get_contents(index, contents):
                     escape = False
     # if character is a character that starts a code block
     if character == syntax["start"]:
+        wait = 0
         # cycling through each character in code
         for char in code:
             # if character does not represent the end of the code block
             if char != syntax["end"]:
+                if char == syntax["start"]:
+                    if not inside_quotes(code.index(char), code):
+                        wait += 1
                 # adding the character to the return value
                 return_value += char
             # if character represents the end of the code block
             else:
                 # if it is not inside of quotes
                 if not inside_quotes(code.index(char), code):
-                    # return the return value
-                    return return_value
+                    if wait == 0:
+                        # return the return value
+                        return return_value
+                    else:
+                        wait -= 1
                 # if the character is not inside of quotes
                 else:
                     # adding the character to the return value
@@ -176,14 +193,16 @@ def get_contents(index, contents):
                     return return_value
                 # if the character is not inside of quotes
                 else:
-                    # adding the character to the return_value
+                    # adding the character to the return value
                     return_value += char
     # returning the return value if not already returned
     return return_value
 
+
 ignore = False
 
-def interpret(line, after, index):
+
+def interpret(line, after="", index=0):
     global ignore
     # splitting the line into keywords
     words = line.split()
@@ -192,18 +211,33 @@ def interpret(line, after, index):
         if not ignore:
             if words[0] == syntax["function"]:
                 # getting the name of the function
-                function_name = re.findall(r"{}\s+([\w_\d]+)\s*".format(syntax["function"]), line)[0]
+                function_name = re.findall(r"{}\s+([\w_\d]+)\s*".format(syntax["function"]), after)[0]
                 # trying to get the body of the function
-                pattern = r"{}\s+{}[\(\)\s\w]*{}([\w\W]*?){}".format(re.escape(syntax["function"]), re.escape(function_name), re.escape(syntax["start"]), re.escape(syntax["end"]))
-                try: body = re.findall(pattern, contents)[0]
-                except Exception as e: raiseError("SyntaxError", "code block not provided", line, lines.index(line)+1)
+                a = False
+                for character in after[after.index(function_name) + len(function_name):]:
+                    if character == "(":
+                        a = True
+                    elif character in ["\n", "\t", " "]:
+                        continue
+                    else:
+                        break
+                pattern = ""
+                if a:
+                    pattern = r"\s+" + re.escape(function_name) + r"\s*\([\w\W]*?\)\s*\{([\w\W]*?)\}"
+                else: r"\s+" + re.escape(function_name) + r"\s*\s*\{([\w\W]*?)\}"
+                body = re.findall(pattern, after)[0]
                 new_body = ""
                 # removing whitespaces and saving the result in new_body
                 for line in body.split("\n"):
                     new_body += line.strip()
                 # getting the arguments
-                try: arguments = get_contents(index + line.index("("), after)
-                except: arguments = ""
+                pattern = r"{}\s+{}\s*{}\s*([\w\W]*?)\s*{}".format(syntax["function"], re.escape(function_name),
+                                                                   re.escape(syntax["arguments_start"]),
+                                                                   re.escape(syntax["arguments_end"]))
+                try:
+                    arguments = re.findall(pattern, after)[0]
+                except:
+                    arguments = ""
                 # creating a class
                 f = func(arguments.split(","), new_body)
                 # saving the function
@@ -212,12 +246,19 @@ def interpret(line, after, index):
                 ignore = True
                 if "\n" not in body:
                     ignore = False
+                f, body, new_body = None, None, None
             # if a function was called
-            elif re.match(r"\w+\s*\([\w\W]*", line):
+            elif re.match(r"\w+\s*\([\w\W]*\)", line):
                 # trying to get the name of the function
-                function_name = re.findall(r"([\w_\d]+)\s*{}[\w\W]*{}".format(re.escape(syntax["arguments_start"]), re.escape(syntax["arguments_end"])), contents)[0]
+                function_name = re.findall(r"([\w_\d]+)\s*{}[\w\W]*{}".format(re.escape(syntax["arguments_start"]),
+                                                                              re.escape(syntax["arguments_end"])),
+                                           line)[0]
+                if inside_quotes(line.index(function_name), line):
+                    return
                 # getting the arguments
-                arguments = get_contents(line.index("("), after).strip()
+                arguments = re.findall(
+                    r"{}\s*{}\s*([\w\W]*?)?{}".format(re.escape(function_name), re.escape(syntax["arguments_start"]),
+                                                      re.escape(syntax["arguments_end"])), after)[0]
                 # list of arguments will be stored in this variable
                 args = []
 
@@ -226,9 +267,12 @@ def interpret(line, after, index):
                     argument = ""
                     # cycling through each character in arguments
                     for i in range(len(arguments)):
-                        if not(not inside_quotes(i, arguments) and arguments[i] == ","):
+                        if not inside_quotes(i, arguments) and arguments[i] == ",":
+                            args.append(argument.strip())
+                            argument = ""
+                        else:
                             argument += arguments[i]
-                        if (not inside_quotes(i, arguments) and arguments[i] == ",") or i == len(arguments)-1:
+                        if i == len(arguments) - 1:
                             args.append(argument.strip())
                             argument = ""
                 # if the name of the function was provided
@@ -239,7 +283,6 @@ def interpret(line, after, index):
                         function = functions[function_name]
                         # getting the body of the function
                         body = function.body
-                        print(body)
                         # replacing the argument variables with given arguments
                         for arg in function.arguments:
                             # if argument is not an empty string
@@ -253,8 +296,19 @@ def interpret(line, after, index):
                                         # replacing it with the argument
                                         body = body.replace(arg, argument)
                         # trying to execute the block of code
-                        for line in body.split("\n"):
-                            interpret(line)
+                        lns = body.split("\n")
+                        for i in range(len(lns)):
+                            line = lns[i]
+                            after = ""
+                            after_list = lns[i - 1:] if i > 0 else lns[0:]
+                            for ln in after_list:
+                                after += ln + "\n"
+                            before = ""
+                            before_list = lns[:i]
+                            for ln in before_list:
+                                before += ln + "\n"
+                            interpret(line, after, before.index(line[0]) if len(line) > 1 and before else 0)
+
                     # if this functions is a elang built-in function
                     elif function_name in elang_functions:
                         # if the function is print
@@ -265,22 +319,29 @@ def interpret(line, after, index):
                                 string = ""
                                 # cycling through each argument in arguments
                                 for argument in args:
+                                    a_string = False
+                                    for index in range(len(argument[1:-1])):
+                                        a_string = inside_quotes(index, argument)
                                     # if argument is a string
-                                    if argument[0] == "\"" or argument[0] == "'" and argument[0] == "\"" or argument[0] == "'":
+                                    if a_string:
                                         # adding the argument to the string and removing the quotes
                                         string += argument[1:-1] + " "
                                 # printing out the string
-                                print(string.strip().replace(r"\n", "\n").replace(r"\t", "\t").replace(r"\r", "\r").replace(r"\"", "\""), end="")
+                                print(string.strip().replace(r"\n", "\n").replace(r"\t", "\t").replace(r"\r", "\r"),
+                                      end="")
                             # printing the new line
                             print()
                     # if this function is not an elang function and it was not defined by the user
                     else:
-                        raiseError("NameError", "name \"" + function_name + "\" is not defined", line, lines.index(line))
+                        raiseError("NameError", "name \"" + function_name + "\" is not defined", line,
+                                   contents.split("\n").index(line) + 1)
             else:
                 # trying to execute the line of code
                 try:
                     eval(line)
-                except: pass
+                except:
+                    pass
+
 
 # main function
 def main():
@@ -295,23 +356,26 @@ def main():
         wait = 0
         # checking, if the following code is still inside of a function
         if ignore:
-            for i in range(len(line)):
+            for j in range(len(line)):
                 # if the character represents the start of a code block and it is not a string
-                if line[i] == syntax["start"] and not inside_quotes(i, line):
+                if line[j] == syntax["start"] and not inside_quotes(j, line):
                     closed_curly_bracket = False
                     wait += 1
-                if line[i] == syntax["end"] and not inside_quotes(i, line):
-                    if wait: wait -= 1
-                    else: ignore = False
+                if line[j] == syntax["end"] and not inside_quotes(j, line):
+                    if wait:
+                        wait -= 1
+                    else:
+                        ignore = False
         after = ""
-        after_list = lines[i-1:] if i > 0 else lines[0:]
-        for line in after_list:
-            after += line + "\n"
+        after_list = lines[i - 1:] if i > 0 else lines[0:]
+        for ln in after_list:
+            after += ln + "\n"
         before = ""
         before_list = lines[:i]
-        for line in before_list:
-            before += line + "\n"
-        interpret(line, after, before.index(line[0]) if len(line) > 1 else 0)
+        for ln in before_list:
+            before += ln + "\n"
+        interpret(line, after, contents.index(line[0]) if len(line) > 1 else 0)
+
 
 # calling the main function
 if __name__ == "__main__":
