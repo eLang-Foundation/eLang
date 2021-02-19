@@ -27,7 +27,7 @@ except:
     exit(1)
 
 if filename == "--version":
-    print("eLang 0.0.8")
+    print("eLang 0.0.8 (this version is in development)")
     exit()
 
 contents = ""
@@ -298,7 +298,7 @@ def interpret(line, after=""):
                                     if not insideQuotes(index, body):
                                         # replacing it with the argument
                                         body = body.replace(arg, argument)
-                        # trying to execute the block of code
+                        # executing the block of code
                         lns = body.split("\n")
                         for i in range(len(lns)):
                             line = lns[i]
@@ -306,10 +306,6 @@ def interpret(line, after=""):
                             after_list = lns[i - 1:] if i > 0 else lns[0:]
                             for ln in after_list:
                                 after += ln + "\n"
-                            before = ""
-                            before_list = lns[:i]
-                            for ln in before_list:
-                                before += ln + "\n"
                             interpret(line, after)
 
                     # if this functions is a elang built-in function
@@ -372,10 +368,6 @@ def main():
         after_list = lines[i - 1:] if i > 0 else lines[0:]
         for ln in after_list:
             after += ln + "\n"
-        before = ""
-        before_list = lines[:i]
-        for ln in before_list:
-            before += ln + "\n"
         interpret(line, after)
 
 
