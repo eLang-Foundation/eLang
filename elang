@@ -27,7 +27,7 @@ except:
     exit(1)
 
 if filename == "--version":
-    print("eLang 0.0.8 (this version is in development)")
+    print("eLang 0.0.8")
     exit()
 
 contents = ""
@@ -50,11 +50,14 @@ chars = {"\"": "quote", "'": "quote", syntax["start"]: "curly bracket", syntax["
          syntax["arguments_start"]: "parentheses", syntax["arguments_end"]: "close parentheses", "[": "square brackets",
          "]": "close square brackets"}
 
-# a dictionary of elang built-in functions
+# this is a dictionary of elang built-in functions
 elang_functions = {"print": "print"}
 
-# creating a dictionary that will contain all functions
+# this is a dictionary that will contain all functions
 functions = {}
+
+# this is a dictionary of variables
+variables = {}
 
 
 # this is a class for functions
@@ -204,7 +207,7 @@ ignore = False
 
 
 def interpret(line, after=""):
-    global ignore
+    global ignore, variables
     # splitting the line into keywords
     words = line.split()
     # if it is a function
@@ -325,6 +328,14 @@ def interpret(line, after=""):
                                     if a_string:
                                         # adding the argument to the string and removing the quotes
                                         string += argument[1:-1] + " "
+                                    else:
+                                        if argument in variables:
+                                            a = variables[argument]
+                                            s = False
+                                            for index in range(len(a[1:-1])):
+                                                s = insideQuotes(index+1, a)
+                                            if s: string += a[1:-1] + " "
+                                            else: string += a + " "
                                 # printing out the string
                                 print(string.replace(r"\n", "\n").replace(r"\t", "\t").replace(r"\r", "\r"),
                                       end="")
@@ -335,11 +346,11 @@ def interpret(line, after=""):
                         raiseError("NameError", "name \"" + function_name + "\" is not defined", line,
                                    contents.split("\n").index(line) + 1)
             else:
-                # trying to execute the line of code
-                try:
-                    eval(line)
-                except:
-                    pass
+                if "=" in line:
+                    index = line.index("=")
+                    variable_name = line[:index].strip()
+                    value = line[index+1:].strip()
+                    variables[variable_name] = value
 
 
 # main function
