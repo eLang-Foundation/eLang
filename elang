@@ -27,7 +27,7 @@ except:
     exit(1)
 
 if filename == "--version":
-    print("eLang 0.0.6")
+    print("eLang 0.0.7")
     exit()
 
 contents = ""
@@ -58,7 +58,7 @@ functions = {}
 
 
 # this is a class for functions
-class func:
+class Function:
     def __init__(self, arguments, body):
         self.arguments = arguments
         self.body = body
@@ -239,7 +239,7 @@ def interpret(line, after="", index=0):
                 except:
                     arguments = ""
                 # creating a class
-                f = func(arguments.split(","), new_body)
+                f = Function(arguments.split(","), new_body)
                 # saving the function
                 functions[function_name] = f
                 # you should ignore the next line of code because it will be inside of a function
