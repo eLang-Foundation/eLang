@@ -330,7 +330,7 @@ def interpret(line, after=""):
                                         # adding the argument to the string and removing the quotes
                                         string += argument[1:-1] + " "
                                 # printing out the string
-                                print(string.strip().replace(r"\n", "\n").replace(r"\t", "\t").replace(r"\r", "\r"),
+                                print(string.replace(r"\n", "\n").replace(r"\t", "\t").replace(r"\r", "\r"),
                                       end="")
                             # printing the new line
                             print()
