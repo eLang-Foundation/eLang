@@ -1,12 +1,5 @@
-function greet (
-	firstName, middleName, lastName
-) {
-	print("Hello,", firstName, middleName, lastName)
-}
+string = "hello, world"
 
-function sayHello {
-	print("Hello, world")
-}
+print(string)
 
-sayHello()
-greet("Bekhruz", "S.", "Niyazov")
+
