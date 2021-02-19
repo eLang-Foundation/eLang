@@ -1,4 +1,4 @@
-![Logo](eLang.png)
+![Logo](logo/eLang.png)
 # eLang
 eLang is a programming language developed by Bekhruz Niyazov (it is still in development).
 
