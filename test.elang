@@ -1,3 +1,5 @@
-string = "hello, world"
+string = ' I\'m Bekhruz Niyazov\n'
 
-print(string)
+string2 = "This language is called \"eLang\""
+
+print(string, string2)
