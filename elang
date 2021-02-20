@@ -23,11 +23,11 @@ filename = ""
 try:
     filename = argv[1]
 except:
-    print("Usage: elang filename.e")
+    print("Usage: elang filename.elang")
     exit(1)
 
 if filename == "--version":
-    print("eLang 0.0.8")
+    print("eLang 0.0.9")
     exit()
 
 contents = ""
@@ -46,7 +46,7 @@ lines = contents.split("\n")
 syntax = {"function": "function", "start": "{", "end": "}", "arguments_start": "(", "arguments_end": ")"}
 
 # characters in eLang that should have a pair
-chars = {"\"": "quote", "'": "quote", syntax["start"]: "curly bracket", syntax["end"]: "close curly bracket",
+chars = {"\"": "double quote", "'": "single quote", syntax["start"]: "curly bracket", syntax["end"]: "close curly bracket",
          syntax["arguments_start"]: "parentheses", syntax["arguments_end"]: "close parentheses", "[": "square brackets",
          "]": "close square brackets"}
 
@@ -70,13 +70,24 @@ class Function:
 # this function checks if quotes or brackets or a parentheses were closed
 def checkClosed(char, char_name="quote"):
     # counting the number of chars in the file
-    counter = contents.count(char)
+    counter = 0
+    for i in range(len(contents)):
+        if contents[i] == char:
+            if not insideQuotes(i, contents):
+                counter += 1
+            else:
+                if not insideQuotes(i+1, contents):
+                    counter += 1
     try:
-        counter += contents.count(list(chars.keys())[list(chars.values()).index("close " + char_name)])
+        char_close = list(chars.keys())[list(chars.values()).index("close " + char_name)]
+        for i in range(len(contents)):
+            if contents[i] == char_close:
+                if not insideQuotes(i, contents):
+                    counter += 1
     except:
         pass
     # if the number is not even
-    if counter % 2 != 0:
+    if counter % 2 != 0 and counter != 0:
         # getting the line to display the error
         ln = ""
         line_number = None
@@ -86,6 +97,7 @@ def checkClosed(char, char_name="quote"):
                 line_number = lines.index(line) + 1
                 ln = line
                 break
+        # raising the error
         raiseError("SyntaxError", "Unclosed " + char_name, ln, line_number)
 
 
@@ -116,7 +128,7 @@ def insideQuotes(index, line):
         # if char is equal to ' and it is not inside of a string and it doesn't have a slash before it
         if line[i] == "'" and closed_double_quote and not slash:
             # the single quotes are opened if they were closed and they are closed if they were opened
-            closed_double_quote = not closed_double_quote
+            closed_single_quote = not closed_single_quote
     # if single quotes and double quotes are closed
     if closed_single_quote and closed_double_quote:
         return False
@@ -207,7 +219,7 @@ ignore = False
 
 
 def interpret(line, after=""):
-    global ignore, variables
+    global ignore, variables, contents
     # splitting the line into keywords
     words = line.split()
     # if it is a function
@@ -333,11 +345,17 @@ def interpret(line, after=""):
                                             a = variables[argument]
                                             s = False
                                             for index in range(len(a[1:-1])):
-                                                s = insideQuotes(index+1, a)
-                                            if s: string += a[1:-1] + " "
-                                            else: string += a + " "
+                                                s = insideQuotes(index + 1, a)
+                                            if s:
+                                                string += a[1:-1] + " "
+                                            else:
+                                                string += a + " "
+                                        else:
+                                            raiseError("NameError", "name \"" + argument + "\" is not defined", line,
+                                                       contents.split("\n").index(line) + 1)
                                 # printing out the string
-                                print(string.replace(r"\n", "\n").replace(r"\t", "\t").replace(r"\r", "\r"),
+                                print(string.replace(r"\n", "\n").replace(r"\t", "\t").replace(r"\r", "\r")
+                                      .replace(r"\"", "\"").replace(r"\'", "'"),
                                       end="")
                             # printing the new line
                             print()
@@ -349,17 +367,31 @@ def interpret(line, after=""):
                 if "=" in line:
                     index = line.index("=")
                     variable_name = line[:index].strip()
-                    value = line[index+1:].strip()
+                    value = line[index + 1:].strip()
                     variables[variable_name] = value
 
 
 # main function
 def main():
     # making this variables accessible
-    global ignore
+    global ignore, contents
+    # removing all comments from the code
+    contents = ""
+    for i in range(len(lines)):
+        line = lines[i]
+        if ":" in line:
+            indexes = list(findAll(line, ":"))
+            if indexes:
+                for index in indexes:
+                    if not insideQuotes(index, line):
+                        lines[i] = line[:index]
+                        contents += line[:index] + "\n"
+        else:
+            contents += line + "\n"
     # checking each character for a presence of a pair
     for char in chars:
-        if not chars[char].startswith("close"): checkClosed(char, chars[char])
+        if not chars[char].startswith("close"):
+            checkClosed(char, chars[char])
     # cycling through lines
     for i in range(len(lines)):
         line = lines[i]
