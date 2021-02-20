@@ -14,7 +14,7 @@ function greet(name) {
 	print("Hello,", name)
 }
 ```
-You can view `test.e` file for latest eLang features.
+You can view `test.elang` file for latest eLang features.
 
 # License
 eLang is licensed with MIT License.
