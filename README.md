@@ -13,6 +13,11 @@ eLang's syntax is similar to JavaScript and Python. Here is a sample greet progr
 function greet(name) {
 	print("Hello,", name)
 }
+greet("eLang")
+```
+Output:
+```
+Hello, eLang
 ```
 You can view `test.elang` file for latest eLang features.
 
