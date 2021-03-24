@@ -25,5 +25,5 @@ You can view `test.elang` file for latest eLang features.
 eLang is licensed with MIT License.
 
 # Credits
-![JetBrainsLogo](logo/JetBrains.png)
+![JetBrainsLogo](logo/jetbrains.png)
 Special thanks to JetBrains who helped in the development of the project by providing free license to their products.
