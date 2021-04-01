@@ -2,6 +2,8 @@
 # eLang
 eLang is a programming language developed by Bekhruz Niyazov (it is still in development).
 
+Update: Although it looks like I abandoned the project actually I did not. Right now I am busy with other projects and school. I hope I will return to the development of eLang soon.
+
 eLang is written in Python, but it is planned to be translated into C in the end of development.
 
 # Installation
