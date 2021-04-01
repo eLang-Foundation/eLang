@@ -1,5 +1,13 @@
 #!/usr/bin/python3
 
+"""
+    This is the last version of eLang that will be written in Python (eLang 0.0.9 Python)
+
+    Right now eLang 0.0.9 is being translated to C
+
+    Stay tuned!
+"""
+
 # importing argv
 from sys import argv
 
@@ -27,7 +35,7 @@ except:
     exit(1)
 
 if filename == "--version":
-    print("eLang 0.0.9 (Python)")
+    print("eLang 0.0.9 Python")
     exit(0)
 
 contents = ""
