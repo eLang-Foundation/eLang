@@ -23,11 +23,16 @@ char *contents;
 char *lines[] = {};
 char *elangFunctions[] = {"print"};
 
+bool ignore = false;
+
 // structs
 typedef struct {
 	char *arguments;
 	char *body;
 } Function;
+
+// all functions created by the user
+Function functions[] = {};
 
 // main function
 int main(int argc, char *argv[])
@@ -95,13 +100,72 @@ int main(int argc, char *argv[])
 		token = strtok(NULL, "\n");
 	}
 
+	// checking for syntax errors
 	checkClosed(numberOfLines);
+
+	for (int i = 0; i < numberOfLines; i++)
+	{
+		char *line = lines[i];
+		int wait = 0;
+
+		// checking if the following code is inside of a function
+		if (ignore)
+		{
+			for (int j = 0; j < strlen(line); j++)
+			{
+				// if the character represents the start of a code block
+				// and it is not a part of a string
+				if (line[j] == '{' && !insideQuotes(j, line))
+					wait++;
+				if (line[j] == '}' && !insideQuotes(j, line))
+				{
+					if (wait)
+						wait--;
+					else
+						ignore = false;
+				}
+			}
+		}
+
+		char after[] = {};
+		char *afterArray[] = {};
+
+		int counter = 0;
+
+		if (i > 0)
+		{
+			for (int j = 1; j < numberOfLines-1; j++)
+				afterArray[counter++] = lines[j];
+		}
+		else
+		{
+			for (int j = 0; j < numberOfLines-1; j++)
+				afterArray[counter++] = lines[j];
+		}
+
+		for (int j = 0; j < counter; j++)
+		{
+			char tmp[] = {};
+			int c = 0;
+			char *currentLine = afterArray[j];
+			if ((char *) &currentLine == (char *) "")
+			{
+				while (currentLine[c] != '\0')
+				{
+					tmp[c] = currentLine[c];
+					c++;
+				}
+				strcat(after, tmp);
+				strcat(after, "\n");
+			}
+		}
+	}
 
 	// freeing the allocated memory
 	free(contents);
 	free(contentsCopy);
 
-	return 1;
+	exit(EXIT_SUCCESS);
 }
 
 // function for raising errors
