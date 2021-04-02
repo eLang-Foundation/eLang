@@ -1,25 +1,34 @@
+/*
+ * eLang 0.0.9 C
+ *
+ * This is the first version of eLang written in C
+ *
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <stdbool.h>
 
 // function prototypes
 void raiseError(char *errorType, char *error, char *line, int lineNumber);
-int findIndexByKey(char *dict[8][2], char *key);
-int findIndexByValue(char *dict[8][2], char *value);
+bool insideQuotes(int index, const char *line);
+void checkClosed(unsigned int number);
+int count(char chr);
+bool contains(char *string, char chr);
 
 // global variables
 char *filename;
-char contents[] = {};
+char *contents;
 char *lines[] = {};
-char *syntax[][2] = {{"function", "function"}, {"start", "{"}, {"end", "}"},
-                    {"arguments_start", ")"}, {"arguments_end", "("}};;
-char *chars[][2] = {{"\"", "double quote"}, {"'", "single quote"},
-                     {syntax[findIndexByKey(syntax, "start")][1], "curly bracket"},
-                     {syntax[findIndexByKey(syntax, "end")][1], "close curly bracket"},
-                     {syntax[findIndexByKey(syntax, "arguments_start")][1], "parentheses"},
-                     {syntax[findIndexByKey(syntax, "arguments_end")][1], "close parentheses"},
-                     {"[", "square brackets"}, {"]", "close square brackets"}};
+char *elangFunctions[] = {"print"};
+
+// structs
+typedef struct {
+	char *arguments;
+	char *body;
+} Function;
 
 // main function
 int main(int argc, char *argv[])
@@ -32,14 +41,14 @@ int main(int argc, char *argv[])
 	else
 	{
 		printf("Usage: elang filename.elang\n");
-		return 1;
+		return 0;
 	}
 
 	// if user wants to get the version of eLang
 	if (!strcmp(filename, "--version"))
 	{
 		printf("eLang 0.0.9 (C)\n");
-		return 0;
+		return 1;
 	}
 
 	// if file was not successfully opened
@@ -60,38 +69,40 @@ int main(int argc, char *argv[])
 	fseek(file, 0L, SEEK_END);
 
 	// getting the length of the file
-	int length = ftell(file);
+	size_t length = ftell(file);
 
 	// moving the pointer back to the start of the file
 	fseek(file, 0L, SEEK_SET);
 
-	char temp[length];
-
 	// storing the contents of the file in a contents array
-	while (fgets(temp, length, file))
-	{
-		strcat(contents, temp);
-	}
+	contents = malloc(length);
+
+	// getting the contents
+	if (contents)
+		fread(contents, 1, length, file);
+
 	// done with the contents
 	fclose(file);
 
-	// creating a pointer that points to an allocated memory that stores the copy of the contents
-	char *contentsPointer = malloc(length * sizeof(char));
-	memcpy(contentsPointer, contents, length);
+	char *contentsCopy = malloc((length * sizeof(char)) + 1);
+	strncpy(contentsCopy, contents, length);
 
 	// splitting the code into lines
-	int counter = 0;
-	char *token = strtok(contentsPointer, "\n");
+	char *token = strtok(contentsCopy, "\n");
+	unsigned int numberOfLines = 0;
 	while (token != NULL)
 	{
-		lines[counter++] = token;
+		lines[numberOfLines++] = token;
 		token = strtok(NULL, "\n");
 	}
 
-	// freeing the allocated memory
-	free(contentsPointer);
+	checkClosed(numberOfLines);
 
-	return 0;
+	// freeing the allocated memory
+	free(contents);
+	free(contentsCopy);
+
+	return 1;
 }
 
 // function for raising errors
@@ -107,34 +118,107 @@ void raiseError(char *errorType, char *error, char *line, int lineNumber)
 	// printing the error
 	printf("%s: %s\n", errorType, error);
 	// exiting the program
-	exit(1);
+	exit(EXIT_FAILURE);
 }
 
-// this function will return the index of the array that contains the given key
-int findIndexByKey(char *dict[8][2], char *key)
+// this function checks if the character at a given index is not inside of a string
+bool insideQuotes(int index, const char *line)
 {
-	// cycling through each array in array
-	for (int i = 0, l = sizeof(dict) * sizeof(dict[0]); i < l; i++)
+	// if there are no double or single quotes then they are closed
+	bool closedSingleQuote = true;
+	bool closedDoubleQuote = true;
+	// cycling through each character in the given string until the given index
+	for (int i = 0; i < index; i++)
 	{
-		// if the key in array is equal to given key
-		if (!strcmp(key, dict[i][0]))
+		// if the last character before the current character is not slash
+		if (line[i-1] != '\\')
 		{
-			return i;
+			// if character is equal to " and it is not inside of a string
+			if (line[i] == '"' && closedSingleQuote)
+			{
+				// the double quotes are opened if they were closed
+				// and they are closed if they were opened
+				closedDoubleQuote = !closedDoubleQuote;
+			}
+			// if the character is equal to ' and it is not inside of a string
+			if (line[i] == '\'' && closedDoubleQuote)
+			{
+				// the single quotes are opened if they were closed
+				// and they are closed if they were opened
+				closedSingleQuote = !closedSingleQuote;
+			}
 		}
 	}
-	return -1;
+	// if single and double quotes are closed
+	if (closedSingleQuote && closedDoubleQuote)
+		return false;
+	return true;
 }
 
-int findIndexByValue(char *dict[8][2], char *value)
+// function that checks whether or not all parentheses, brackets and so forth are closed
+void checkClosed(unsigned int number)
 {
-	// cycling through each array in array
-	for (int i = 0, l = sizeof(dict) * sizeof(dict[0]); i < l; i++)
+	char chars[] = {'"', '\'', '{', '(', '['};
+	char *charName;
+	int counter;
+	for (int i = 0, l = sizeof(chars) / sizeof(chars[0]); i < l; i++)
 	{
-		// if the value in array is equal to given value
-		if (!strcmp(value, dict[i][0]))
+		char chr = chars[i];
+		counter = count(chr);
+		if (chr == '"')
+			charName = "double quote";
+		else if (chr == '\'')
+			charName = "single quote";
+		else if (chr == '{')
 		{
-			return i;
+			counter += count('}');
+			charName = "curly bracket";
+		}
+		else if (chr == '(')
+		{
+			counter += count(')');
+			charName = "parentheses";
+		}
+		else if (chr == '[')
+		{
+			counter += count(']');
+			charName = "square bracket";
+		}
+		if (counter % 2 != 0 && counter != 0)
+		{
+			// displaying the error
+			for (; number > 0;)
+			{
+				char *line = lines[--number];
+				if (line)
+				{
+					if (strchr(line, chr) != NULL)
+					{
+						char str[] = "Unclosed ";
+						strcat(str, charName);
+						raiseError("SyntaxError", str, line, (int) number);
+					}
+				}
+			}
 		}
 	}
-	return -1;
+}
+
+int count(char chr)
+{
+	int counter = 0;
+	for (int i = 0, l = (int) strlen(contents); i < l; i++)
+	{
+		if (contents[i] == chr)
+		{
+			if (!insideQuotes(i, contents))
+				counter++;
+			else
+			{
+				if (!insideQuotes(i+1, contents))
+					counter++;
+			}
+		}
+	}
+	return counter;
 }
