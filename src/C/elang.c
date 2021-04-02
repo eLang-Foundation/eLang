@@ -16,7 +16,6 @@ void raiseError(char *errorType, char *error, char *line, int lineNumber);
 bool insideQuotes(int index, const char *line);
 void checkClosed(unsigned int number);
 int count(char chr);
-bool contains(char *string, char chr);
 
 // global variables
 char *filename;
@@ -47,7 +46,7 @@ int main(int argc, char *argv[])
 	// if user wants to get the version of eLang
 	if (!strcmp(filename, "--version"))
 	{
-		printf("eLang 0.0.9 (C)\n");
+		printf("eLang 0.0.9 C\n");
 		return 1;
 	}
 
@@ -116,7 +115,7 @@ void raiseError(char *errorType, char *error, char *line, int lineNumber)
 		printf("    %s\n", line);
 	}
 	// printing the error
-	printf("%s: %s\n", errorType, error);
+	printf("\n%s: %s\n", errorType, error);
 	// exiting the program
 	exit(EXIT_FAILURE);
 }
