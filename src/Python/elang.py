@@ -417,7 +417,7 @@ def main():
                     else:
                         ignore = False
         after = ""
-        after_list = lines[i - 1:] if i > 0 else lines[0:]
+        after_list = lines[i - 1:] if i > 0 else lines
         for ln in after_list:
             after += ln + "\n"
         interpret(line, after)
