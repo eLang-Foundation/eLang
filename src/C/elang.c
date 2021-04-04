@@ -16,6 +16,7 @@ void raiseError(char *errorType, char *error, char *line, int lineNumber);
 bool insideQuotes(int index, const char *line);
 void checkClosed(unsigned int number);
 int count(char chr);
+void execute(char *line, char *after);
 
 // global variables
 char *filename;
@@ -27,12 +28,18 @@ bool ignore = false;
 
 // structs
 typedef struct {
+	char *name;
 	char *arguments;
 	char *body;
 } Function;
 
-// all functions created by the user
+typedef struct {
+	char *name;
+	char *value;
+} Variable;
+
 Function functions[] = {};
+Variable variables[] = {};
 
 // main function
 int main(int argc, char *argv[])
@@ -88,8 +95,7 @@ int main(int argc, char *argv[])
 	// done with the contents
 	fclose(file);
 
-	char *contentsCopy = malloc((length * sizeof(char)) + 1);
-	strncpy(contentsCopy, contents, length);
+	char *contentsCopy = strdup(contents);
 
 	// splitting the code into lines
 	char *token = strtok(contentsCopy, "\n");
@@ -132,16 +138,8 @@ int main(int argc, char *argv[])
 
 		int counter = 0;
 
-		if (i > 0)
-		{
-			for (int j = 1; j < numberOfLines-1; j++)
-				afterArray[counter++] = lines[j];
-		}
-		else
-		{
-			for (int j = 0; j < numberOfLines-1; j++)
-				afterArray[counter++] = lines[j];
-		}
+		for (int j = i > 0 ? 1: 0; j < numberOfLines-1; j++)
+			afterArray[counter++] = lines[j];
 
 		for (int j = 0; j < counter; j++)
 		{
@@ -159,6 +157,8 @@ int main(int argc, char *argv[])
 				strcat(after, "\n");
 			}
 		}
+
+		execute(line, after);
 	}
 
 	// freeing the allocated memory
@@ -267,6 +267,8 @@ void checkClosed(unsigned int number)
 	}
 }
 
+// this function counts the number of the occurrences of the given character in the even string
+// (excludes the ones that are inside of quotes)
 int count(char chr)
 {
 	int counter = 0;
@@ -284,4 +286,27 @@ int count(char chr)
 		}
 	}
 	return counter;
+}
+
+void execute(char *line, char *after)
+{
+	// splitting the line
+//	char *words[] = {};
+//	int counter = 0;
+//	char *lineCopy = malloc(strlen(line) * sizeof(char));
+//	strcpy(lineCopy, line);
+//	char *tk = strtok(line, " ");
+//	while (tk != NULL)
+//	{
+//		printf("Token: %s\n", tk);
+//		words[counter++] = tk;
+//		tk = strtok(NULL, " ");
+//	}
+//	printf("Line: %s\n", line);
+//	free(lineCopy);
+	// for each word in the line
+//	for (int i = 0; i < counter; i++)
+//	{
+//		printf("%s\n", words[i]);
+//	}
 }
