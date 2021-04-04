@@ -227,9 +227,9 @@ def getContents(index, code):
 ignore = False
 
 
-def interpret(line, after=""):
+def execute(line, after=""):
     global ignore, variables, contents
-    # splitting the line into keywords
+    # splitting the line
     words = line.split()
     # if it is a function
     if words:
@@ -330,7 +330,7 @@ def interpret(line, after=""):
                             after_list = lns[i - 1:] if i > 0 else lns[0:]
                             for ln in after_list:
                                 after += ln + "\n"
-                            interpret(line, after)
+                            execute(line, after)
 
                     # if this functions is a elang built-in function
                     elif function_name in elang_functions:
@@ -420,7 +420,7 @@ def main():
         after_list = lines[i - 1:] if i > 0 else lines
         for ln in after_list:
             after += ln + "\n"
-        interpret(line, after)
+        execute(line, after)
 
 
 # calling the main function
