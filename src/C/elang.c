@@ -291,22 +291,23 @@ int count(char chr)
 void execute(char *line, char *after)
 {
 	// splitting the line
-//	char *words[] = {};
-//	int counter = 0;
-//	char *lineCopy = malloc(strlen(line) * sizeof(char));
-//	strcpy(lineCopy, line);
-//	char *tk = strtok(line, " ");
-//	while (tk != NULL)
-//	{
-//		printf("Token: %s\n", tk);
-//		words[counter++] = tk;
-//		tk = strtok(NULL, " ");
-//	}
-//	printf("Line: %s\n", line);
-//	free(lineCopy);
+	char *words[] = {};
+	int counter = 0;
+	char *lineCopy = strdup(line);
+	char *tk = strtok(lineCopy, " ");
+
+	while (tk != NULL)
+	{
+		printf("Token: %s\n", tk);
+		words[counter++] = tk;
+		tk = strtok(NULL, " ");
+	}
+	free(lineCopy);
+
+	printf("Line: %s\n", line);
 	// for each word in the line
-//	for (int i = 0; i < counter; i++)
-//	{
-//		printf("%s\n", words[i]);
-//	}
+	for (int i = 0; i < counter; i++)
+	{
+		printf("%s\n", words[i]);
+	}
 }
