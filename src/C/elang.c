@@ -95,7 +95,8 @@ int main(int argc, char *argv[])
 	// done with the contents
 	fclose(file);
 
-	char *contentsCopy = strdup(contents);
+	char *contentsCopy = malloc(strlen(contents) + 1);
+	strcpy(contentsCopy, contents);
 
 	// splitting the code into lines
 	char *token = strtok(contentsCopy, "\n");
@@ -133,29 +134,27 @@ int main(int argc, char *argv[])
 			}
 		}
 
-		char after[] = {};
+		// creating an array of lines that are after the current line
+		char *after;
 		char *afterArray[] = {};
 
 		int counter = 0;
 
-		for (int j = i > 0 ? 1: 0; j < numberOfLines-1; j++)
-			afterArray[counter++] = lines[j];
+		for (int j = i; j < numberOfLines; j++)
+		{
+			afterArray[counter] = malloc(strlen(lines[j]) + 1);
+			strcpy(afterArray[counter++], lines[j]);
+		}
 
 		for (int j = 0; j < counter; j++)
 		{
-			char tmp[] = {};
-			int c = 0;
-			char *currentLine = afterArray[j];
-			if ((char *) &currentLine == (char *) "")
-			{
-				while (currentLine[c] != '\0')
-				{
-					tmp[c] = currentLine[c];
-					c++;
-				}
-				strcat(after, tmp);
-				strcat(after, "\n");
-			}
+			char *string = afterArray[j];
+			char tmp[(j == 0 ? 0 : strlen(after)) + strlen(string) + 10];
+			strcpy(tmp, j == 0 ? "" : after);
+			strcat(tmp, string);
+			strcat(tmp, "\n");
+			after = (char *) tmp;
+			free(string);
 		}
 
 		execute(line, after);
@@ -290,24 +289,25 @@ int count(char chr)
 
 void execute(char *line, char *after)
 {
-	// splitting the line
 	char *words[] = {};
-	int counter = 0;
-	char *lineCopy = strdup(line);
-	char *tk = strtok(lineCopy, " ");
 
-	while (tk != NULL)
+	char *lineCopy = malloc(strlen(line) + 1);
+	strcpy(lineCopy, line);
+
+	int counter = 0;
+
+	char *token = strtok(lineCopy, " ");
+	while (token != NULL)
 	{
-		printf("Token: %s\n", tk);
-		words[counter++] = tk;
-		tk = strtok(NULL, " ");
+		words[counter++] = token;
+		token = strtok(NULL, " ");
 	}
+
 	free(lineCopy);
 
-	printf("Line: %s\n", line);
-	// for each word in the line
 	for (int i = 0; i < counter; i++)
 	{
 		printf("%s\n", words[i]);
 	}
+
 }
