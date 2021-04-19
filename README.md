@@ -3,6 +3,7 @@
 [![Line count](https://img.shields.io/tokei/lines/github/BekhruzSNiyazov/eLang)](https://github.com/BekhruzSNiyazov/eLang)
 [![Open issues](https://img.shields.io/github/issues/BekhruzSNiyazov/eLang)](https://github.com/BekhruzSNiyazov/eLang/issues)
 [![License](https://img.shields.io/github/license/BekhruzSNiyazov/eLang)](https://github.com/BekhruzSNiyazov/eLang/blob/master/LICENSE)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/2240ab9515e041d4a1bfa045233939ac)](https://www.codacy.com/gh/BekhruzSNiyazov/eLang/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=SaptakBhoumik/WebPlus&amp;utm_campaign=Badge_Grade)
 
 eLang is a programming language developed by Bekhruz Niyazov (it is still in development).
 
