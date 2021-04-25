@@ -162,6 +162,7 @@ int main(int argc, char *argv[])
 		}
 
 		execute(line, after);
+
 	}
 
 	// freeing the allocated memory
@@ -293,23 +294,29 @@ int count(char chr)
 
 void execute(char *line, char *after)
 {
-	printf("%s\n", after);
-
-	char *words[] = {};
-
 	int counter = 0;
-
 	char *token = strtok(line, " ");
 
 	while (token != NULL)
 	{
-		words[counter] = strdup(token);
+		counter++;
+		token = strtok(NULL, " ");
+	}
+
+	char *words[counter];
+	token = strtok(line, " ");
+	counter = 0;
+
+	while (token != NULL)
+	{
+		words[counter++] = strdup(token);
 		token = strtok(NULL, " ");
 	}
 
 	for (int i = 0; i < counter; i++)
 	{
-		printf("%s\n", words[i]);
+		printf("Word: %s\n", words[i]);
+		free(words[i]);
 	}
 
 }
