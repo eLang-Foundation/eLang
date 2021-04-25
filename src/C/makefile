@@ -1,8 +1,8 @@
 elang: elang.c
-	cc -o elang elang.c
+	cc -Wall -g -o elang elang.c
 
 test:
-	cc -o elang elang.c
+	cc -Wall -g -o elang elang.c
 	./elang test.elang
 
 clean:
