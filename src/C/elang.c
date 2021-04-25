@@ -13,33 +13,39 @@
 
 // function prototypes
 void raiseError(char *errorType, char *error, char *line, int lineNumber);
+
 bool insideQuotes(int index, const char *line);
+
 void checkClosed(unsigned int number);
+
 int count(char chr);
+
 void execute(char *line, char *after);
 
 // global variables
-char *filename;
-char *contents;
-char *lines[] = {};
-char *elangFunctions[] = {"print"};
+char *FILENAME;
+char *CONTENTS;
+char *LINES[] = {};
+char *ELANG_FUNCTIONS[] = { "print" };
 
 bool ignore = false;
 
 // structs
-typedef struct {
+typedef struct
+{
 	char *name;
 	char *arguments;
 	char *body;
 } Function;
 
-typedef struct {
+typedef struct
+{
 	char *name;
 	char *value;
 } Variable;
 
-Function functions[] = {};
-Variable variables[] = {};
+Function FUNCTIONS[] = {};
+Variable VARIABLES[] = {};
 
 // main function
 int main(int argc, char *argv[])
@@ -47,7 +53,7 @@ int main(int argc, char *argv[])
 	// if the number of arguments is 2
 	if (argc == 2)
 	{
-		filename = argv[1];
+		FILENAME = argv[1];
 	}
 	else
 	{
@@ -56,25 +62,25 @@ int main(int argc, char *argv[])
 	}
 
 	// if user wants to get the version of eLang
-	if (!strcmp(filename, "--version"))
+	if (!strcmp(FILENAME, "--version"))
 	{
 		printf("eLang 0.0.9 C\n");
 		return 1;
 	}
 
 	// if file was not successfully opened
-	if (access(filename, F_OK) != 0)
+	if (access(FILENAME, F_OK) != 0)
 	{
 		// creating a string that will be printed in a console
 		char str[] = "unable to open \"";
-		strcat(str, filename);
+		strcat(str, FILENAME);
 		strcat(str, "\"");
 		// raising the error
 		raiseError("eLang", str, NULL, 0);
 	}
 
 	// opening the file
-	FILE *file = fopen(filename, "r");
+	FILE *file = fopen(FILENAME, "r");
 
 	// moving the pointer to the end of the file
 	fseek(file, 0L, SEEK_END);
@@ -85,25 +91,25 @@ int main(int argc, char *argv[])
 	// moving the pointer back to the start of the file
 	fseek(file, 0L, SEEK_SET);
 
-	// storing the contents of the file in a contents array
-	contents = malloc(length);
+	// storing the CONTENTS of the file in a CONTENTS array
+	CONTENTS = malloc(length + 1);
 
-	// getting the contents
-	if (contents)
-		fread(contents, 1, length, file);
+	// getting the CONTENTS
+	if (CONTENTS)
+		fread(CONTENTS, 1, length, file);
 
-	// done with the contents
+	// done with the CONTENTS
 	fclose(file);
 
-	char *contentsCopy = malloc(strlen(contents) + 1);
-	strcpy(contentsCopy, contents);
+	char *contentsCopy = malloc(length + 1);
+	strcpy(contentsCopy, CONTENTS);
 
-	// splitting the code into lines
+	// splitting the code into LINES
 	char *token = strtok(contentsCopy, "\n");
 	unsigned int numberOfLines = 0;
 	while (token != NULL)
 	{
-		lines[numberOfLines++] = token;
+		LINES[numberOfLines++] = token;
 		token = strtok(NULL, "\n");
 	}
 
@@ -112,7 +118,7 @@ int main(int argc, char *argv[])
 
 	for (int i = 0; i < numberOfLines; i++)
 	{
-		char *line = lines[i];
+		char *line = LINES[i];
 		int wait = 0;
 
 		// checking if the following code is inside of a function
@@ -134,34 +140,32 @@ int main(int argc, char *argv[])
 			}
 		}
 
-		// creating an array of lines that are after the current line
-		char *after;
+		// creating an array of LINES that are after the current line
+		char *after = "";
 		char *afterArray[] = {};
 
 		int counter = 0;
 
 		for (int j = i; j < numberOfLines; j++)
 		{
-			afterArray[counter] = malloc(strlen(lines[j]) + 1);
-			strcpy(afterArray[counter++], lines[j]);
+			afterArray[counter++] = strdup(LINES[j]);
 		}
 
-		for (int j = 0; j < counter; j++)
+		for (int j = 1; j < counter; j++)
 		{
-			char *string = afterArray[j];
-			char tmp[(j == 0 ? 0 : strlen(after)) + strlen(string) + 10];
-			strcpy(tmp, j == 0 ? "" : after);
-			strcat(tmp, string);
+			char *tmp = malloc(strlen(after) + strlen(afterArray[j]) + 1);
+			strcpy(tmp, after);
+			strcat(tmp, afterArray[j]);
 			strcat(tmp, "\n");
-			after = (char *) tmp;
-			free(string);
+			after = strdup(tmp);
+			free(tmp);
 		}
 
 		execute(line, after);
 	}
 
 	// freeing the allocated memory
-	free(contents);
+	free(CONTENTS);
 	free(contentsCopy);
 
 	exit(EXIT_SUCCESS);
@@ -173,12 +177,12 @@ void raiseError(char *errorType, char *error, char *line, int lineNumber)
 	// if the incorrect line of code was given
 	if (line != NULL)
 	{
-		printf("File \"%s\"", filename);
+		printf("File \"%s\"", FILENAME);
 		printf(", line %i\n", lineNumber);
-		printf("    %s\n", line);
+		printf("    %s\n\n", line);
 	}
 	// printing the error
-	printf("\n%s: %s\n", errorType, error);
+	printf("%s: %s\n", errorType, error);
 	// exiting the program
 	exit(EXIT_FAILURE);
 }
@@ -193,7 +197,7 @@ bool insideQuotes(int index, const char *line)
 	for (int i = 0; i < index; i++)
 	{
 		// if the last character before the current character is not slash
-		if (line[i-1] != '\\')
+		if (line[i - 1] != '\\')
 		{
 			// if character is equal to " and it is not inside of a string
 			if (line[i] == '"' && closedSingleQuote)
@@ -220,7 +224,7 @@ bool insideQuotes(int index, const char *line)
 // function that checks whether or not all parentheses, brackets and so forth are closed
 void checkClosed(unsigned int number)
 {
-	char chars[] = {'"', '\'', '{', '(', '['};
+	char chars[] = { '"', '\'', '{', '(', '[' };
 	char *charName;
 	int counter;
 	for (int i = 0, l = sizeof(chars) / sizeof(chars[0]); i < l; i++)
@@ -251,14 +255,14 @@ void checkClosed(unsigned int number)
 			// displaying the error
 			for (; number > 0;)
 			{
-				char *line = lines[--number];
+				char *line = LINES[--number];
 				if (line)
 				{
 					if (strchr(line, chr) != NULL)
 					{
 						char str[] = "Unclosed ";
 						strcat(str, charName);
-						raiseError("SyntaxError", str, line, (int) number);
+						raiseError("SyntaxError", str, line, (int)number);
 					}
 				}
 			}
@@ -266,20 +270,20 @@ void checkClosed(unsigned int number)
 	}
 }
 
-// this function counts the number of the occurrences of the given character in the even string
+// this function counts the number of the occurrences of the given character in the given string
 // (excludes the ones that are inside of quotes)
 int count(char chr)
 {
 	int counter = 0;
-	for (int i = 0, l = (int) strlen(contents); i < l; i++)
+	for (int i = 0, l = (int)strlen(CONTENTS); i < l; i++)
 	{
-		if (contents[i] == chr)
+		if (CONTENTS[i] == chr)
 		{
-			if (!insideQuotes(i, contents))
+			if (!insideQuotes(i, CONTENTS))
 				counter++;
 			else
 			{
-				if (!insideQuotes(i+1, contents))
+				if (!insideQuotes(i + 1, CONTENTS))
 					counter++;
 			}
 		}
@@ -289,21 +293,19 @@ int count(char chr)
 
 void execute(char *line, char *after)
 {
-	char *words[] = {};
+	printf("%s\n", after);
 
-	char *lineCopy = malloc(strlen(line) + 1);
-	strcpy(lineCopy, line);
+	char *words[] = {};
 
 	int counter = 0;
 
-	char *token = strtok(lineCopy, " ");
+	char *token = strtok(line, " ");
+
 	while (token != NULL)
 	{
-		words[counter++] = token;
+		words[counter] = strdup(token);
 		token = strtok(NULL, " ");
 	}
-
-	free(lineCopy);
 
 	for (int i = 0; i < counter; i++)
 	{
