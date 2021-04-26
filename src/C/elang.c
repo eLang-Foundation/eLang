@@ -52,9 +52,7 @@ int main(int argc, char *argv[])
 {
 	// if the number of arguments is 2
 	if (argc == 2)
-	{
 		FILENAME = argv[1];
-	}
 	else
 	{
 		printf("Usage: elang filename.elang\n");
@@ -147,9 +145,7 @@ int main(int argc, char *argv[])
 		int counter = 0;
 
 		for (int j = i; j < numberOfLines; j++)
-		{
 			afterArray[counter++] = strdup(LINES[j]);
-		}
 
 		for (int j = 0; j < counter; j++)
 		{
@@ -310,7 +306,7 @@ int match(const char *string, const char *pattern)
 int getIndex(const char *string, char chr)
 {
 	int counter = 0;
-	while (string[counter++] != chr) {}
+	while (string[counter++] != chr);
 	return counter;
 }
 
@@ -318,46 +314,49 @@ int getIndex(const char *string, char chr)
 char *get(const char *string, const char *pattern)
 {
 	int size = 0;
-	if (!match(string, pattern))
+	char last;
+	char prelast;
+	int index = getIndex(pattern, '(') - 1;
+	for (; index < strlen(pattern); index++, size++)
 	{
-		int index = getIndex(pattern, '(');
-		while (pattern[index++] != ')')
-		{
-			size++;
-		}
+		last = pattern[index];
+		prelast = last;
+		if (pattern[index] == ')' && last != '\\' && prelast != '\\')
+			break;
 	}
 
 	// filling in the regular expression into the array
-	char re[size+1];
+	char re[size + 1];
 	int counter = 0;
-	if (!match(string, pattern))
+	index = getIndex(pattern, '(');
+	for (; index < strlen(pattern); index++, size++)
 	{
-		int index = getIndex(pattern, '(');
-		while (pattern[index] != ')')
-		{
-			re[counter++] = pattern[index++];
-		}
+		last = pattern[index];
+		prelast = last;
+		if (pattern[index] == ')' && last != '\\' && prelast != '\\')
+			break;
+		re[counter++] = pattern[index];
 	}
 	re[counter] = '\0';
+
+	puts(re);
 
 	// getting the size of the string
 	size = 0;
 	counter = 0;
-	for (; size < strlen(string);)
+	for (int i = 0; i < strlen(string); i++)
 	{
-		if (!match(&string[counter++], re))
+		if (!match(&string[counter++], strdup(re)))
 			size++;
 	}
 
 	// filling in the string
-	char tmp[size+1];
+	char tmp[size + 1];
 	counter = 0;
-	for (int index = 0; index < strlen(string); index++)
+	for (int i = 0; i < strlen(string); i++)
 	{
-		if (!match(&string[counter], re))
-		{
-			tmp[counter++] = string[index];
-		}
+		if (!match(&string[counter], strdup(re)))
+			tmp[counter++] = string[i];
 	}
 	tmp[counter] = '\0';
 
@@ -398,7 +397,7 @@ void execute(char *line, char *after)
 			if (!strcmp(words[0], functionKeyword))
 			{
 				// getting the name of the function
-				char *returnValue = get(after, "{\\s+([\\w_\\d]+)\\s*");
+				char *returnValue = get(after, "function\\s+(\\w)\\s*");
 				printf("%s\n", returnValue);
 			}
 		}
