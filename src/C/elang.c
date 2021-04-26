@@ -10,17 +10,17 @@
 #include <string.h>
 #include <unistd.h>
 #include <stdbool.h>
+#include <regex.h>
 
 // function prototypes
 void raiseError(char *errorType, char *error, char *line, int lineNumber);
-
 bool insideQuotes(int index, const char *line);
-
 void checkClosed(unsigned int number);
-
 int count(char chr);
-
 void execute(char *line, char *after);
+int match(const char *string, const char *pattern);
+char *get(const char *string, const char *pattern);
+int getIndex(const char *string, char chr);
 
 // global variables
 char *FILENAME;
@@ -292,30 +292,103 @@ int count(char chr)
 	return counter;
 }
 
+// this function checks whether the given string matches the given regex pattern
+int match(const char *string, const char *pattern)
+{
+	regex_t re;
+	if (regcomp(&re, pattern, REG_EXTENDED | REG_NOSUB) != 0) return 0;
+	int status = regexec(&re, string, 0, NULL, 0);
+	regfree(&re);
+	if (status != 0) return 0;
+	return 1;
+}
+
+// this function returns the index of the first occurrence of the given character in the given string
+int getIndex(const char *string, char chr)
+{
+	int counter = 0;
+	while (string[counter++] != chr) {}
+	return counter;
+}
+
+// this function returns the string found using given regex pattern
+char *get(const char *string, const char *pattern)
+{
+	char *returnString;
+	char re[10];
+	if (!match(string, pattern))
+	{
+		int index = getIndex(pattern, '(');
+		int counter = 0;
+		while (pattern[index] != ')')
+		{
+			re[counter++] = pattern[index++];
+		}
+	}
+	printf("%s\n", re);
+	int size = 0;
+	int counter = 0;
+	for (; size < strlen(string);)
+	{
+		if (!match(&string[counter++], re))
+			size++;
+	}
+
+	char tmp[size];
+	counter = 0;
+	for (int index = 0; index < strlen(string); index++)
+	{
+		if (!match(&string[counter], re))
+		{
+			tmp[counter++] = string[index];
+		}
+	}
+	returnString = tmp;
+	return returnString;
+}
+
+// this function executed the given code
 void execute(char *line, char *after)
 {
 	int counter = 0;
 	char *token = strtok(line, " ");
 
+	// getting the size of the array
 	while (token != NULL)
 	{
 		counter++;
 		token = strtok(NULL, " ");
 	}
 
+	// creating an array of words
 	char *words[counter];
 	token = strtok(line, " ");
 	counter = 0;
 
+	// filling in the array of words
 	while (token != NULL)
 	{
 		words[counter++] = strdup(token);
 		token = strtok(NULL, " ");
 	}
 
+	char *functionKeyword = "function";
+
+	if (counter)
+	{
+		if (!ignore)
+		{
+			if (!strcmp(words[0], functionKeyword))
+			{
+				// getting the name of the function
+				char *returnValue = get(after, "{\\s+([\\w_\\d]+)\\s*");
+				printf("%s\n", returnValue);
+			}
+		}
+	}
+
 	for (int i = 0; i < counter; i++)
 	{
-		printf("Word: %s\n", words[i]);
 		free(words[i]);
 	}
 
