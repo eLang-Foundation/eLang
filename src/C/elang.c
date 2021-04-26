@@ -151,7 +151,7 @@ int main(int argc, char *argv[])
 			afterArray[counter++] = strdup(LINES[j]);
 		}
 
-		for (int j = 1; j < counter; j++)
+		for (int j = 0; j < counter; j++)
 		{
 			char *tmp = malloc(strlen(after) + strlen(afterArray[j]) + 1);
 			strcpy(tmp, after);
@@ -251,14 +251,17 @@ void checkClosed(unsigned int number)
 			counter += count(']');
 			charName = "square bracket";
 		}
+		// if number is not even
 		if (counter % 2 != 0 && counter != 0)
 		{
 			// displaying the error
 			for (; number > 0;)
 			{
+				// getting the line
 				char *line = LINES[--number];
 				if (line)
 				{
+					// displaying the error
 					if (strchr(line, chr) != NULL)
 					{
 						char str[] = "Unclosed ";
@@ -314,27 +317,40 @@ int getIndex(const char *string, char chr)
 // this function returns the string found using given regex pattern
 char *get(const char *string, const char *pattern)
 {
-	char *returnString;
-	char re[10];
+	int size = 0;
 	if (!match(string, pattern))
 	{
 		int index = getIndex(pattern, '(');
-		int counter = 0;
+		while (pattern[index++] != ')')
+		{
+			size++;
+		}
+	}
+
+	// filling in the regular expression into the array
+	char re[size+1];
+	int counter = 0;
+	if (!match(string, pattern))
+	{
+		int index = getIndex(pattern, '(');
 		while (pattern[index] != ')')
 		{
 			re[counter++] = pattern[index++];
 		}
 	}
-	printf("%s\n", re);
-	int size = 0;
-	int counter = 0;
+	re[counter] = '\0';
+
+	// getting the size of the string
+	size = 0;
+	counter = 0;
 	for (; size < strlen(string);)
 	{
 		if (!match(&string[counter++], re))
 			size++;
 	}
 
-	char tmp[size];
+	// filling in the string
+	char tmp[size+1];
 	counter = 0;
 	for (int index = 0; index < strlen(string); index++)
 	{
@@ -343,8 +359,9 @@ char *get(const char *string, const char *pattern)
 			tmp[counter++] = string[index];
 		}
 	}
-	returnString = tmp;
-	return returnString;
+	tmp[counter] = '\0';
+
+	return strdup(tmp);
 }
 
 // this function executed the given code
