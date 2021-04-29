@@ -1,5 +1,0 @@
-string1 = ' I\'m Bekhruz Niyazov\n'
-
-string2 = "This language is called \"eLang\""
-
-print(string1, string2)
