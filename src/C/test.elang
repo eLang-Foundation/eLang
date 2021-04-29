@@ -1,7 +1,0 @@
-print("hello, world")
-function greet(name)
-{
-    print("Hello,", name)
-}
-
-greet("eLang")
