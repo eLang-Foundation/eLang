@@ -14,12 +14,19 @@
 
 // function prototypes
 void raiseError(char *errorType, char *error, char *line, int lineNumber);
+
 bool insideQuotes(int index, const char *line);
+
 void checkClosed(unsigned int number);
+
 int count(char chr);
+
 void execute(char *line, char *after);
+
 int match(const char *string, const char *pattern);
+
 char *get(const char *string, const char *pattern);
+
 int getIndex(const char *string, char chr);
 
 // global variables
@@ -313,15 +320,16 @@ int getIndex(const char *string, char chr)
 // this function returns the string found using given regex pattern
 char *get(const char *string, const char *pattern)
 {
+	// getting the size of the regular expression
 	int size = 0;
 	char last;
-	char prelast;
+	char preLast;
 	int index = getIndex(pattern, '(') - 1;
 	for (; index < strlen(pattern); index++, size++)
 	{
 		last = pattern[index];
-		prelast = last;
-		if (pattern[index] == ')' && last != '\\' && prelast != '\\')
+		preLast = last;
+		if (pattern[index] == ')' && last != '\\' && preLast != '\\')
 			break;
 	}
 
@@ -332,33 +340,37 @@ char *get(const char *string, const char *pattern)
 	for (; index < strlen(pattern); index++, size++)
 	{
 		last = pattern[index];
-		prelast = last;
-		if (pattern[index] == ')' && last != '\\' && prelast != '\\')
+		preLast = last;
+		if (pattern[index] == ')' && last != '\\' && preLast != '\\')
 			break;
 		re[counter++] = pattern[index];
 	}
 	re[counter] = '\0';
 
-	puts(re);
-
-	// getting the size of the string
 	size = 0;
-	counter = 0;
-	for (int i = 0; i < strlen(string); i++)
+	// getting the size of the return string
+	for (int i = 0, l = (int)strlen(string); i < l; i++)
 	{
-		if (!match(&string[counter++], strdup(re)))
+		if (!strcmp(&string[i], re))
 			size++;
 	}
 
-	// filling in the string
+	// filling in the return string
 	char tmp[size + 1];
-	counter = 0;
-	for (int i = 0; i < strlen(string); i++)
+	for (int i = 0, l = (int)strlen(string); i < l; i++)
 	{
-		if (!match(&string[counter], strdup(re)))
-			tmp[counter++] = string[i];
+		if (!strcmp(&string[i], re))
+		{
+			if (strcmp(tmp, pattern) != 0)
+				tmp[i] = string[i];
+			else
+			{
+				for (int j = 0; j < i; j++)
+					tmp[j] = '\0';
+			}
+		}
 	}
-	tmp[counter] = '\0';
+	tmp[size] = '\0';
 
 	return strdup(tmp);
 }
@@ -397,7 +409,7 @@ void execute(char *line, char *after)
 			if (!strcmp(words[0], functionKeyword))
 			{
 				// getting the name of the function
-				char *returnValue = get(after, "function\\s+(\\w)\\s*");
+				char *returnValue = get(after, "function\\s+([\\w_\\d]+)\\s*");
 				printf("%s\n", returnValue);
 			}
 		}
