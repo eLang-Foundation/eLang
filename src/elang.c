@@ -320,59 +320,53 @@ int getIndex(const char *string, char chr)
 // this function returns the string found using given regex pattern
 char *get(const char *string, const char *pattern)
 {
-	// getting the size of the regular expression
-	int size = 0;
-	char last;
-	char preLast;
-	int index = getIndex(pattern, '(') - 1;
-	for (; index < strlen(pattern); index++, size++)
+	int sizeBefore = 0;
+	int sizeAfter = 0;
+	bool done = false;
+	bool wait = false;
+	for (int i = 0, l = (int) strlen(pattern); i < l; i++)
 	{
-		last = pattern[index];
-		preLast = last;
-		if (pattern[index] == ')' && last != '\\' && preLast != '\\')
-			break;
-	}
-
-	// filling in the regular expression into the array
-	char re[size + 1];
-	int counter = 0;
-	index = getIndex(pattern, '(');
-	for (; index < strlen(pattern); index++, size++)
-	{
-		last = pattern[index];
-		preLast = last;
-		if (pattern[index] == ')' && last != '\\' && preLast != '\\')
-			break;
-		re[counter++] = pattern[index];
-	}
-	re[counter] = '\0';
-
-	size = 0;
-	// getting the size of the return string
-	for (int i = 0, l = (int)strlen(string); i < l; i++)
-	{
-		if (!strcmp(&string[i], re))
-			size++;
-	}
-
-	// filling in the return string
-	char tmp[size + 1];
-	for (int i = 0, l = (int)strlen(string); i < l; i++)
-	{
-		if (!strcmp(&string[i], re))
+		if (pattern[i] == '[' && pattern[i + 1] == ']')
+			done = true;
+		else
 		{
-			if (strcmp(tmp, pattern) != 0)
-				tmp[i] = string[i];
+			if (done)
+				wait = true;
+			if (wait)
+				sizeAfter++;
 			else
-			{
-				for (int j = 0; j < i; j++)
-					tmp[j] = '\0';
-			}
+				sizeBefore++;
 		}
 	}
-	tmp[size] = '\0';
 
-	return strdup(tmp);
+	char before[sizeBefore];
+	char after[sizeAfter];
+	for (int i = 0, l = (int) strlen(pattern); i < l;)
+	{
+		if (i < sizeBefore)
+		{
+			before[i] = pattern[i];
+			i++;
+		}
+		else
+		{
+			before[sizeBefore] = '\0';
+			for (int j = i + 2; j < l; j++)
+			{
+				if (j - sizeBefore > 1)
+				{
+					printf("here\n");
+					after[j - i - 2] = pattern[j];
+				}
+			}
+			break;
+		}
+	}
+	after[sizeAfter] = '\0';
+
+	printf("%s | %s\n", before, after);
+
+	return strdup("");
 }
 
 // this function executed the given code
@@ -409,8 +403,9 @@ void execute(char *line, char *after)
 			if (!strcmp(words[0], functionKeyword))
 			{
 				// getting the name of the function
-				char *returnValue = get(after, "function\\s+([\\w_\\d]+)\\s*");
+				char *returnValue = get(after, "[{][][}]");
 				printf("%s\n", returnValue);
+				free(returnValue);
 			}
 		}
 	}
