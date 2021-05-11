@@ -31,3 +31,5 @@ eLang is licensed with MIT License.
 
 # Credits
 Special thanks to JetBrains who helped in the development of the project by providing free license to their products.
+
+I would also like to thank [@kokke](https://github.com/kokke) for the awesome (regex library)[https://github.com/kokke/tiny-regex-c] they have developed.
