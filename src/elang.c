@@ -10,24 +10,13 @@
 #include <string.h>
 #include <unistd.h>
 #include <stdbool.h>
-#include <regex.h>
-
-// function prototypes
-void raiseError(char *errorType, char *error, char *line, int lineNumber);
-
-bool insideQuotes(int index, const char *line);
-
-void checkClosed(unsigned int number);
-
-int count(char chr);
-
-void execute(char *line, char *after);
-
-int match(const char *string, const char *pattern);
-
-char *get(const char *string, const char *pattern);
-
-int getIndex(const char *string, char chr);
+//#include "Regex/src/regex.c"
+#include "raiseError.c"
+#include "insideQuotes.c"
+#include "count.c"
+#include "checkClosed.c"
+#include "get.c"
+#include "execute.c"
 
 // global variables
 char *FILENAME;
@@ -81,7 +70,7 @@ int main(int argc, char *argv[])
 		strcat(str, FILENAME);
 		strcat(str, "\"");
 		// raising the error
-		raiseError("eLang", str, NULL, 0);
+		raiseError("eLang", str, NULL, 0, FILENAME);
 	}
 
 	// opening the file
@@ -119,7 +108,7 @@ int main(int argc, char *argv[])
 	}
 
 	// checking for syntax errors
-	checkClosed(numberOfLines);
+	checkClosed(numberOfLines, CONTENTS, LINES, FILENAME);
 
 	for (int i = 0; i < numberOfLines; i++)
 	{
@@ -164,7 +153,7 @@ int main(int argc, char *argv[])
 			free(tmp);
 		}
 
-		execute(line, after);
+		execute(line, after, ignore);
 
 	}
 
@@ -173,246 +162,4 @@ int main(int argc, char *argv[])
 	free(contentsCopy);
 
 	exit(EXIT_SUCCESS);
-}
-
-// function for raising errors
-void raiseError(char *errorType, char *error, char *line, int lineNumber)
-{
-	// if the incorrect line of code was given
-	if (line != NULL)
-	{
-		printf("File \"%s\"", FILENAME);
-		printf(", line %i\n", lineNumber);
-		printf("    %s\n\n", line);
-	}
-	// printing the error
-	printf("%s: %s\n", errorType, error);
-	// exiting the program
-	exit(EXIT_FAILURE);
-}
-
-// this function checks if the character at a given index is not inside of a string
-bool insideQuotes(int index, const char *line)
-{
-	// if there are no double or single quotes then they are closed
-	bool closedSingleQuote = true;
-	bool closedDoubleQuote = true;
-	// cycling through each character in the given string until the given index
-	for (int i = 0; i < index; i++)
-	{
-		// if the last character before the current character is not slash
-		if (line[i - 1] != '\\')
-		{
-			// if character is equal to " and it is not inside of a string
-			if (line[i] == '"' && closedSingleQuote)
-			{
-				// the double quotes are opened if they were closed
-				// and they are closed if they were opened
-				closedDoubleQuote = !closedDoubleQuote;
-			}
-			// if the character is equal to ' and it is not inside of a string
-			if (line[i] == '\'' && closedDoubleQuote)
-			{
-				// the single quotes are opened if they were closed
-				// and they are closed if they were opened
-				closedSingleQuote = !closedSingleQuote;
-			}
-		}
-	}
-	// if single and double quotes are closed
-	if (closedSingleQuote && closedDoubleQuote)
-		return false;
-	return true;
-}
-
-// function that checks whether or not all parentheses, brackets and so forth are closed
-void checkClosed(unsigned int number)
-{
-	char chars[] = { '"', '\'', '{', '(', '[' };
-	char *charName;
-	int counter;
-	for (int i = 0, l = sizeof(chars) / sizeof(chars[0]); i < l; i++)
-	{
-		char chr = chars[i];
-		counter = count(chr);
-		if (chr == '"')
-			charName = "double quote";
-		else if (chr == '\'')
-			charName = "single quote";
-		else if (chr == '{')
-		{
-			counter += count('}');
-			charName = "curly bracket";
-		}
-		else if (chr == '(')
-		{
-			counter += count(')');
-			charName = "parentheses";
-		}
-		else if (chr == '[')
-		{
-			counter += count(']');
-			charName = "square bracket";
-		}
-		// if number is not even
-		if (counter % 2 != 0 && counter != 0)
-		{
-			// displaying the error
-			for (; number > 0;)
-			{
-				// getting the line
-				char *line = LINES[--number];
-				if (line)
-				{
-					// displaying the error
-					if (strchr(line, chr) != NULL)
-					{
-						char str[] = "Unclosed ";
-						strcat(str, charName);
-						raiseError("SyntaxError", str, line, (int)number);
-					}
-				}
-			}
-		}
-	}
-}
-
-// this function counts the number of the occurrences of the given character in the given string
-// (excludes the ones that are inside of quotes)
-int count(char chr)
-{
-	int counter = 0;
-	for (int i = 0, l = (int)strlen(CONTENTS); i < l; i++)
-	{
-		if (CONTENTS[i] == chr)
-		{
-			if (!insideQuotes(i, CONTENTS))
-				counter++;
-			else
-			{
-				if (!insideQuotes(i + 1, CONTENTS))
-					counter++;
-			}
-		}
-	}
-	return counter;
-}
-
-// this function checks whether the given string matches the given regex pattern
-int match(const char *string, const char *pattern)
-{
-	regex_t re;
-	if (regcomp(&re, pattern, REG_EXTENDED | REG_NOSUB) != 0) return 0;
-	int status = regexec(&re, string, 0, NULL, 0);
-	regfree(&re);
-	if (status != 0) return 0;
-	return 1;
-}
-
-// this function returns the index of the first occurrence of the given character in the given string
-int getIndex(const char *string, char chr)
-{
-	int counter = 0;
-	while (string[counter++] != chr);
-	return counter;
-}
-
-// this function returns the string found using given regex pattern
-char *get(const char *string, const char *pattern)
-{
-	int sizeBefore = 0;
-	int sizeAfter = 0;
-	bool done = false;
-	bool wait = false;
-	for (int i = 0, l = (int) strlen(pattern); i < l; i++)
-	{
-		if (pattern[i] == '[' && pattern[i + 1] == ']')
-			done = true;
-		else
-		{
-			if (done)
-				wait = true;
-			if (wait)
-				sizeAfter++;
-			else
-				sizeBefore++;
-		}
-	}
-
-	char before[sizeBefore];
-	char after[sizeAfter];
-	for (int i = 0, l = (int) strlen(pattern); i < l;)
-	{
-		if (i < sizeBefore)
-		{
-			before[i] = pattern[i];
-			i++;
-		}
-		else
-		{
-			before[sizeBefore] = '\0';
-			for (int j = i + 2; j < l; j++)
-			{
-				if (j - sizeBefore > 1)
-				{
-					printf("here\n");
-					after[j - i - 2] = pattern[j];
-				}
-			}
-			break;
-		}
-	}
-	after[sizeAfter] = '\0';
-
-	printf("%s | %s\n", before, after);
-
-	return strdup("");
-}
-
-// this function executed the given code
-void execute(char *line, char *after)
-{
-	int counter = 0;
-	char *token = strtok(line, " ");
-
-	// getting the size of the array
-	while (token != NULL)
-	{
-		counter++;
-		token = strtok(NULL, " ");
-	}
-
-	// creating an array of words
-	char *words[counter];
-	token = strtok(line, " ");
-	counter = 0;
-
-	// filling in the array of words
-	while (token != NULL)
-	{
-		words[counter++] = strdup(token);
-		token = strtok(NULL, " ");
-	}
-
-	char *functionKeyword = "function";
-
-	if (counter)
-	{
-		if (!ignore)
-		{
-			if (!strcmp(words[0], functionKeyword))
-			{
-				// getting the name of the function
-				char *returnValue = get(after, "[{][][}]");
-				printf("%s\n", returnValue);
-				free(returnValue);
-			}
-		}
-	}
-
-	for (int i = 0; i < counter; i++)
-	{
-		free(words[i]);
-	}
-
 }
