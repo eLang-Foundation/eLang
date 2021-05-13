@@ -10,7 +10,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <stdbool.h>
-//#include "Regex/src/regex.c"
+#include "Regex/src/regex.c"
 #include "raiseError.c"
 #include "insideQuotes.c"
 #include "count.c"

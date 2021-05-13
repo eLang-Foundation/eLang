@@ -33,17 +33,18 @@ char *get(char *string, char *pattern)
 		}
 	}
 
-	printf("Before: %s\nAfter: %s\n", before, after);
+	printf("Before:%s\nAfter: %s\n", before, after);
+	printf("here");
 
 	char returnString[strlen(string)];
 	counter = 0;
 	for (int i = 0, l = (int) strlen(string); i < l; i++)
 	{
-//		if (regex_matches((regex *)&before, (char *) &returnString, (capture_group **)"[\\w\\W]*") != 0)
-//		{
-//			returnString[counter++] = string[i];
-//			printf("%c", string[i]);
-//		}
+		if (regex_matches((regex *)&before, (char *) &returnString, (capture_group **)"[\\w\\W]*") != 0)
+		{
+			returnString[counter++] = string[i];
+			printf("%c", string[i]);
+		}
 	}
 
 	printf("\n");
