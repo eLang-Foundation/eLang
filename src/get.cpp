@@ -1,8 +1,10 @@
 #include <stdio.h>
 #include <string.h>
+#include <regex>
+#include "get.h"
 
 // this function returns the string found using given regex pattern
-char *get(const char *string, const char *pattern)
+extern "C" char *get(char *string, char *pattern)
 {
 	// getting the size of the string before and after the pattern inside of []
 	int sizeBefore = 1, sizeAfter = 1;
@@ -43,11 +45,11 @@ char *get(const char *string, const char *pattern)
 	counter = 0;
 	for (int i = 0, l = (int) strlen(string); i < l; i++)
 	{
-//		if (regex_matches((regex *)&before, (char *) &returnString, (capture_group **)"[\\w\\W]*") != 0)
-//		{
-//			returnString[counter++] = string[i];
-//			printf("%c", string[i]);
-//		}
+		if (regex_matches((regex *)&before, (char *) &returnString, (capture_group **)"[\\w\\W]*") != 0)
+		{
+			returnString[counter++] = string[i];
+			printf("%c", string[i]);
+		}
 	}
 
 	printf("\n");

@@ -1,7 +1,7 @@
 /*
  * eLang 0.0.9 C
  *
- * This is the first version of eLang written in C
+ * This is the first version of eLang written in C and C++
  *
  */
 
@@ -10,13 +10,12 @@
 #include <string.h>
 #include <unistd.h>
 #include <stdbool.h>
-#include "Regex/src/regex.c"
 #include "raiseError.c"
 #include "insideQuotes.c"
 #include "count.c"
 #include "checkClosed.c"
-#include "get.c"
 #include "execute.c"
+#include "get.h"
 
 // global variables
 char *FILENAME;

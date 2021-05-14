@@ -1,8 +1,12 @@
-#include "get.cpp"
+#ifndef GET_H
+#define GET_H
 
 #ifdef __cplusplus
 extern "C" {
-	char *get(const char *string, const char *pattern);
-};
+#endif
+char *get(char *string, char *pattern);
+#ifdef __cplusplus
+}
+#endif
 
 #endif
