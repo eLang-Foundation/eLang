@@ -14,6 +14,7 @@
 #include "insideQuotes.c"
 #include "count.c"
 #include "checkClosed.c"
+#include "removeWhitespace.c"
 #include "execute.c"
 
 // global variables

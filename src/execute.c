@@ -34,9 +34,14 @@ void execute(char *line, char *after, bool ignore)
 			if (!strcmp(words[0], functionKeyword))
 			{
 				// getting the name of the function
-				char *returnValue = get(after, "function\\s+([\\w_\\d]+)\\s*\\(");
-				printf("function name: %s\n", returnValue);
-				free(returnValue);
+				char *functionName = get(after, "function\\s+([\\w_\\d]+)\\s*\\(");
+				printf("function name: %s\n", functionName);
+				// getting the body of the function
+				char *body = get(after, "\\{([\\w\\W]*)\\}");
+				body = removeWhitespace(body);
+				printf("body: `%s`\n", body);
+				free(functionName);
+				free(body);
 			}
 		}
 	}
