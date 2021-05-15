@@ -1,3 +1,5 @@
+#include "get.h"
+
 // this function executed the given code
 void execute(char *line, char *after, bool ignore)
 {
@@ -32,9 +34,9 @@ void execute(char *line, char *after, bool ignore)
 			if (!strcmp(words[0], functionKeyword))
 			{
 				// getting the name of the function
-//				char *returnValue = get(after, "function\\s+([\\w_\\d]+)\\s*");
-//				printf("return value: %s\n", returnValue);
-//				free(returnValue);
+				char *returnValue = get(after, "function\\s+([\\w_\\d]+)\\s*");
+				printf("return value: %s\n", returnValue);
+				free(returnValue);
 			}
 		}
 	}

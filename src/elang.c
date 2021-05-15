@@ -15,7 +15,6 @@
 #include "count.c"
 #include "checkClosed.c"
 #include "execute.c"
-#include "get.h"
 
 // global variables
 char *FILENAME;
