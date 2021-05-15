@@ -1,7 +1,7 @@
-#include <regex>
 #include "get.h"
 #include <iostream>
 #include <cstring>
+#include <bits/stdc++.h>
 
 bool replace(std::string& str, const std::string& from, const std::string& to) {
 	size_t start_pos = str.find(from);
@@ -19,18 +19,11 @@ char *get(char *string, char *pattern)
 	std::smatch m;
 	std::string returnString = s;
 
-	while (std::regex_search(s, m, e))
+	if (std::regex_search(s, m, e))
 	{
-		std::cout << std::endl;
-		s = m.suffix().str();
-
+		char returnValue[m.str(1).length()];
+		strcpy(returnValue, m.str(1).c_str());
+		return strdup(returnValue);
 	}
-
-	replace(returnString, s, "");
-
-	char returnValue[returnString.length()];
-
-	strcpy(returnValue, returnString.c_str());
-
-	return strdup(&returnValue[0]);
+	return strdup("");
 }

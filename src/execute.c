@@ -34,8 +34,8 @@ void execute(char *line, char *after, bool ignore)
 			if (!strcmp(words[0], functionKeyword))
 			{
 				// getting the name of the function
-				char *returnValue = get(after, "function\\s+([\\w_\\d]+)\\s*");
-				printf("return value: %s\n", returnValue);
+				char *returnValue = get(after, "function\\s+([\\w_\\d]+)\\s*\\(");
+				printf("function name: %s\n", returnValue);
 				free(returnValue);
 			}
 		}
