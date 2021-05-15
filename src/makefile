@@ -1,9 +1,13 @@
 elang: elang.c
-	cc -Wall -g -o elang elang.c
+	g++ -c -Wall -Werror -fPIC get.cpp
+	g++ -shared -o libGet.so get.o
+	gcc -L. -Wall -o elang elang.c libGet.so
 
 test:
-	cc -Wall -g -o elang elang.c
+	make
 	./elang test.elang
 
 clean:
 	rm elang
+	rm *.so
+	rm *.o

@@ -1,4 +1,4 @@
-#include "get.h"
+extern char *get(char *string, char *pattern);
 
 // this function executed the given code
 void execute(char *line, char *after, bool ignore)
