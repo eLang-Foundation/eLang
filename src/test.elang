@@ -1,8 +1,14 @@
 #!/home/bekhruz/Desktop/CS/eLang/src/elang
 print("hello, world")
-function greet(name)
-{
-    print("Hello,", name)
+
+function greet(name) {
+    5 times with i {
+        print("Hello,", name)
+    }
+}
+
+function hello(name) {
+    print("hello,", name)
 }
 
 greet("eLang")

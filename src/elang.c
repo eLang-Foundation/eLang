@@ -15,6 +15,7 @@
 #include "count.c"
 #include "checkClosed.c"
 #include "removeWhitespace.c"
+#include "getContents.c"
 #include "execute.c"
 
 // global variables

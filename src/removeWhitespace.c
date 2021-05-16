@@ -1,7 +1,7 @@
 // this function removes the whitespace around the string
 char *removeWhitespace(char *string)
 {
-	char *returnString;
+	char *returnString = "";
 	char *tmp = string;
 	for (int i = 0, l = (int) strlen(tmp); i < l; i++)
 	{
