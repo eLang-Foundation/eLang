@@ -35,11 +35,22 @@ void execute(char *line, char *after, bool ignore)
 			{
 				// getting the name of the function
 				char *functionName = get(after, "function\\s+([\\w_\\d]+)\\s*\\(");
-				printf("function name: %s\n", functionName);
+
 				// getting the body of the function
 				char *body = get(after, "\\{([\\w\\W]*)\\}");
-				body = removeWhitespace(body);
-				printf("body: `%s`\n", body);
+				char bodyWithoutWhitespaces[strlen(body)];
+				int charCounter = 0;
+				token = strtok(body, "\n");
+				while (token != NULL)
+				{
+					char *withoutWhitespaces = removeWhitespace(token);
+					for (int i = 0, l = (int) strlen(withoutWhitespaces); i < l; i++)
+					{
+						bodyWithoutWhitespaces[charCounter++] = withoutWhitespaces[i];
+					}
+					free(withoutWhitespaces);
+					token = strtok(NULL, "\n");
+				}
 				free(functionName);
 				free(body);
 			}
