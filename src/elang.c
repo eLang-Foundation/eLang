@@ -151,6 +151,7 @@ int main(int argc, char *argv[])
 			strcat(tmp, "\n");
 			after = strdup(tmp);
 			free(tmp);
+			free(afterArray[j]);
 		}
 
 		execute(line, after, ignore);
