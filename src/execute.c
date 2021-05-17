@@ -34,7 +34,7 @@ void execute(char *line, char *after, bool ignore)
 			if (!strcmp(words[0], functionKeyword))
 			{
 				// getting the name of the function
-				char *functionName = get(after, "function\\s+([\\w_\\d]+)\\s*\\(");
+				char *functionName = get(after, "function\\s+([\\w_\\d]+)\\s*[\\(\\{]+");
 				printf("function name: %s\n", functionName);
 
 				// getting the body of the function
@@ -57,7 +57,7 @@ void execute(char *line, char *after, bool ignore)
 				printf("body: `%s`\n", body);
 
 				// getting the arguments of the function
-				char *arguments = get(after, "\\(([\\w\\W]*?)\\)");
+				char *arguments = get(after, "\\(([\\w\\W]*?)\\)\\s*\\{");
 				printf("arguments: %s\n", arguments);
 
 				free(functionName);
@@ -67,7 +67,7 @@ void execute(char *line, char *after, bool ignore)
 
 	for (int i = 0; i < counter; i++)
 	{
-		free(words[i]);
+//		free(words[i]);
 	}
 
 }
