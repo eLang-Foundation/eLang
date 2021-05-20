@@ -155,6 +155,7 @@ int main(int argc, char *argv[])
 		}
 
 		execute(line, after, ignore);
+		free(after);
 
 	}
 
