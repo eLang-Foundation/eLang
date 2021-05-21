@@ -7,7 +7,7 @@ function greet(name) {
     }
 }
 
-function hello(name) {
+function hello {
     print("hello,", name)
 }
 
