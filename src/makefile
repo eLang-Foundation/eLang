@@ -11,3 +11,7 @@ clean:
 	rm elang
 	rm *.so
 	rm *.o
+
+memcheck:
+	make
+	valgrind --track-origins=yes --leak-check=full ./elang test.elang
