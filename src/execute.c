@@ -61,13 +61,14 @@ void execute(char *line, char *after, bool ignore)
 				printf("arguments: %s\n", arguments);
 
 				free(functionName);
+				free(arguments);
 			}
 		}
 	}
 
 	for (int i = 0; i < counter; i++)
 	{
-//		free(words[i]);
+		free(words[i]);
 	}
 
 }
