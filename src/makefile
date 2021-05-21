@@ -1,7 +1,10 @@
 compile: elang.c
+	make lib
+	gcc -L. -Wall -o elang elang.c libGet.so
+
+lib:
 	g++ -c -Wall -Werror -fPIC get.cpp
 	g++ -shared -o libGet.so get.o
-	gcc -L. -Wall -o elang elang.c libGet.so
 
 test:
 	make
@@ -15,3 +18,7 @@ clean:
 memcheck:
 	make
 	valgrind --track-origins=yes --leak-check=full ./elang test.elang
+
+debug:
+	make lib
+	gcc -g -L. -Wall -o elang elang.c libGet.so
