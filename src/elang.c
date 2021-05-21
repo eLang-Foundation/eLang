@@ -85,20 +85,21 @@ int main(int argc, char *argv[])
 	// moving the pointer back to the start of the file
 	fseek(file, 0L, SEEK_SET);
 
-	// storing the CONTENTS of the file in a CONTENTS array
+	// storing the contents of the file in a CONTENTS array
 	CONTENTS = malloc(length + 1);
 
-	// getting the CONTENTS
+	// getting the contents
 	if (CONTENTS)
 		fread(CONTENTS, 1, length, file);
 
-	// done with the CONTENTS
+	// done with the contents
 	fclose(file);
 
-	char *contentsCopy = malloc(length + 1);
-	strcpy(contentsCopy, CONTENTS);
+	char *contentsCopy = strdup(CONTENTS);
 
-	// splitting the code into LINES
+	free(CONTENTS);
+
+	// splitting the code into lines
 	char *token = strtok(contentsCopy, "\n");
 	unsigned int numberOfLines = 0;
 	while (token != NULL)
@@ -108,7 +109,7 @@ int main(int argc, char *argv[])
 	}
 
 	// checking for syntax errors
-	checkClosed(numberOfLines, CONTENTS, LINES, FILENAME);
+	checkClosed(numberOfLines, contentsCopy, LINES, FILENAME);
 
 	for (int i = 0; i < numberOfLines; i++)
 	{
@@ -134,7 +135,7 @@ int main(int argc, char *argv[])
 			}
 		}
 
-		// creating an array of LINES that are after the current line
+		// creating an array of lines that are after the current line
 		char *after = "";
 		char *afterArray[] = {};
 
@@ -160,7 +161,6 @@ int main(int argc, char *argv[])
 	}
 
 	// freeing the allocated memory
-	free(CONTENTS);
 	free(contentsCopy);
 
 	exit(EXIT_SUCCESS);
