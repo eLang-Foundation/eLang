@@ -24,5 +24,6 @@ bool match(char *string, char *pattern)
 {
 	std::string s (string);
 	std::regex p (pattern);
-	return std::regex_match(s, p);
+	bool matched = std::regex_match(s, p);
+	return matched;
 }
