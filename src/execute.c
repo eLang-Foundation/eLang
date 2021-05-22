@@ -46,6 +46,7 @@ void execute(char *line, char *after, bool ignore)
 				printf("arguments: %s\n", arguments);
 
 				free(functionName);
+				free(body);
 				free(arguments);
 			}
 		}
