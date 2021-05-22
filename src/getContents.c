@@ -18,7 +18,7 @@ char *getContents(char *string, char openCharacter, char closeCharacter)
 			start = true;
 			charCounter++;
 		}
-		else if (string[i] == closeCharacter)
+		else if (string[i + 1] == closeCharacter)
 		{
 			charCounter--;
 			if (charCounter == 0)

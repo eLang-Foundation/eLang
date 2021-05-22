@@ -11,4 +11,8 @@ function hello(name) {
     print("hello,", name)
 }
 
+function 3rd(123var) {
+    print(123var)
+}
+
 greet("eLang")

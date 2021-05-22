@@ -14,7 +14,7 @@
 #include "insideQuotes.c"
 #include "count.c"
 #include "checkClosed.c"
-#include "removeWhitespace.c"
+#include "trim.c"
 #include "getContents.c"
 #include "execute.c"
 
@@ -136,28 +136,32 @@ int main(int argc, char *argv[])
 		}
 
 		// creating an array of lines that are after the current line
-		char *after = "";
 		char *afterArray[] = {};
 
 		int counter = 0;
+		int afterLength = 0;
 
 		for (int j = i; j < numberOfLines; j++)
+		{
 			afterArray[counter++] = strdup(LINES[j]);
+			afterLength += (int) strlen(LINES[j]) + 1;
+		}
+
+		char after[afterLength + 1];
+		int afterCounter = 0;
 
 		for (int j = 0; j < counter; j++)
 		{
-			char *tmp = malloc(strlen(after) + strlen(afterArray[j]) + 1);
-			strcpy(tmp, after);
-			strcat(tmp, afterArray[j]);
-			strcat(tmp, "\n");
-			after = strdup(tmp);
-			free(tmp);
+			for (int k = 0, l = (int) strlen(afterArray[j]); k < l; k++)
+			{
+				after[afterCounter++] = afterArray[j][k];
+			}
 			free(afterArray[j]);
+			after[afterCounter++] = '\n';
 		}
+		after[afterCounter] = '\0';
 
 		execute(line, after, ignore);
-		free(after);
-
 	}
 
 	// freeing the allocated memory

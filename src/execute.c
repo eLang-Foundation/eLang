@@ -39,21 +39,6 @@ void execute(char *line, char *after, bool ignore)
 
 				// getting the body of the function
 				char *body = getContents(after, '{', '}');
-				char bodyWithoutWhitespaces[strlen(body)];
-				int charCounter = 0;
-				token = strtok(body, "\n");
-				while (token != NULL)
-				{
-					char *withoutWhitespaces = removeWhitespace(token);
-					charCounter += (int) strlen(withoutWhitespaces);
-					strcat(bodyWithoutWhitespaces, withoutWhitespaces);
-					free(withoutWhitespaces);
-					token = strtok(NULL, "\n");
-				}
-				bodyWithoutWhitespaces[charCounter] = '\0';
-				free(body);
-
-				body = bodyWithoutWhitespaces;
 				printf("body: `%s`\n", body);
 
 				// getting the arguments of the function
@@ -61,6 +46,7 @@ void execute(char *line, char *after, bool ignore)
 				printf("arguments: %s\n", arguments);
 
 				free(functionName);
+				free(body);
 				free(arguments);
 			}
 		}
