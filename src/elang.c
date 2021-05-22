@@ -10,6 +10,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <stdbool.h>
+#include "variables.h"
 #include "raiseError.c"
 #include "insideQuotes.c"
 #include "count.c"
@@ -25,20 +26,6 @@ char *LINES[] = {};
 char *ELANG_FUNCTIONS[] = { "print" };
 
 bool ignore = false;
-
-// structs
-typedef struct
-{
-	char *name;
-	char *arguments;
-	char *body;
-} Function;
-
-typedef struct
-{
-	char *name;
-	char *value;
-} Variable;
 
 Function FUNCTIONS[] = {};
 Variable VARIABLES[] = {};
