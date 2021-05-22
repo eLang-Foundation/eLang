@@ -1,4 +1,5 @@
 extern char *get(char *string, char *pattern);
+extern bool match(char *string, char *pattern);
 
 // this function executed the given code
 void execute(char *line, char *after, int *functionCount)
@@ -31,6 +32,7 @@ void execute(char *line, char *after, int *functionCount)
 	{
 		if (!ignore)
 		{
+			// if a function was defined
 			if (!strcmp(words[0], functionKeyword))
 			{
 				// getting the name of the function
