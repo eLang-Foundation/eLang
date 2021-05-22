@@ -19,16 +19,7 @@
 #include "getContents.c"
 #include "execute.c"
 
-// global variables
-char *FILENAME;
-char *CONTENTS;
-char *LINES[] = {};
-char *ELANG_FUNCTIONS[] = { "print" };
 
-bool ignore = false;
-
-Function FUNCTIONS[] = {};
-Variable VARIABLES[] = {};
 
 // main function
 int main(int argc, char *argv[])
