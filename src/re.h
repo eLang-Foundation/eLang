@@ -5,6 +5,7 @@
 extern "C" {
 #endif
 char *get(char *string, char *pattern);
+bool match(char *string, char *pattern);
 #ifdef __cplusplus
 }
 #endif
