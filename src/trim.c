@@ -1,3 +1,4 @@
+// this function removes whitespace around the string
 char *trim(char *string)
 {
 	size_t size;
