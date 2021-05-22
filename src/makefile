@@ -1,10 +1,10 @@
 compile: elang.c
 	make lib
-	gcc -L. -Wall -o elang elang.c libGet.so
+	gcc -L. -Wall -o elang elang.c libRe.so
 
 lib:
-	g++ -c -Wall -Werror -fPIC get.cpp
-	g++ -shared -o libGet.so get.o
+	g++ -c -Wall -Werror -fPIC re.cpp
+	g++ -shared -o libRe.so re.o
 
 test:
 	make
