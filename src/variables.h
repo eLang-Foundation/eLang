@@ -3,7 +3,7 @@ typedef struct
 {
 	char *name;
 	char *arguments;
-	char *body;
+	char *code;
 } Function;
 
 typedef struct
