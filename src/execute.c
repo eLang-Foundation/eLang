@@ -46,7 +46,7 @@ void execute(char *line, char *after, int *functionCount)
 				Function f;
 				f.name = functionName;
 				f.arguments = trim(arguments);
-				f.code= trim(code);
+				f.code = trim(code);
 
 				// appending the function to the array of functions
 				FUNCTIONS[*functionCount] = f;
