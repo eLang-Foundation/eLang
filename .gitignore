@@ -2,3 +2,4 @@ cmake-build-debug
 venv
 .idea
 CMakeLists.txt
+elang.py
