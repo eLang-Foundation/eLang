@@ -14,7 +14,7 @@
 #include "insideQuotes.c"
 #include "count.c"
 #include "checkClosed.c"
-#include "removeWhitespace.c"
+#include "trim.c"
 #include "getContents.c"
 #include "execute.c"
 
