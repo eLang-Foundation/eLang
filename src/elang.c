@@ -19,9 +19,6 @@
 #include "getContents.c"
 #include "execute.c"
 
-
-
-// main function
 int main(int argc, char *argv[])
 {
 	// if the number of arguments is 2
@@ -89,6 +86,9 @@ int main(int argc, char *argv[])
 	// checking for syntax errors
 	checkClosed(numberOfLines, contentsCopy, LINES, FILENAME);
 
+	int functionCountVariable = 0;
+	int *functionCount = &functionCountVariable;
+
 	for (int i = 0; i < numberOfLines; i++)
 	{
 		char *line = LINES[i];
@@ -139,7 +139,7 @@ int main(int argc, char *argv[])
 		}
 		after[afterCounter] = '\0';
 
-		execute(line, after, ignore);
+		execute(trim(line), trim(after), functionCount);
 	}
 
 	// freeing the allocated memory
