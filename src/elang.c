@@ -139,7 +139,7 @@ int main(int argc, char *argv[])
 		}
 		after[afterCounter] = '\0';
 
-		execute(trim(line), trim(after), functionCount);
+		execute(trim(line), after, functionCount);
 	}
 
 	// freeing the allocated memory
