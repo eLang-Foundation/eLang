@@ -1,5 +1,5 @@
 // function that checks whether or not all parentheses, brackets and so forth are closed
-void checkClosed(unsigned int number, char *contents)
+void checkClosed(unsigned int number, char *code)
 {
 	char chars[] = {'"', '\'', '{', '(', '['};
 
@@ -10,7 +10,7 @@ void checkClosed(unsigned int number, char *contents)
 	for (int i = 0, l = sizeof(chars) / sizeof(chars[0]); i < l; i++)
 	{
 		char chr = chars[i];
-		counter = count(chr, contents);
+		counter = count(chr, code);
 
 		switch (chr)
 		{
@@ -27,15 +27,15 @@ void checkClosed(unsigned int number, char *contents)
 			break;
 		case '{':
 			charName = "curly bracket";
-			counter += count('}', contents);
+			counter += count('}', code);
 			break;
 		case '(':
 			charName = "parentheses";
-			counter += count(')', contents);
+			counter += count(')', code);
 			break;
 		case '[':
 			charName = "square bracket";
-			counter += count(']', contents);
+			counter += count(']', code);
 			break;
 		}
 		// if number is not even
@@ -43,7 +43,7 @@ void checkClosed(unsigned int number, char *contents)
 		{
 			// displaying the error
 			// getting the line
-			char *line = LINES[number - 1];
+			char *line = LINES[number];
 			if (line)
 			{
 				// displaying the error
