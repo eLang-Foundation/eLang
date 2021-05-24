@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
 	if (access(FILENAME, F_OK) != 0)
 	{
 		// creating a string that will be printed in a console
-		char str[] = "unable to open \"";
+		char str[] = "Unable to open \"";
 		strcat(str, FILENAME);
 		strcat(str, "\"");
 		// raising the error
@@ -70,26 +70,29 @@ int main(int argc, char *argv[])
 	// done with the contents
 	fclose(file);
 
-	char *contentsCopy = strdup(CONTENTS);
-
-	free(CONTENTS);
-
 	// splitting the code into lines
-	char *token = strtok(contentsCopy, "\n");
 	unsigned int numberOfLines = 0;
-	while (token != NULL)
+	unsigned int charCount = 0;
+	char ln[] = "";
+	for (int i = 0, l = (int) strlen(CONTENTS); i < l; i++)
 	{
-		LINES[numberOfLines++] = token;
-		token = strtok(NULL, "\n");
+		if (CONTENTS[i] != '\n')
+		{
+			ln[charCount++] = CONTENTS[i];
+		}
+		else
+		{
+			ln[charCount] = '\0';
+			charCount = 0;
+			LINES[numberOfLines++] = strdup(ln);
+		}
 	}
-
-	// checking for syntax errors
-	checkClosed(numberOfLines, contentsCopy, LINES, FILENAME);
 
 	int functionCountVariable = 0;
 	int *functionCount = &functionCountVariable;
 
-	for (int i = 0; i < numberOfLines; i++)
+	// executing each line of code
+	for (unsigned int i = 0; i < numberOfLines; i++)
 	{
 		char *line = LINES[i];
 		int wait = 0;
@@ -97,7 +100,7 @@ int main(int argc, char *argv[])
 		// checking if the following code is inside of a function
 		if (ignore)
 		{
-			for (int j = 0; j < strlen(line); j++)
+			for (int j = 0, l = (int) strlen(line); j < l; j++)
 			{
 				// if the character represents the start of a code block
 				// and it is not a part of a string
@@ -114,36 +117,19 @@ int main(int argc, char *argv[])
 		}
 
 		// creating an array of lines that are after the current line
-		char *afterArray[] = {};
-
-		int counter = 0;
-		int afterLength = 0;
-
-		for (int j = i; j < numberOfLines; j++)
+		char after[] = " ";
+		for (unsigned int j = i; j < numberOfLines; j++)
 		{
-			afterArray[counter++] = strdup(LINES[j]);
-			afterLength += (int) strlen(LINES[j]) + 1;
+			strcat(after, LINES[j]);
+			strcat(after, "\n");
+			checkClosed(j, CONTENTS);
 		}
-
-		char after[afterLength + 1];
-		int afterCounter = 0;
-
-		for (int j = 0; j < counter; j++)
-		{
-			for (int k = 0, l = (int) strlen(afterArray[j]); k < l; k++)
-			{
-				after[afterCounter++] = afterArray[j][k];
-			}
-			free(afterArray[j]);
-			after[afterCounter++] = '\n';
-		}
-		after[afterCounter] = '\0';
 
 		execute(trim(line), after, functionCount);
 	}
 
 	// freeing the allocated memory
-	free(contentsCopy);
+	free(CONTENTS);
 
 	exit(EXIT_SUCCESS);
 }
