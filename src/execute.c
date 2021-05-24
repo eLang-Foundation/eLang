@@ -62,12 +62,17 @@ void execute(char *line, char *after, int *functionCount)
 					if (code[i] == '\n') found = true;
 				}
 				// if it is then ignore the next line
-				ignore = found ? true : false;
+				ignore = found;
 
 				free(functionName);
 				free(code);
 				free(arguments);
 			}
+		}
+		// if a function was called
+		else if (match(trim(line), "[\\w\\d_]+\\s*\\([\\w\\W]*\\)"))
+		{
+			char *functionName = get(after, "([\\w\\d+]+)\\s*\\(");
 		}
 	}
 
