@@ -1,3 +1,6 @@
+#include "../tests/count.h"
+#include "../tests/insideQuotes.h"
+
 // this function counts the number of the occurrences of the given character in the given string
 // (excludes the ones that are inside of quotes)
 int count(char chr, char *contents)
@@ -9,11 +12,6 @@ int count(char chr, char *contents)
 		{
 			if (!insideQuotes(i, contents))
 				counter++;
-			else
-			{
-				if (!insideQuotes(i + 1, contents))
-					counter++;
-			}
 		}
 	}
 	return counter;
