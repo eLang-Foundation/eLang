@@ -4,7 +4,6 @@ extern bool match(char *string, char *pattern);
 // this function executed the given code
 void execute(char *line, char *after, int *functionCount)
 {
-	puts(line);
 	int counter = 0;
 	char *token = strtok(line, " ");
 
@@ -73,9 +72,7 @@ void execute(char *line, char *after, int *functionCount)
 		// if a function was called
 		else if (match(trim(line), "[\\w\\d_]+\\s*\\([\\w\\W]*\\)"))
 		{
-			printf("line: ```%s```\n", line);
 			char *functionName = get(after, "([\\w\\d+]+)\\s*\\(");
-			printf("function name: `%s`\n", functionName);
 		}
 	}
 
