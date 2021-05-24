@@ -1,0 +1,18 @@
+name: eLang
+
+on:
+  pull_request:
+    branches:
+      - master
+      - Python
+
+jobs:
+  test_pull_request:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+      - uses: actions/checkout@v2
+      - name: Compile
+      - run: (cd src && make)
+      - name: Run tests
+      - run: (cd src && make tests)
