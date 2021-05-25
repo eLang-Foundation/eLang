@@ -13,6 +13,7 @@ void insideQuotes_test(void)
 
 int main(void)
 {
+	printf("\n\n");
 	UNITY_BEGIN();
 	RUN_TEST(insideQuotes_test);
 	return UNITY_END();

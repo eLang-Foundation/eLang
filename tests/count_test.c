@@ -13,6 +13,7 @@ void count_test(void)
 
 int main(void)
 {
+	printf("\n\n");
 	UNITY_BEGIN();
 	RUN_TEST(count_test);
 	return UNITY_END();

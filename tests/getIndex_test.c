@@ -13,6 +13,7 @@ void getIndex_test(void)
 
 int main(void)
 {
+	printf("\n\n");
 	UNITY_BEGIN();
 	RUN_TEST(getIndex_test);
 	return UNITY_END();

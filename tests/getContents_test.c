@@ -20,6 +20,7 @@ void getContents_test(void)
 
 int main(void)
 {
+	printf("\n\n");
 	UNITY_BEGIN();
 	RUN_TEST(getContents_test);
 	return UNITY_END();
