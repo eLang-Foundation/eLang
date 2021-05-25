@@ -16,23 +16,20 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout the repository
-      uses: actions/checkout@v2
+    - uses: actions/checkout@v2
 
-      - name: Checkout Unity submodule
-      uses: actions/checkout@v2
-      with:
-        repository: ThrowTheSwitch/Unity
-        path: "tests/Unity"
-        fetch_depth: 0
+    - uses: actions/checkout@v2
+    with:
+      repository: ThrowTheSwitch/Unity
+      path: "tests/Unity"
+      fetch_depth: 0
 
-      - name: Compiling the source code
-        run: (cd src && make)
-      
-      - name: Compiling tests
-        run: (cd tests && make)
+    - name: Compiling the source code
+      run: (cd src && make)
 
-      
-      - name: Executing tests
-        run: (cd tests && make tests)
+    - name: Compiling tests
+      run: (cd tests && make)
+
+
+    - name: Executing tests
+      run: (cd tests && make tests)
