@@ -21,4 +21,4 @@ memcheck:
 
 debug:
 	make lib
-	gcc -g -L. -Wall -o elang elang.c libGet.so
+	gcc -g -L.-Wall -o elang elang.c libRe.so
