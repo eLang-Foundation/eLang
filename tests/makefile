@@ -2,4 +2,5 @@ tests:
 	gcc count_test.c ../src/count.c ../src/insideQuotes.c Unity/src/unity.c -o count_test
 	gcc getContents_test.c ../src/getContents.c Unity/src/unity.c -o getContents_test
 	gcc getIndex_test.c ../src/getIndex.c Unity/src/unity.c -o getIndex_test
+	gcc insideQuotes_test.c ../src/insideQuotes.c Unity/src/unity.c -o insideQuotes_test
 
