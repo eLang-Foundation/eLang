@@ -1,3 +1,5 @@
+#include "../tests/insideQuotes.h"
+
 // this function checks if the character at a given index is not inside of a string
 bool insideQuotes(int index, const char *line)
 {

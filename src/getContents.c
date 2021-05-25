@@ -1,3 +1,5 @@
+#include "../tests/getContents.h"
+
 // this function gets text in between the given characters in the given string
 char *getContents(char *string, char openCharacter, char closeCharacter)
 {
@@ -10,22 +12,20 @@ char *getContents(char *string, char openCharacter, char closeCharacter)
 	for (int i = 0, l = (int) strlen(string); i < l; i++)
 	{
 		if (start)
-		{
 			returnString[counter++] = string[i];
-		}
 		if (string[i] == openCharacter)
 		{
-			start = true;
 			charCounter++;
+			start = true;
 		}
-		else if (string[i + 1] == closeCharacter)
+		if (string[i + 1] == closeCharacter && start)
 		{
 			charCounter--;
-			if (charCounter == 0)
-			{
-				returnString[counter] = '\0';
-				return strdup(returnString);
-			}
+		}
+		if (charCounter == 0 && start)
+		{
+			returnString[counter] = '\0';
+			return strdup(returnString);
 		}
 	}
 

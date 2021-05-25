@@ -3,6 +3,8 @@
 
 #ifdef __cplusplus
 extern "C" {
+#else
+#include <stdbool.h>
 #endif
 char *get(char *string, char *pattern);
 bool match(char *string, char *pattern);
