@@ -74,7 +74,7 @@ int main(int argc, char *argv[])
 	unsigned int numberOfLines = 0;
 	unsigned int charCount = 0;
 	char ln[] = "";
-	for (int i = 0, l = (int) strlen(CONTENTS); i < l; i++)
+	for (unsigned int i = 0, l = (int) strlen(CONTENTS); i < l; i++)
 	{
 		if (CONTENTS[i] != '\n')
 		{

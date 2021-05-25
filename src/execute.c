@@ -5,7 +5,9 @@ extern bool match(char *string, char *pattern);
 void execute(char *line, char *after, int *functionCount)
 {
 	int counter = 0;
-	char *token = strtok(line, " ");
+
+	char *lineCopy = strdup(line);
+	char *token = strtok(lineCopy, " ");
 
 	// getting the size of the array
 	while (token != NULL)
@@ -13,18 +15,24 @@ void execute(char *line, char *after, int *functionCount)
 		counter++;
 		token = strtok(NULL, " ");
 	}
+	free(lineCopy);
+
+	// creating a copy of the line
+	lineCopy = strdup(line);
 
 	// creating an array of words
 	char *words[counter];
-	token = strtok(line, " ");
-	counter = 0;
 
+	token = strtok(lineCopy, " ");
+	counter = 0;
 	// filling in the array of words
 	while (token != NULL)
 	{
 		words[counter++] = strdup(token);
 		token = strtok(NULL, " ");
 	}
+
+	free(lineCopy);
 
 	char *functionKeyword = "function";
 
@@ -56,13 +64,15 @@ void execute(char *line, char *after, int *functionCount)
 				*functionCount = (*functionCount + 1);
 
 				// checking if the next line of code is inside of a function
-				bool found = false;
+				ignore = false;
 				for (int i = 0, l = (int) strlen(code); i < l; i++)
 				{
-					if (code[i] == '\n') found = true;
+					if (code[i] == '\n')
+					{
+						ignore = true;
+						break;
+					}
 				}
-				// if it is then ignore the next line
-				ignore = found;
 
 				free(functionName);
 				free(code);
@@ -70,9 +80,13 @@ void execute(char *line, char *after, int *functionCount)
 			}
 		}
 		// if a function was called
-		else if (match(trim(line), "[\\w\\d_]+\\s*\\([\\w\\W]*\\)"))
+		else if (match(trim(after), "[\\w\\d_]+\\s*\\([\\w\\W]*\\)[\\w\\W]*"))
 		{
-			char *functionName = get(after, "([\\w\\d+]+)\\s*\\(");
+			puts(line);
+			char *functionName = get(after, "([\\w\\d]+)\\s*\\(");
+			puts(functionName);
+
+			free(functionName);
 		}
 	}
 
