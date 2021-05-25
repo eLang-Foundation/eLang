@@ -4,3 +4,4 @@ tests:
 	gcc getIndex_test.c ../src/getIndex.c Unity/src/unity.c -o getIndex_test
 	gcc insideQuotes_test.c ../src/insideQuotes.c Unity/src/unity.c -o insideQuotes_test
 	gcc trim_test.c ../src/trim.c Unity/src/unity.c -o trim_test
+	g++ -L../src/ -Wall re_test.c ../src/re.cpp Unity/src/unity.c ../src/libRe.so -o re_test
