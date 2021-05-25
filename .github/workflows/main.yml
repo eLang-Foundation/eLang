@@ -19,11 +19,18 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - uses: actions/checkout@v2
+      with:
+        repository: ThrowTheSwitch/Unity
+        path: "tests/Unity"
+        fetch_depth: 0
+
       - name: Compiling the source code
         run: (cd src && make)
       
       - name: Compiling tests
         run: (cd tests && make)
+
       
       - name: Executing tests
         run: (cd tests && make tests)
