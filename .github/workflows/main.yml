@@ -16,20 +16,21 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    - uses: actions/checkout@v2
+    steps:
+      - uses: actions/checkout@v2
 
-    - uses: actions/checkout@v2
-    with:
-      repository: ThrowTheSwitch/Unity
-      path: "tests/Unity"
-      fetch_depth: 0
+      - name: Checkout Unity submodule
+      shell: bash
+      run: |
+        auth_header="$(git config --local --get http.https://github.com/.extraheader)"
+        git submodule sync --recursive
+        git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive --depth=1
 
     - name: Compiling the source code
-      run: (cd src && make)
+        run: (cd src && make)
 
-    - name: Compiling tests
-      run: (cd tests && make)
+      - name: Compiling tests
+        run: (cd tests && make)
 
-
-    - name: Executing tests
-      run: (cd tests && make tests)
+      - name: Executing tests
+        run: (cd tests && make tests)
