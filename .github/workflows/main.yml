@@ -17,8 +17,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout the repository
+      uses: actions/checkout@v2
 
+      - name: Checkout Unity submodule
       uses: actions/checkout@v2
       with:
         repository: ThrowTheSwitch/Unity
