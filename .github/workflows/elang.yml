@@ -13,8 +13,8 @@ jobs:
       - name: Checkout
       - uses: actions/checkout@v2
       - name: Compile
-      - run: (cd src && make)
+        run: (cd src && make)
       - name: Compile tests
-      - run: (cd tests && make)
+        run: (cd tests && make)
       - name: Run tests
-      - run: (cd tests && make tests)
+        run: (cd tests && make tests)
