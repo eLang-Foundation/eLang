@@ -126,6 +126,8 @@ int main(int argc, char *argv[])
 		}
 
 		execute(trim(line), after, functionCount);
+		puts(LINES[i]);
+		free(LINES[i]);
 	}
 
 	// freeing the allocated memory
