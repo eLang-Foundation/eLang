@@ -1,4 +1,11 @@
 // structs
+
+typedef struct
+{
+	char *value;
+	bool allocated;
+} string;
+
 typedef struct
 {
 	char *name;
@@ -15,7 +22,7 @@ typedef struct
 // global variables
 char *FILENAME;
 char *CONTENTS;
-char *LINES[] = {};
+string LINES[] = {};
 char *ELANG_FUNCTIONS[] = { "print" };
 
 bool ignore = false;
