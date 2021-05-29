@@ -19,8 +19,6 @@
 #include "getContents.c"
 #include "execute.c"
 
-#define ui unsigned int
-
 int main(int argc, char *argv[])
 {
 	// if the number of arguments is 2

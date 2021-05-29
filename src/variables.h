@@ -1,5 +1,6 @@
-// structs
+#define ui unsigned int
 
+// structs
 typedef struct
 {
 	char *value;
