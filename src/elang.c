@@ -19,6 +19,8 @@
 #include "getContents.c"
 #include "execute.c"
 
+#define ui unsigned int
+
 int main(int argc, char *argv[])
 {
 	// if the number of arguments is 2
@@ -71,10 +73,10 @@ int main(int argc, char *argv[])
 	fclose(file);
 
 	// splitting the code into lines
-	unsigned int numberOfLines = 0;
-	unsigned int charCount = 0;
+	ui numberOfLines = 0;
+	ui charCount = 0;
 	char ln[] = "";
-	for (unsigned int i = 0, l = (int) strlen(CONTENTS); i < l; i++)
+	for (ui i = 0, l = (int) strlen(CONTENTS); i < l; i++)
 	{
 		if (CONTENTS[i] != '\n')
 		{
@@ -84,7 +86,9 @@ int main(int argc, char *argv[])
 		{
 			ln[charCount] = '\0';
 			charCount = 0;
-			LINES[numberOfLines++] = strdup(ln);
+			LINES[numberOfLines].value = strdup(ln);
+			LINES[numberOfLines].allocated = true;
+			numberOfLines++;
 		}
 	}
 
@@ -92,9 +96,9 @@ int main(int argc, char *argv[])
 	int *functionCount = &functionCountVariable;
 
 	// executing each line of code
-	for (unsigned int i = 0; i < numberOfLines; i++)
+	for (ui i = 0; i < numberOfLines; i++)
 	{
-		char *line = LINES[i];
+		char *line = strdup(LINES[i].value);
 		int wait = 0;
 
 		// checking if the following code is inside of a function
@@ -118,14 +122,19 @@ int main(int argc, char *argv[])
 
 		// creating an array of lines that are after the current line
 		char after[] = " ";
-		for (unsigned int j = i; j < numberOfLines; j++)
+		for (ui j = i; j < numberOfLines; j++)
 		{
-			strcat(after, LINES[j]);
+			char *currentLine = strdup(LINES[j].value);
+			strcat(after, currentLine);
 			strcat(after, "\n");
 			checkClosed(j, CONTENTS);
+			free(currentLine);
 		}
 
 		execute(trim(line), after, functionCount);
+
+		free(line);
+		free(LINES[i].value);
 	}
 
 	// freeing the allocated memory
@@ -133,3 +142,4 @@ int main(int argc, char *argv[])
 
 	exit(EXIT_SUCCESS);
 }
+

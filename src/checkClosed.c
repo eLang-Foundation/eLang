@@ -43,7 +43,7 @@ void checkClosed(unsigned int number, char *code)
 		{
 			// displaying the error
 			// getting the line
-			char *line = LINES[number];
+			char *line = LINES[number].value;
 			if (line)
 			{
 				// displaying the error
