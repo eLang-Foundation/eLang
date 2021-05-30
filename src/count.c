@@ -12,6 +12,8 @@ int count(char chr, char *contents)
 		{
 			if (!insideQuotes(i, contents))
 				counter++;
+			else if (!insideQuotes(i + 1, contents))
+				counter++;
 		}
 	}
 	return counter;
