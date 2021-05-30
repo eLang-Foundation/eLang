@@ -3,3 +3,4 @@ venv
 .idea
 CMakeLists.txt
 elang.py
+.vscode
