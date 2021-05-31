@@ -21,9 +21,11 @@ void checkClosed(unsigned int number, char *code)
 			break;
 		case '"':
 			charName = "double quote";
+			counter += count(chr, code);
 			break;
 		case '\'':
 			charName = "single quote";
+			counter += count(chr, code);
 			break;
 		case '{':
 			charName = "curly bracket";
