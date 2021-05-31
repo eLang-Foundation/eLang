@@ -18,6 +18,7 @@
 #include "trim.c"
 #include "getContents.c"
 #include "getIndex.c"
+#include "append.c"
 #include "execute.c"
 
 int main(int argc, char *argv[])
@@ -133,7 +134,7 @@ int main(int argc, char *argv[])
 		execute(trim(line), after, functionCount);
 
 		free(line);
-		free(LINES[i].value);
+		if (LINES[i].allocated) free(LINES[i].value);
 	}
 
 	// freeing the allocated memory
