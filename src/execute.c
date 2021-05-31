@@ -101,7 +101,7 @@ void execute(char *line, char *after, int *functionCount)
 					argument.value = malloc(0);
 					argument.allocated = true;
 
-					// cycling through each character in arguments
+					// the following code splits the arguments string into separate arguments and adds them to the args array
 					for (int i = 0, l = (int) strlen(arguments); i < l; i++)
 					{
 						if (arguments[i] != ',')
