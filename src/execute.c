@@ -78,15 +78,68 @@ void execute(char *line, char *after, int *functionCount)
 				free(code);
 				free(arguments);
 			}
-		}
-		// if a function was called
-		else if (match(trim(after), "[\\w\\d_]+\\s*\\([\\w\\W]*\\)[\\w\\W]*"))
-		{
-			puts(line);
-			char *functionName = get(after, "([\\w\\d]+)\\s*\\(");
-			puts(functionName);
 
-			free(functionName);
+			// if a function was called
+			else if (match(line, "[\\w\\d_]+\\s*\\([\\w\\W]*\\)[\\w\\W]*"))
+			{
+				// if the function was just a part of a string and not a function
+				if (insideQuotes(getIndex(line, '('), line))
+					return;
+
+				char *functionName = get(line, "([\\w\\d]+)\\s*\\(");
+				char *arguments = get(after, "\\(([\\w\\W]*?)\\)");
+
+				if (strcmp(arguments, ""))
+				{
+					// an array of arguments will be stored in this variable
+					char *args[count(',', arguments) + 1];
+
+					int argCounter = 0;
+					int charCounter = 0;
+
+					str argument;
+					argument.value = malloc(0);
+					argument.allocated = true;
+
+					// cycling through each character in arguments
+					for (int i = 0, l = (int) strlen(arguments); i < l; i++)
+					{
+						if (arguments[i] != ',')
+						{
+							char tmp[charCounter + 2];
+							strcpy(tmp, argument.value);
+							tmp[charCounter++] = arguments[i];
+							argument.value = realloc(argument.value, charCounter);
+							argument.allocated = true;
+							strcpy(argument.value, tmp);
+						}
+
+						if ((!insideQuotes(i + 1, arguments) && arguments[i + 1] == ',') || (i == l - 1))
+						{
+							args[argCounter++] = strdup(trim(argument.value));
+							charCounter = 0;
+							if (!argument.allocated)
+							{
+								free(argument.value);
+								argument.allocated = false;
+							}
+							argument.value = malloc(0);
+							argument.allocated = true;
+						}
+					}
+
+					if (argument.allocated) free(argument.value);
+
+					for (int i = 0; i < argCounter; i++)
+					{
+						printf("%s\n", args[i]);
+						free(args[i]);
+					}
+				}
+
+				free(functionName);
+				free(arguments);
+			}
 		}
 	}
 
