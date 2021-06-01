@@ -97,9 +97,8 @@ void execute(char *line, char *after, int *functionCount)
 					int argCounter = 0;
 					int charCounter = 0;
 
-					str argument;
-					argument.value = malloc(0);
-					argument.allocated = true;
+					char *argument;
+					argument = malloc(0);
 
 					// the following code splits the arguments string into separate arguments and adds them to the args array
 					for (int i = 0, l = (int) strlen(arguments); i < l; i++)
@@ -107,28 +106,22 @@ void execute(char *line, char *after, int *functionCount)
 						if (arguments[i] != ',')
 						{
 							char tmp[charCounter + 2];
-							strcpy(tmp, argument.value);
+							strcpy(tmp, argument);
 							tmp[charCounter++] = arguments[i];
-							argument.value = realloc(argument.value, charCounter);
-							argument.allocated = true;
-							strcpy(argument.value, tmp);
+							argument = realloc(argument, charCounter);
+							strcpy(argument, tmp);
 						}
 
 						if ((!insideQuotes(i + 1, arguments) && arguments[i + 1] == ',') || (i == l - 1))
 						{
-							args[argCounter++] = strdup(trim(argument.value));
+							args[argCounter++] = strdup(trim(argument));
 							charCounter = 0;
-							if (!argument.allocated)
-							{
-								free(argument.value);
-								argument.allocated = false;
-							}
-							argument.value = malloc(0);
-							argument.allocated = true;
+							free(argument);
+							argument = malloc(0);
 						}
 					}
 
-					if (argument.allocated) free(argument.value);
+					free(argument);
 
 					for (int i = 0; i < argCounter; i++)
 					{
