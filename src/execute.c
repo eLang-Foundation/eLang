@@ -119,10 +119,25 @@ void execute(char *line, char *after, int *functionCount)
 								for (int k = 0, n = currentFunction.argumentsNumber; k < n; k++)
 								{
 									char *arg = currentFunction.arguments[k];
+									code = replace(code, arg, args[k]);
+
+									int linesCounter = 0;
+									str lines[] = {};
+
+									token = strtok(code, "\n");
+									while (token != NULL)
+									{
+										lines[linesCounter].value = strdup(token);
+										token = strtok(NULL, "\n");
+									}
 									
+									for (int i = 0; i < linesCounter; i++)
+									{
+										char *after = getAfter(code, lines, i, linesCounter);
+										execute(lines[i].value, after, functionCount);
+									}
 								}
 
-								// puts(code);
 								free(code);
 								break;
 							}
