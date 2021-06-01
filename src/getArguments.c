@@ -18,6 +18,7 @@ strArray getArguments(char *arguments)
             char tmp[charCounter + 2];
             strcpy(tmp, argument);
             tmp[charCounter++] = arguments[i];
+            tmp[charCounter] = '\0';
             argument = realloc(argument, charCounter);
             strcpy(argument, tmp);
         }
