@@ -18,7 +18,9 @@
 #include "trim.c"
 #include "getContents.c"
 #include "getIndex.c"
+#include "append.c"
 #include "getArguments.c"
+#include "replace.c"
 #include "execute.c"
 
 int main(int argc, char *argv[])
