@@ -18,6 +18,7 @@
 #include "trim.c"
 #include "getContents.c"
 #include "getIndex.c"
+#include "getArguments.c"
 #include "execute.c"
 
 int main(int argc, char *argv[])
@@ -138,6 +139,14 @@ int main(int argc, char *argv[])
 
 	// freeing the allocated memory
 	free(CONTENTS);
+
+	for (ui i = 0; i < *functionCount; i++)
+	{
+		Function function = FUNCTIONS[i];
+		free(function.arguments);
+		free(function.code);
+		free(function.name);
+	}
 
 	exit(EXIT_SUCCESS);
 }

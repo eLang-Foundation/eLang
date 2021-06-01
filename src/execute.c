@@ -1,5 +1,5 @@
-extern char *get(char *string, char *pattern);
-extern bool match(char *string, char *pattern);
+extern char *get(char *, char *);
+extern bool match(char *, char *);
 
 // this function executed the given code
 void execute(char *line, char *after, int *functionCount)
@@ -52,11 +52,14 @@ void execute(char *line, char *after, int *functionCount)
 				// getting the arguments of the function
 				char *arguments = get(after, "\\(([\\w\\W]*?)\\)\\s*\\{");
 
+				strArray array = getArguments(trim(arguments));
+				
 				// creating a function
 				Function f;
-				f.name = functionName;
-				f.arguments = trim(arguments);
-				f.code = trim(code);
+				f.name = strdup(trim(functionName));
+				f.arguments = array.array;
+				f.code = strdup(trim(code));
+				f.argumentsNumber = array.length;
 
 				// appending the function to the array of functions
 				FUNCTIONS[*functionCount] = f;
@@ -92,42 +95,45 @@ void execute(char *line, char *after, int *functionCount)
 				if (strcmp(arguments, ""))
 				{
 					// an array of arguments will be stored in this variable
-					char *args[count(',', arguments) + 1];
+					strArray array = getArguments(arguments);
+					char **args = array.array;
 
-					int argCounter = 0;
-					int charCounter = 0;
-
-					char *argument;
-					argument = malloc(0);
-
-					// the following code splits the arguments string into separate arguments and adds them to the args array
-					for (int i = 0, l = (int) strlen(arguments); i < l; i++)
+					// if the function name was provided
+					if (strcmp(functionName, ""))
 					{
-						if (arguments[i] != ',')
+						Function function;
+						char *code;
+						// if the function was defined by the user
+						bool definedByUser = false;
+						for (int j = 0; j < *functionCount; j++)
 						{
-							char tmp[charCounter + 2];
-							strcpy(tmp, argument);
-							tmp[charCounter++] = arguments[i];
-							argument = realloc(argument, charCounter);
-							strcpy(argument, tmp);
-						}
+							Function currentFunction = FUNCTIONS[j];
+							if (!strcmp(functionName, currentFunction.name))
+							{
+								definedByUser = true;
 
-						if ((!insideQuotes(i + 1, arguments) && arguments[i + 1] == ',') || (i == l - 1))
-						{
-							args[argCounter++] = strdup(trim(argument));
-							charCounter = 0;
-							free(argument);
-							argument = malloc(0);
+								// getting the body of the function
+								code = strdup(currentFunction.code);
+
+								// replacing the argument variables with given arguments
+								for (int k = 0, n = currentFunction.argumentsNumber; k < n; k++)
+								{
+									char *arg = currentFunction.arguments[k];
+									
+								}
+
+								// puts(code);
+								free(code);
+								break;
+							}
 						}
 					}
 
-					free(argument);
-
-					for (int i = 0; i < argCounter; i++)
+					for (int i = 0; i < count(',', arguments) + 1; i++)
 					{
-						printf("%s\n", args[i]);
 						free(args[i]);
 					}
+					free(args);
 				}
 
 				free(functionName);
