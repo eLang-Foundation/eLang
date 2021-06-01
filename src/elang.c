@@ -21,6 +21,7 @@
 #include "append.c"
 #include "getArguments.c"
 #include "replace.c"
+#include "getAfter.c"
 #include "execute.c"
 
 int main(int argc, char *argv[])
@@ -122,18 +123,12 @@ int main(int argc, char *argv[])
 			}
 		}
 
-		// creating an array of lines that are after the current line
-		char after[] = " ";
-		for (ui j = i; j < numberOfLines; j++)
-		{
-			char *currentLine = strdup(LINES[j].value);
-			strcat(after, currentLine);
-			strcat(after, "\n");
-			checkClosed(j, CONTENTS);
-			free(currentLine);
-		}
+		// getting an array of lines that are after the current line
+		char *after = getAfter(CONTENTS, LINES, i, numberOfLines);
 
 		execute(trim(line), after, functionCount);
+
+		free(after);
 
 		free(line);
 		if (LINES[i].allocated) free(LINES[i].value);
