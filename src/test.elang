@@ -1,18 +1,18 @@
 #!/home/bekhruz/Desktop/CS/eLang/src/elang
-print("hello, world")
+println("hello, world")
 
 function greet(name) {
     5 times with i {
-        print("Hello,", name)
+        println("Hello,", name)
     }
 }
 
 function hello(name) {
-    print("hello,", name)
+    println("hello,", name)
 }
 
 function 3rd(123var) {
-    print(123var)
+    println(123var)
 }
 
 greet("eLang")
