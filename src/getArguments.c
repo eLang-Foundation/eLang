@@ -5,7 +5,6 @@ strArray getArguments(char *arguments)
     char **args = malloc(length * sizeof(char *));
 
     int argCounter = 0;
-    int charCounter = 0;
 
     char *argument = malloc(1);
     strcpy(argument, "");
@@ -21,7 +20,6 @@ strArray getArguments(char *arguments)
         if ((!insideQuotes(i + 1, arguments) && arguments[i + 1] == ',') || (i == l - 1))
         {
             args[argCounter++] = strdup(trim(argument));
-            charCounter = 0;
             free(argument);
             argument = malloc(1);
             strcpy(argument, "");
