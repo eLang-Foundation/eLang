@@ -9,9 +9,17 @@ typedef struct
 
 typedef struct
 {
+	char **array;
+	bool allocated;
+	int length;
+} strArray;
+
+typedef struct
+{
 	char *name;
-	char *arguments;
+	char **arguments;
 	char *code;
+	int argumentsNumber;
 } Function;
 
 typedef struct
