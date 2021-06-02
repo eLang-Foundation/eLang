@@ -92,15 +92,15 @@ void execute(char *line, char *after, int *functionCount)
 				char *functionName = get(line, "([\\w\\d]+)\\s*\\(");
 				char *arguments = get(after, "\\(([\\w\\W]*?)\\)");
 
+				bool definedByUser = false;
+				bool eLangFunction = false;
+
 				if (strcmp(arguments, ""))
 				{
 					// an array of arguments will be stored in this variable
 					strArray array = getArguments(trim(arguments));
 					char **args = array.array;
 					int numberOfArguments = array.length;
-
-					bool definedByUser = false;
-					bool eLangFunction = false;
 
 					// if the function name was provided
 					if (strcmp(functionName, ""))
@@ -152,32 +152,13 @@ void execute(char *line, char *after, int *functionCount)
 								{
 									eLangFunction = true;
 
+									if (!strcmp(functionName, "print"))
+									{
+										print(args, numberOfArguments);
+									}
 									if (!strcmp(functionName, "println"))
 									{
-										for (int k = 0; k < numberOfArguments; k++)
-										{
-											char *currentArgument = args[k];
-
-											// this string will be printed
-											char *string = malloc(1);
-											strcpy(string, "");
-
-											int length = (int) strlen(currentArgument);
-
-											int index = length - 1;
-
-											if ((currentArgument[0] == '"' && currentArgument[index] == '"') ||
-												(currentArgument[0] == '\'' && currentArgument[index] == '\'') ||
-												(currentArgument[0] == '`' && currentArgument[index] == '`'))
-											{
-												for (int h = 1, l = length; h < l - 1; h++)
-												{
-													string = appendChar(string, currentArgument[h]);
-												}
-											}
-
-											printf("%s\n", string);
-										}
+										println(args, numberOfArguments);
 									}
 								}
 							}
@@ -189,6 +170,15 @@ void execute(char *line, char *after, int *functionCount)
 						free(args[i]);
 					}
 					free(args);
+				}
+
+				// if function is not defined
+				if (!definedByUser && !eLangFunction)
+				{
+					char error[] = "Function \"";
+					strcat(error, functionName);
+					strcat(error, "\" is not defined.");
+					raiseError("eLang", error, NULL, 0, FILENAME);
 				}
 
 				free(functionName);

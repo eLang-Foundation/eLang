@@ -22,6 +22,7 @@
 #include "getArguments.c"
 #include "replace.c"
 #include "getAfter.c"
+#include "print.c"
 #include "execute.c"
 
 int main(int argc, char *argv[])
