@@ -131,7 +131,7 @@ int main(int argc, char *argv[])
 		free(after);
 
 		free(line);
-		if (LINES[i].allocated) free(LINES[i].value);
+		// if (LINES[i].allocated) free(LINES[i].value);
 	}
 
 	// freeing the allocated memory
@@ -147,4 +147,3 @@ int main(int argc, char *argv[])
 
 	exit(EXIT_SUCCESS);
 }
-
