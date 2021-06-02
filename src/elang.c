@@ -10,20 +10,20 @@
 #include <string.h>
 #include <unistd.h>
 #include <stdbool.h>
-#include "variables.h"
-#include "raiseError.c"
-#include "insideQuotes.c"
-#include "count.c"
-#include "checkClosed.c"
-#include "trim.c"
-#include "getContents.c"
-#include "getIndex.c"
-#include "append.c"
-#include "getArguments.c"
-#include "replace.c"
-#include "getAfter.c"
-#include "print.c"
-#include "execute.c"
+#include "helpers/variables.h"
+#include "helpers/raiseError.c"
+#include "helpers/insideQuotes.c"
+#include "helpers/count.c"
+#include "helpers/checkClosed.c"
+#include "helpers/trim.c"
+#include "helpers/getContents.c"
+#include "helpers/getIndex.c"
+#include "helpers/append.c"
+#include "helpers/getArguments.c"
+#include "helpers/replace.c"
+#include "helpers/getAfter.c"
+#include "helpers/print.c"
+#include "helpers/execute.c"
 
 int main(int argc, char *argv[])
 {
