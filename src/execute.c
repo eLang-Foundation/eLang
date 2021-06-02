@@ -95,25 +95,25 @@ void execute(char *line, char *after, int *functionCount)
 				if (strcmp(arguments, ""))
 				{
 					// an array of arguments will be stored in this variable
-					strArray array = getArguments(arguments);
+					strArray array = getArguments(trim(arguments));
 					char **args = array.array;
+					int numberOfArguments = array.length;
+
+					bool definedByUser = false;
+					bool eLangFunction = false;
 
 					// if the function name was provided
 					if (strcmp(functionName, ""))
 					{
-						Function function;
-						char *code;
 						// if the function was defined by the user
-						bool definedByUser = false;
 						for (int j = 0; j < *functionCount; j++)
 						{
 							Function currentFunction = FUNCTIONS[j];
 							if (!strcmp(functionName, currentFunction.name))
 							{
 								definedByUser = true;
-
 								// getting the body of the function
-								code = strdup(currentFunction.code);
+								char *code = strdup(currentFunction.code);
 
 								// replacing the argument variables with given arguments
 								for (int k = 0, n = currentFunction.argumentsNumber; k < n; k++)
@@ -140,6 +140,46 @@ void execute(char *line, char *after, int *functionCount)
 
 								free(code);
 								break;
+							}							
+						}
+
+						// if function is an eLang function
+						if (!definedByUser)
+						{
+							for (int j = 0; j < numberOfeLangFunctions; j++)
+							{
+								if (!strcmp(functionName, ELANG_FUNCTIONS[j]))
+								{
+									eLangFunction = true;
+
+									if (!strcmp(functionName, "println"))
+									{
+										for (int k = 0; k < numberOfArguments; k++)
+										{
+											char *currentArgument = args[k];
+
+											// this string will be printed
+											char *string = malloc(1);
+											strcpy(string, "");
+
+											int length = (int) strlen(currentArgument);
+
+											int index = length - 1;
+
+											if ((currentArgument[0] == '"' && currentArgument[index] == '"') ||
+												(currentArgument[0] == '\'' && currentArgument[index] == '\'') ||
+												(currentArgument[0] == '`' && currentArgument[index] == '`'))
+											{
+												for (int h = 1, l = length; h < l - 1; h++)
+												{
+													string = appendChar(string, currentArgument[h]);
+												}
+											}
+
+											printf("%s\n", string);
+										}
+									}
+								}
 							}
 						}
 					}
