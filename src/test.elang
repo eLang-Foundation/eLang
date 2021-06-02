@@ -1,4 +1,3 @@
-#!/home/bekhruz/Desktop/CS/eLang/src/elang
 println("hello, world")
 
 function greet(name) {
