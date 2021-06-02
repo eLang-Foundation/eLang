@@ -27,3 +27,4 @@ char *appendString(char *string, char *string2)
 	strcpy(string, tmp);
 	return string;
 }
+
