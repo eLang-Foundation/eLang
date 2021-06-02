@@ -32,7 +32,10 @@ typedef struct
 char *FILENAME;
 char *CONTENTS;
 str LINES[] = {};
-char *ELANG_FUNCTIONS[] = { "print" };
+
+char *ELANG_FUNCTIONS[] = { "println" };
+
+int numberOfeLangFunctions = 1;
 
 bool ignore = false;
 
