@@ -113,8 +113,6 @@ void execute(char *line, char *after, int *functionCount)
 							// getting the body of the function
 							char *code = strdup(currentFunction.code);
 
-							puts(code);
-
 							// replacing the argument variables with given arguments
 							for (int k = 0, n = currentFunction.argumentsNumber; k < n; k++)
 							{
@@ -124,12 +122,16 @@ void execute(char *line, char *after, int *functionCount)
 								int linesCounter = 0;
 								str lines[] = {};
 
-								token = strtok(code, "\n");
+								char *codeCopy = strdup(code);
+
+								token = strtok(codeCopy, "\n");
 								while (token != NULL)
 								{
 									lines[linesCounter++].value = strdup(token);
 									token = strtok(NULL, "\n");
 								}
+
+								free(codeCopy);
 								
 								for (int i = 0; i < linesCounter; i++)
 								{
