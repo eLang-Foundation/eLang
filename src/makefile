@@ -3,7 +3,7 @@ compile: elang.c
 	gcc -L. -Wall -o elang elang.c helpers/libRe.so
 
 lib:
-	g++ -c -Wall -Werror -fPIC helpers/re.cpp
+	(cd helpers && g++ -c -Wall -Werror -fPIC re.cpp)
 	g++ -shared -o helpers/libRe.so helpers/re.o
 
 test:
