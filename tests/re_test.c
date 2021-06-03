@@ -7,12 +7,12 @@ void tearDown(void) {}
 
 void re_test(void)
 {
-	char *string1 = "hello";
-	char *pattern1 = "[\\w]*";
-	TEST_ASSERT(match(string1, (char *)pattern1) == true);
-	char *string2 = "123hello456";
-	char *pattern2 = "([A-Za-z]+)";
-	char *result = "hello";
+	char *string1 = (char *) "hello";
+	char *pattern1 = (char *) "[\\w]*";
+	TEST_ASSERT(match(string1, pattern1) == true);
+	char *string2 = (char *) "123hello456";
+	char *pattern2 = (char *) "([A-Za-z]+)";
+	char *result = (char *) "hello";
 	TEST_ASSERT_EQUAL_STRING(result, get(string2, pattern2));
 }
 
