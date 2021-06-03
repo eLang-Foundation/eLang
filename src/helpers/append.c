@@ -1,3 +1,5 @@
+#include "../../tests/append.h"
+
 // this function appends the given character to the given string
 char *appendChar(char *string, char chr)
 {
@@ -6,9 +8,8 @@ char *appendChar(char *string, char chr)
 	strcpy(tmp, string);
 	tmp[length++] = chr;
 	tmp[length++] = '\0';
-	string = realloc(string, length);
-	strcpy(string, tmp);
-	return string;
+	free(string);
+	return strdup(tmp);
 }
 
 // this function appends the given string to the given string
