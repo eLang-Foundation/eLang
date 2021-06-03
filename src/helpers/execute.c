@@ -95,82 +95,81 @@ void execute(char *line, char *after, int *functionCount)
 				bool definedByUser = false;
 				bool eLangFunction = false;
 
-				if (strcmp(arguments, ""))
+				// an array of arguments will be stored in this variable
+				strArray array = getArguments(trim(arguments));
+				char **args = array.array;
+				int numberOfArguments = array.length;
+
+				// if the function name was provided
+				if (strcmp(functionName, ""))
 				{
-					// an array of arguments will be stored in this variable
-					strArray array = getArguments(trim(arguments));
-					char **args = array.array;
-					int numberOfArguments = array.length;
-
-					// if the function name was provided
-					if (strcmp(functionName, ""))
+					// if the function was defined by the user
+					for (int j = 0; j < *functionCount; j++)
 					{
-						// if the function was defined by the user
-						for (int j = 0; j < *functionCount; j++)
+						Function currentFunction = FUNCTIONS[j];
+						if (!strcmp(functionName, currentFunction.name))
 						{
-							Function currentFunction = FUNCTIONS[j];
-							if (!strcmp(functionName, currentFunction.name))
+							definedByUser = true;
+							// getting the body of the function
+							char *code = strdup(currentFunction.code);
+
+							puts(code);
+
+							// replacing the argument variables with given arguments
+							for (int k = 0, n = currentFunction.argumentsNumber; k < n; k++)
 							{
-								definedByUser = true;
-								// getting the body of the function
-								char *code = strdup(currentFunction.code);
+								char *arg = currentFunction.arguments[k];
+								code = replace(code, arg, args[k]);
 
-								// replacing the argument variables with given arguments
-								for (int k = 0, n = currentFunction.argumentsNumber; k < n; k++)
+								int linesCounter = 0;
+								str lines[] = {};
+
+								token = strtok(code, "\n");
+								while (token != NULL)
 								{
-									char *arg = currentFunction.arguments[k];
-									code = replace(code, arg, args[k]);
-
-									int linesCounter = 0;
-									str lines[] = {};
-
-									token = strtok(code, "\n");
-									while (token != NULL)
-									{
-										lines[linesCounter].value = strdup(token);
-										token = strtok(NULL, "\n");
-									}
-									
-									for (int i = 0; i < linesCounter; i++)
-									{
-										char *after = getAfter(code, lines, i, linesCounter);
-										execute(lines[i].value, after, functionCount);
-									}
+									lines[linesCounter++].value = strdup(token);
+									token = strtok(NULL, "\n");
 								}
-
-								free(code);
-								break;
-							}							
-						}
-
-						// if function is an eLang function
-						if (!definedByUser)
-						{
-							for (int j = 0; j < numberOfeLangFunctions; j++)
-							{
-								if (!strcmp(functionName, ELANG_FUNCTIONS[j]))
+								
+								for (int i = 0; i < linesCounter; i++)
 								{
-									eLangFunction = true;
+									char *after = getAfter(code, lines, i, linesCounter);
+									execute(lines[i].value, after, functionCount);
+								}
+							}
 
-									if (!strcmp(functionName, "print"))
-									{
-										print(args, numberOfArguments);
-									}
-									if (!strcmp(functionName, "println"))
-									{
-										println(args, numberOfArguments);
-									}
+							free(code);
+							break;
+						}							
+					}
+
+					// if function is an eLang function
+					if (!definedByUser)
+					{
+						for (int j = 0; j < numberOfeLangFunctions; j++)
+						{
+							if (!strcmp(functionName, ELANG_FUNCTIONS[j]))
+							{
+								eLangFunction = true;
+
+								if (!strcmp(functionName, "print"))
+								{
+									print(args, numberOfArguments);
+								}
+								if (!strcmp(functionName, "println"))
+								{
+									println(args, numberOfArguments);
 								}
 							}
 						}
 					}
-
-					for (int i = 0; i < count(',', arguments) + 1; i++)
-					{
-						free(args[i]);
-					}
-					free(args);
 				}
+
+				for (int i = 0; i < count(',', arguments) + 1; i++)
+				{
+					free(args[i]);
+				}
+				free(args);
 
 				// if function is not defined
 				if (!definedByUser && !eLangFunction)
