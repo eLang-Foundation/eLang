@@ -12,10 +12,7 @@ strArray getArguments(char *arguments)
 	// the following code splits the arguments string into separate arguments and adds them to the args array
 	for (int i = 0, l = (int) strlen(arguments); i < l; i++)
 	{
-		if (arguments[i] != ',' && !insideQuotes(i, arguments))
-		{
-			argument = appendString(argument, &arguments[i]);
-		}
+		argument = appendChar(argument, arguments[i]);
 
 		if ((!insideQuotes(i + 1, arguments) && arguments[i + 1] == ',') || (i == l - 1))
 		{
