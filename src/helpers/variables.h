@@ -33,9 +33,9 @@ char *FILENAME;
 char *CONTENTS;
 str LINES[] = {};
 
-char *ELANG_FUNCTIONS[] = { "println" };
+char *ELANG_FUNCTIONS[] = { "print", "println" };
 
-int numberOfeLangFunctions = 1;
+int numberOfeLangFunctions = 2;
 
 bool ignore = false;
 
