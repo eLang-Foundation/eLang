@@ -1,12 +1,12 @@
 void print(char **args, int numberOfArguments)
 {
+	// this string will be printed
+	char *string = malloc(1);
+	strcpy(string, "");
+
 	for (int k = 0; k < numberOfArguments; k++)
 	{
 		char *currentArgument = args[k];
-
-		// this string will be printed
-		char *string = malloc(1);
-		strcpy(string, "");
 
 		int length = (int) strlen(currentArgument);
 
@@ -20,10 +20,15 @@ void print(char **args, int numberOfArguments)
 			{
 				string = appendChar(string, currentArgument[h]);
 			}
+			if (k < numberOfArguments - 1) string = appendChar(string, ' ');
 		}
-
-		printf("%s", string);
+		else
+		{
+			if (strcmp(currentArgument, ""))
+				raiseError("eLang", "Types other than strings are not supported yet", NULL, 0, FILENAME);
+		}
 	}
+	printf("%s", string);
 }
 
 void println(char **args, int numberOfArguments)
