@@ -22,7 +22,7 @@
 #include "helpers/getArguments.c"
 #include "helpers/replace.c"
 #include "helpers/getAfter.c"
-#include "helpers/print.c"
+#include "functions/print.c"
 #include "helpers/execute.c"
 
 int main(int argc, char *argv[])
