@@ -1,11 +1,9 @@
-print("hello, world")
+print("hello, world", "hello")
 
 println()
 
-function greet(names) {
-	5 times with i {
-		println("Hello,", name)
-	}
+function greet(name) {
+    println("Hello,", name)
 }
 
 function hello(name) {
@@ -18,4 +16,4 @@ function 3rd(123var) {
 
 greet("eLang")
 
-greet("hello", test)
+greet("hello")
