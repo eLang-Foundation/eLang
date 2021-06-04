@@ -43,7 +43,6 @@ void checkClosed(unsigned int number, char *code)
 		// if number is not even
 		if (counter % 2 != 0 && counter != 0)
 		{
-			// displaying the error
 			// getting the line
 			char *line = LINES[number].value;
 			if (line)
