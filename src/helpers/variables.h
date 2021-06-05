@@ -1,4 +1,6 @@
 #define ui unsigned int
+#define FND "Function Not Defined"
+#define VND "Variable Not Defined"
 
 // structs
 typedef struct
