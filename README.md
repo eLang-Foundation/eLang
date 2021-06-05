@@ -16,7 +16,7 @@ Just grab the latest release for your operating system from _releases_ section, 
 eLang's syntax is similar to JavaScript and Python. Here is a sample greet program:
 ```
 function greet(name) {
-	print("Hello,", name)
+	println("Hello,", name)
 }
 greet("eLang")
 ```
