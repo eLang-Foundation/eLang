@@ -90,8 +90,10 @@ int main(int argc, char *argv[])
 		{
 			ln[charCount] = '\0';
 			charCount = 0;
-			LINES[numberOfLines].value = strdup(ln);
-			LINES[numberOfLines].allocated = true;
+			str line;
+			line.value = strdup(ln);
+			line.allocated = true;
+			LINES[numberOfLines] = line;
 			numberOfLines++;
 		}
 	}
