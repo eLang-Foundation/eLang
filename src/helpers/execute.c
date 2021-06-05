@@ -44,7 +44,7 @@ void execute(char *line, char *after, int *functionCount)
 			if (!strcmp(words[0], functionKeyword))
 			{
 				// getting the name of the function
-				char *functionName = get(after, "function\\s+([\\w_\\d]+)\\s*[\\(\\{]+");
+				char *functionName = get(after, "fun\\s+([\\w_\\d]+)\\s*[\\(\\{]+");
 
 				// getting the code inside of the function
 				char *code = getContents(after, '{', '}');
@@ -53,7 +53,7 @@ void execute(char *line, char *after, int *functionCount)
 				char *arguments = get(after, "\\(([\\w\\W]*?)\\)\\s*\\{");
 
 				strArray array = getArguments(trim(arguments));
-				
+
 				// creating a function
 				Function f;
 				f.name = strdup(trim(functionName));
@@ -135,7 +135,6 @@ void execute(char *line, char *after, int *functionCount)
 								
 								for (int i = 0; i < linesCounter; i++)
 								{
-									printf("%i\n", linesCounter);
 									char *after = getAfter(code, lines, i, linesCounter);
 									execute(lines[i].value, after, functionCount);
 								}
@@ -143,8 +142,9 @@ void execute(char *line, char *after, int *functionCount)
 
 							free(code);
 							break;
-						}							
+						}
 					}
+
 
 					// if function is an eLang function
 					if (!definedByUser)
@@ -177,10 +177,10 @@ void execute(char *line, char *after, int *functionCount)
 				// if function is not defined
 				if (!definedByUser && !eLangFunction)
 				{
-					char error[] = "Function \"";
+					char error[] = "\"";
 					strcat(error, functionName);
-					strcat(error, "\" is not defined.");
-					raiseError("eLang", error, NULL, 0, FILENAME);
+					strcat(error, "\" is not defined");
+					raiseError(FND, error, NULL, 0, FILENAME);
 				}
 
 				free(functionName);
