@@ -1,19 +1,14 @@
-print("hello, world", "hello")
-
-println()
-
-function greet(name) {
-    println("Hello,", name)
+fun greet(name) {
+	println("Hello,", name)
+	println("just a test")
 }
 
-function hello(name) {
+fun hello(name) {
 	println("hello,", name)
 }
 
-function 3rd(123var) {
+fun 3rd(123var) {
 	println(123var)
 }
 
 greet("eLang")
-
-greet("hello")

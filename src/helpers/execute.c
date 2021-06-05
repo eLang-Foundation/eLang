@@ -34,7 +34,7 @@ void execute(char *line, char *after, int *functionCount)
 
 	free(lineCopy);
 
-	char *functionKeyword = "function";
+	char *functionKeyword = "fun";
 
 	if (counter)
 	{
@@ -135,6 +135,7 @@ void execute(char *line, char *after, int *functionCount)
 								
 								for (int i = 0; i < linesCounter; i++)
 								{
+									printf("%i\n", linesCounter);
 									char *after = getAfter(code, lines, i, linesCounter);
 									execute(lines[i].value, after, functionCount);
 								}
