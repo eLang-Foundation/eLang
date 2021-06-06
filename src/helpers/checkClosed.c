@@ -52,7 +52,7 @@ void checkClosed(unsigned int number, char *code)
 				{
 					char str[] = "Unclosed ";
 					strcat(str, charName);
-					raiseError("SyntaxError", str, line, (int) number, FILENAME);
+					raiseError("SyntaxError", str, line, (int) number + 1, FILENAME);
 				}
 			}
 		}
