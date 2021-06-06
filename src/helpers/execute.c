@@ -136,7 +136,7 @@ void execute(char *line, char *after, int *functionCount, int lineNumber)
 								for (int i = 0; i < linesCounter; i++)
 								{
 									char *after = getAfter(code, lines, i, linesCounter);
-									execute(lines[i].value, after, functionCount, lineNumber + i + 1);
+									execute(trim(lines[i].value), after, functionCount, lineNumber + i + 1);
 								}
 							}
 
@@ -144,7 +144,6 @@ void execute(char *line, char *after, int *functionCount, int lineNumber)
 							break;
 						}
 					}
-
 
 					// if function is an eLang function
 					if (!definedByUser)
@@ -160,6 +159,7 @@ void execute(char *line, char *after, int *functionCount, int lineNumber)
 									print(args, numberOfArguments);
 									break;
 								}
+
 								if (!strcmp(functionName, "println"))
 								{
 									println(args, numberOfArguments);
