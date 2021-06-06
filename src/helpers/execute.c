@@ -2,7 +2,7 @@ extern char *get(char *, char *);
 extern bool match(char *, char *);
 
 // this function executed the given code
-void execute(char *line, char *after, int *functionCount)
+void execute(char *line, char *after, int *functionCount, int lineNumber)
 {
 	int counter = 0;
 
@@ -136,7 +136,7 @@ void execute(char *line, char *after, int *functionCount)
 								for (int i = 0; i < linesCounter; i++)
 								{
 									char *after = getAfter(code, lines, i, linesCounter);
-									execute(lines[i].value, after, functionCount);
+									execute(lines[i].value, after, functionCount, lineNumber + i + 1);
 								}
 							}
 
@@ -182,7 +182,7 @@ void execute(char *line, char *after, int *functionCount)
 					char error[] = "\"";
 					strcat(error, functionName);
 					strcat(error, "\" is not defined");
-					raiseError(FND, error, NULL, 0, FILENAME);
+					raiseError(FND, error, line, lineNumber, FILENAME);
 				}
 
 				free(functionName);
