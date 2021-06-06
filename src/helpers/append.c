@@ -28,3 +28,24 @@ char *appendString(char *string, char *string2)
 	strcpy(string, tmp);
 	return string;
 }
+
+// this function appends the given Function to the given Functions array
+Function *appendFunction(Function *functions, Function function, int functionCount)
+{
+	Function tmp[functionCount + 1];
+
+	for (int i = 0; i < functionCount; i++)
+	{
+		tmp[i] = functions[i];
+	}
+	tmp[functionCount++] = function;
+
+	functions = realloc(functions, functionCount * sizeof(Function));
+
+	for (int i = 0; i < functionCount; i++)
+	{
+		functions[i] = tmp[i];
+	}
+
+	return functions;
+}
