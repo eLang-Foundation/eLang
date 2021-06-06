@@ -5,11 +5,14 @@
  *
  */
 
+// libraries
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 #include <stdbool.h>
+
+// helper files
 #include "helpers/variables.h"
 #include "helpers/raiseError.c"
 #include "helpers/insideQuotes.c"
@@ -22,7 +25,11 @@
 #include "helpers/getArguments.c"
 #include "helpers/replace.c"
 #include "helpers/getAfter.c"
+
+// eLang functions
 #include "functions/print.c"
+
+// the execute function
 #include "helpers/execute.c"
 
 int main(int argc, char *argv[])
@@ -129,7 +136,7 @@ int main(int argc, char *argv[])
 		// getting an array of lines that are after the current line
 		char *after = getAfter(CONTENTS, LINES, i, numberOfLines);
 
-		execute(trim(line), after, functionCount);
+		execute(trim(line), after, functionCount, i + 1);
 
 		free(after);
 
