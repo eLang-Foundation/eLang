@@ -11,5 +11,5 @@ fun 3rd(123var) {
 }
 
 greet("eLang")
-hello("Bekhruz")
+hello("name")
 3rd("123")
