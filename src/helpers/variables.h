@@ -1,6 +1,7 @@
 #define ui unsigned int
-#define FND "Function not defined"
-#define VND "Variable not defined"
+#define FND "Undefined function"
+#define VND "Undefined variable"
+#define INV "Invalid value"
 
 // structs
 typedef struct
@@ -41,5 +42,5 @@ int numberOfeLangFunctions = 2;
 
 bool ignore = false;
 
-Function FUNCTIONS[];
+Function *FUNCTIONS;
 Variable VARIABLES[] = {};
