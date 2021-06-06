@@ -132,7 +132,7 @@ void execute(char *line, char *after, int *functionCount)
 								}
 
 								free(codeCopy);
-								
+
 								for (int i = 0; i < linesCounter; i++)
 								{
 									char *after = getAfter(code, lines, i, linesCounter);
@@ -158,10 +158,12 @@ void execute(char *line, char *after, int *functionCount)
 								if (!strcmp(functionName, "print"))
 								{
 									print(args, numberOfArguments);
+									break;
 								}
 								if (!strcmp(functionName, "println"))
 								{
 									println(args, numberOfArguments);
+									break;
 								}
 							}
 						}
