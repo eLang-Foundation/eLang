@@ -1,6 +1,7 @@
 fun greet(name) {
 	println("Hello,", name)
 	println("just a test")
+	println("hello world")
 }
 
 fun hello(name) {
