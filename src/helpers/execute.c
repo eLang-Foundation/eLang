@@ -4,45 +4,22 @@ extern bool match(char *, char *);
 // this function executed the given code
 void execute(char *line, char *after, int *functionCount, int lineNumber)
 {
-	int counter = 0;
-
 	char *lineCopy = strdup(line);
-	char *token = strtok(lineCopy, " ");
-
-	// getting the size of the array
-	while (token != NULL)
-	{
-		counter++;
-		token = strtok(NULL, " ");
-	}
-	free(lineCopy);
-
-	// creating a copy of the line
-	lineCopy = strdup(line);
-
-	// creating an array of words
-	char *words[counter];
-
-	token = strtok(lineCopy, " ");
-	counter = 0;
-	// filling in the array of words
-	while (token != NULL)
-	{
-		words[counter++] = strdup(token);
-		token = strtok(NULL, " ");
-	}
-
-	free(lineCopy);
+	char *firstWord = strtok(lineCopy, " ");
 
 	char *functionKeyword = "fun";
 
-	if (counter)
+	if (firstWord)
 	{
 		if (!ignore)
 		{
 			// if a function was defined
-			if (!strcmp(words[0], functionKeyword))
+			if (!strcmp(firstWord, functionKeyword))
 			{
+				if (*functionCount == 0)
+				{
+					FUNCTIONS = malloc(1 * sizeof(Function));
+				}
 				// getting the name of the function
 				char *functionName = get(after, "fun\\s+([\\w_\\d]+)\\s*[\\(\\{]+");
 
@@ -62,7 +39,7 @@ void execute(char *line, char *after, int *functionCount, int lineNumber)
 				f.argumentsNumber = array.length;
 
 				// appending the function to the array of functions
-				FUNCTIONS[*functionCount] = f;
+				FUNCTIONS = appendFunction(FUNCTIONS, f, *functionCount);
 				// incrementing the number of functions
 				*functionCount = (*functionCount + 1);
 
@@ -109,12 +86,25 @@ void execute(char *line, char *after, int *functionCount, int lineNumber)
 						Function currentFunction = FUNCTIONS[j];
 						if (!strcmp(functionName, currentFunction.name))
 						{
+							if (numberOfArguments != currentFunction.argumentsNumber)
+							{
+								char error[] = "Expected ";
+								char expected[2];
+								sprintf(expected, "%i", currentFunction.argumentsNumber);
+								strcat(error, expected);
+								strcat(error, " arguments, got ");
+								char got[2];
+								sprintf(got, "%i", numberOfArguments);
+								strcat(error, got);
+								raiseError(INV, error, line, lineNumber, FILENAME);
+							}
+
 							definedByUser = true;
 							// getting the body of the function
 							char *code = strdup(currentFunction.code);
 
 							// replacing the argument variables with given arguments
-							for (int k = 0, n = currentFunction.argumentsNumber; k < n; k++)
+							for (int k = 0; k < numberOfArguments; k++)
 							{
 								char *arg = currentFunction.arguments[k];
 								code = replace(code, arg, args[k]);
@@ -124,7 +114,7 @@ void execute(char *line, char *after, int *functionCount, int lineNumber)
 
 								char *codeCopy = strdup(code);
 
-								token = strtok(codeCopy, "\n");
+								char *token = strtok(codeCopy, "\n");
 								while (token != NULL)
 								{
 									lines[linesCounter++].value = strdup(token);
@@ -170,7 +160,7 @@ void execute(char *line, char *after, int *functionCount, int lineNumber)
 					}
 				}
 
-				for (int i = 0; i < count(',', arguments) + 1; i++)
+				for (int i = 0; i < numberOfArguments; i++)
 				{
 					free(args[i]);
 				}
@@ -191,9 +181,5 @@ void execute(char *line, char *after, int *functionCount, int lineNumber)
 		}
 	}
 
-	for (int i = 0; i < counter; i++)
-	{
-		free(words[i]);
-	}
-
+	free(lineCopy);
 }
