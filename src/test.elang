@@ -11,7 +11,5 @@ fun 3rd(123var) {
 }
 
 greet("eLang")
-
 hello("Bekhruz")
-
 3rd("123")
