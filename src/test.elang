@@ -1,3 +1,10 @@
+; the main function
+fun main() {
+	greet("eLang")
+	hello("name")
+	3rd("123")
+}
+
 fun greet(name) {
 	println("Hello,", name)
 }
@@ -10,6 +17,4 @@ fun 3rd(123var) {
 	println(123var)
 }
 
-greet("eLang")
-hello("name")
-3rd("123")
+main()
