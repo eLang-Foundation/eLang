@@ -103,6 +103,8 @@ void execute(char *line, char *after, int *functionCount, int lineNumber)
 							// getting the body of the function
 							char *code = strdup(currentFunction.code);
 
+							printf("%i\n", numberOfArguments);
+
 							// replacing the argument variables with given arguments
 							for (int k = 0; k < numberOfArguments; k++)
 							{
@@ -118,6 +120,7 @@ void execute(char *line, char *after, int *functionCount, int lineNumber)
 								while (token != NULL)
 								{
 									lines[linesCounter++].value = strdup(token);
+									lines[linesCounter++].allocated = true;
 									token = strtok(NULL, "\n");
 								}
 
@@ -177,6 +180,12 @@ void execute(char *line, char *after, int *functionCount, int lineNumber)
 
 				free(functionName);
 				free(arguments);
+			}
+
+			// invalid syntax
+			else if (strcmp(line, "}"))
+			{
+				raiseError(ERROR_MSG, INS, line, lineNumber, FILENAME);
 			}
 		}
 	}
