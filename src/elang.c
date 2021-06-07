@@ -121,9 +121,7 @@ int main(int argc, char *argv[])
 		execute(trim(line), after, functionCount, i + 1);
 
 		free(after);
-
 		free(line);
-		// if (LINES[i].allocated) free(LINES[i].value);
 	}
 
 	// freeing the allocated memory
