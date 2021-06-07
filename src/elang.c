@@ -25,6 +25,7 @@
 #include "helpers/getArguments.c"
 #include "helpers/replace.c"
 #include "helpers/getAfter.c"
+#include "helpers/splitIntoLines.c"
 
 // eLang functions
 #include "stdlib/print.c"
@@ -84,34 +85,15 @@ int main(int argc, char *argv[])
 	fclose(file);
 
 	// splitting the code into lines
-	ui numberOfLines = 0;
-	ui charCount = 0;
-	char ln[] = "";
-	for (ui i = 0, l = (int) strlen(CONTENTS); i < l; i++)
-	{
-		if (CONTENTS[i] != '\n')
-		{
-			ln[charCount++] = CONTENTS[i];
-		}
-		else
-		{
-			ln[charCount] = '\0';
-			charCount = 0;
-			str line;
-			line.value = strdup(ln);
-			line.allocated = true;
-			LINES[numberOfLines] = line;
-			numberOfLines++;
-		}
-	}
+	LINES = splitIntoLines(CONTENTS);
 
 	int functionCountVariable = 0;
 	int *functionCount = &functionCountVariable;
 
 	// executing each line of code
-	for (ui i = 0; i < numberOfLines; i++)
+	for (ui i = 0; i < LINES.length; i++)
 	{
-		char *line = strdup(LINES[i].value);
+		char *line = strdup(LINES.array[i]);
 		int wait = 0;
 
 		// checking if the following code is inside of a function
@@ -134,7 +116,7 @@ int main(int argc, char *argv[])
 		}
 
 		// getting an array of lines that are after the current line
-		char *after = getAfter(CONTENTS, LINES, i, numberOfLines);
+		char *after = getAfter(CONTENTS, LINES, i, LINES.length);
 
 		execute(trim(line), after, functionCount, i + 1);
 
