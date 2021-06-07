@@ -4,6 +4,8 @@ extern bool match(char *, char *);
 // this function executed the given code
 void execute(char *line, char *after, int *functionCount, int lineNumber)
 {
+	if (line[0] == ';') return;
+
 	char *lineCopy = strdup(line);
 	char *firstWord = strtok(lineCopy, " ");
 
