@@ -27,7 +27,7 @@
 #include "helpers/getAfter.c"
 
 // eLang functions
-#include "functions/print.c"
+#include "stdlib/print.c"
 
 // the execute function
 #include "helpers/execute.c"
