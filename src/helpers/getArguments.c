@@ -17,10 +17,13 @@ strArray getArguments(char *arguments)
 
 		if ((!insideQuotes(i + 1, arguments) && arguments[i + 1] == ',') || (i == l - 1))
 		{
-			args[argCounter++] = strdup(trim(argument));
-			free(argument);
-			argument = malloc(1);
-			strcpy(argument, "");
+			if (strcmp(trim(argument), ""))
+			{
+				args[argCounter++] = strdup(trim(argument));
+				free(argument);
+				argument = malloc(1);
+				strcpy(argument, "");
+			}
 		}
 	}
 
