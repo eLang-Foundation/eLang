@@ -103,34 +103,20 @@ void execute(char *line, char *after, int *functionCount, int lineNumber)
 							// getting the body of the function
 							char *code = strdup(currentFunction.code);
 
-							printf("%i\n", numberOfArguments);
-
 							// replacing the argument variables with given arguments
 							for (int k = 0; k < numberOfArguments; k++)
 							{
 								char *arg = currentFunction.arguments[k];
 								code = replace(code, arg, args[k]);
 
-								int linesCounter = 0;
-								str lines[] = {};
+								strArray lines = splitIntoLines(code);
 
-								char *codeCopy = strdup(code);
-
-								char *token = strtok(codeCopy, "\n");
-								while (token != NULL)
+								for (int i = 0, l = lines.length; i < l; i++)
 								{
-									lines[linesCounter++].value = strdup(token);
-									lines[linesCounter++].allocated = true;
-									token = strtok(NULL, "\n");
+									char *after = getAfter(code, lines, i, lines.length);
+									execute(trim(lines.array[i]), after, functionCount, lineNumber + i + 1);
 								}
-
-								free(codeCopy);
-
-								for (int i = 0; i < linesCounter; i++)
-								{
-									char *after = getAfter(code, lines, i, linesCounter);
-									execute(trim(lines[i].value), after, functionCount, lineNumber + i + 1);
-								}
+								free(lines.array);
 							}
 
 							free(code);
