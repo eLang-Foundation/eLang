@@ -1,7 +1,9 @@
 #define ui unsigned int
+#define ERROR_MSG "Error"
 #define FND "Undefined function"
 #define VND "Undefined variable"
 #define INV "Invalid value"
+#define INS "Invalid syntax"
 
 // structs
 typedef struct
