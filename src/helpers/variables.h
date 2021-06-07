@@ -36,7 +36,7 @@ typedef struct
 // global variables
 char *FILENAME;
 char *CONTENTS;
-str LINES[] = {};
+strArray LINES;
 
 char *ELANG_FUNCTIONS[] = { "print", "println" };
 

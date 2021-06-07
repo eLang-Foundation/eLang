@@ -44,7 +44,7 @@ void checkClosed(unsigned int number, char *code)
 		if (counter % 2 != 0 && counter != 0)
 		{
 			// getting the line
-			char *line = LINES[number].value;
+			char *line = LINES.array[number];
 			if (line)
 			{
 				// displaying the error
