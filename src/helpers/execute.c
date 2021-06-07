@@ -105,21 +105,24 @@ void execute(char *line, char *after, int *functionCount, int lineNumber)
 							// getting the body of the function
 							char *code = strdup(currentFunction.code);
 
-							// replacing the argument variables with given arguments
-							for (int k = 0; k < numberOfArguments; k++)
+							if (strcmp(arguments, ""))
 							{
-								char *arg = currentFunction.arguments[k];
-								code = replace(code, arg, args[k]);
-
-								strArray lines = splitIntoLines(code);
-
-								for (int i = 0, l = lines.length; i < l; i++)
+								// replacing the argument variables with given arguments
+								for (int k = 0; k < numberOfArguments; k++)
 								{
-									char *after = getAfter(code, lines, i, lines.length);
-									execute(trim(lines.array[i]), after, functionCount, lineNumber + i + 1);
+									char *arg = currentFunction.arguments[k];
+									code = replace(code, arg, args[k]);
 								}
-								free(lines.array);
 							}
+
+							strArray lines = splitIntoLines(code);
+
+							for (int i = 0, l = lines.length; i < l; i++)
+							{
+								char *after = getAfter(code, lines, i, lines.length);
+								execute(trim(lines.array[i]), after, functionCount, lineNumber + i + 1);
+							}
+							free(lines.array);
 
 							free(code);
 							break;
