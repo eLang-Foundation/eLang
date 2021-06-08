@@ -18,5 +18,6 @@ char *toString(char *var, int numberOfVariables)
 			}
 		}
 	}
+
 	return strdup("");
 }

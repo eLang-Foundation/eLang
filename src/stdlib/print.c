@@ -10,7 +10,7 @@ void print(char **args, int numberOfArguments, int numberOfVariables)
 
 		int length = (int) strlen(currentArgument);
 
-		if (!strcmp(type(currentArgument), "strmp")) {
+		if (!strcmp(type(currentArgument), "string")) {
 			for (int h = 1, l = length; h < l - 1; h++)
 			{
 				string = appendChar(string, currentArgument[h]);
