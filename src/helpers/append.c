@@ -49,3 +49,26 @@ Function *appendFunction(Function *functions, Function function, int functionCou
 
 	return functions;
 }
+
+// this function appends the given Variable to the given Variables array
+Variable *appendVariable(Variable *variables, Variable variable, int variableCount)
+{
+	Variable tmp[variableCount + 1];
+
+	for (int i = 0; i < variableCount; i++)
+	{
+		tmp[i] = variables[i];
+	}
+	tmp[variableCount++] = variable;
+
+	variables = realloc(variables, variableCount * sizeof(Function));
+
+	for (int i = 0; i < variableCount; i++)
+	{
+		variables[i] = tmp[i];
+	}
+
+	return variables;
+}
+
+

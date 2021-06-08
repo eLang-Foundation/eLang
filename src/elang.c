@@ -87,8 +87,8 @@ int main(int argc, char *argv[])
 	// splitting the code into lines
 	LINES = splitIntoLines(CONTENTS);
 
-	int functionCountVariable = 0;
-	int *functionCount = &functionCountVariable;
+	int functionCountVariable = 0, variableCountVariable = 0;
+	int *functionCount = &functionCountVariable, *variableCount = &variableCountVariable;
 
 	// executing each line of code
 	for (ui i = 0; i < LINES.length; i++)
@@ -118,7 +118,7 @@ int main(int argc, char *argv[])
 		// getting an array of lines that are after the current line
 		char *after = getAfter(CONTENTS, LINES, i, LINES.length);
 
-		execute(trim(line), after, functionCount, i + 1);
+		execute(trim(line), after, functionCount, variableCount, i + 1);
 
 		free(after);
 		free(line);
@@ -129,6 +129,7 @@ int main(int argc, char *argv[])
 	free(CONTENTS);
 	free(LINES.array);
 
+	// freeing all functions
 	for (ui i = 0; i < *functionCount; i++)
 	{
 		Function function = FUNCTIONS[i];
@@ -141,6 +142,16 @@ int main(int argc, char *argv[])
 		free(function.name);
 	}
 	free(FUNCTIONS);
+
+	// freeing all variables
+	for (ui i = 0; i < *variableCount; i++)
+	{
+		Variable variable = VARIABLES[i];
+		
+		free(variable.name);
+		free(variable.value);
+	}
+	free(VARIABLES);
 
 	return 0;
 }

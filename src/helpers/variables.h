@@ -45,4 +45,4 @@ int numberOfeLangFunctions = 2;
 bool ignore = false;
 
 Function *FUNCTIONS;
-Variable VARIABLES[] = {};
+Variable *VARIABLES;

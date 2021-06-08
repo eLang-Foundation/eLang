@@ -2,7 +2,7 @@ extern char *get(char *, char *);
 extern bool match(char *, char *);
 
 // this function executed the given code
-void execute(char *line, char *after, int *functionCount, int lineNumber)
+void execute(char *line, char *after, int *functionCount, int *variableCount, int lineNumber)
 {
 	if (line[0] == ';') return;
 
@@ -128,7 +128,7 @@ void execute(char *line, char *after, int *functionCount, int lineNumber)
 							for (int i = 0, l = lines.length; i < l; i++)
 							{
 								char *after = getAfter(code, lines, i, lines.length);
-								execute(trim(lines.array[i]), after, functionCount, lineNumber + i + 1);
+								execute(trim(lines.array[i]), after, functionCount, variableCount, lineNumber + i + 1);
 								free(lines.array[i]);
 								free(after);
 							}
@@ -182,6 +182,46 @@ void execute(char *line, char *after, int *functionCount, int lineNumber)
 
 				free(functionName);
 				free(arguments);
+			}
+
+			// if a variable was created or changed
+			else if (match(line, "[\\w_\\d]+\\s*=\\s*[\\w\\W]+"))
+			{
+				if (*variableCount == 0)
+				{
+					VARIABLES = malloc(1 * sizeof(Variable));
+				}
+
+				char *varName = get(line, "([\\w_\\d]+?)\\s*=");
+				char *varValue = get(line, "[\\w_\\d]+\\s*=\\s*([\\w\\W]+)");
+
+				bool exists = false;
+
+				for (int i = 0; i < *variableCount; i++)
+				{
+					if (!strcmp(VARIABLES[i].name, varName))
+					{
+						VARIABLES[i].value = strdup(varValue);
+						exists = true;
+						break;
+					}
+				}
+
+				if (!exists)
+				{
+					// creating a variable
+					Variable var;
+					var.name = strdup(varName);
+					var.value = strdup(varValue);
+
+					// appending the variable to the array of variables
+					VARIABLES = appendVariable(VARIABLES, var, *variableCount);
+					// incrementing the number of variables
+					*variableCount = (*variableCount + 1);
+				}
+
+				free(varName);
+				free(varValue);
 			}
 
 			// invalid syntax

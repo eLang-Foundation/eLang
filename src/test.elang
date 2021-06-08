@@ -18,4 +18,8 @@ fun 3rd(123var) {
 	println(123var)
 }
 
-main()
+; main()
+
+hello = "hello, world"
+
+hello = "hello again"
