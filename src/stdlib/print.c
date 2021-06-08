@@ -25,10 +25,12 @@ void print(char **args, int numberOfArguments)
 		else
 		{
 			if (strcmp(currentArgument, ""))
-				raiseError("eLang", "Types other than strings are not supported yet", NULL, 0, FILENAME);
+				raiseError(INV, "Types other than strings are not supported yet", NULL, 0, FILENAME);
 		}
 	}
+
 	printf("%s", string);
+	free(string);
 }
 
 void println(char **args, int numberOfArguments)

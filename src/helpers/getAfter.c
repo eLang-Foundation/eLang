@@ -14,5 +14,5 @@ char *getAfter(char *code, strArray lines, int index, int numberOfLines)
 			free(currentLine);
 		}
 	}
-	return strdup(after);
+	return after;
 }

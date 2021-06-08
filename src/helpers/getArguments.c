@@ -32,7 +32,7 @@ strArray getArguments(char *arguments)
 	strArray array;
 	array.array = args;
 	array.allocated = true;
-	array.length = length; 
+	array.length = argCounter; 
 
 	return array;
 }

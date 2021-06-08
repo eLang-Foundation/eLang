@@ -6,7 +6,8 @@ void execute(char *line, char *after, int *functionCount, int lineNumber)
 {
 	if (line[0] == ';') return;
 
-	char *lineCopy = strdup(line);
+	char lineCopy[strlen(line) + 1];
+	strcpy(lineCopy, line);
 	char *firstWord = strtok(lineCopy, " ");
 
 	char *functionKeyword = "fun";
@@ -22,6 +23,7 @@ void execute(char *line, char *after, int *functionCount, int lineNumber)
 				{
 					FUNCTIONS = malloc(1 * sizeof(Function));
 				}
+				
 				// getting the name of the function
 				char *functionName = get(after, "fun\\s+([\\w_\\d]+)\\s*[\\(\\{]+");
 
@@ -66,7 +68,9 @@ void execute(char *line, char *after, int *functionCount, int lineNumber)
 			{
 				// if the function was just a part of a string and not a function
 				if (insideQuotes(getIndex(line, '('), line))
+				{
 					return;
+				}
 
 				char *functionName = get(line, "([\\w\\d]+)\\s*\\(");
 				char *arguments = get(after, "\\(([\\w\\W]*?)\\)");
@@ -102,6 +106,7 @@ void execute(char *line, char *after, int *functionCount, int lineNumber)
 							}
 
 							definedByUser = true;
+
 							// getting the body of the function
 							char *code = strdup(currentFunction.code);
 
@@ -111,7 +116,10 @@ void execute(char *line, char *after, int *functionCount, int lineNumber)
 								for (int k = 0; k < numberOfArguments; k++)
 								{
 									char *arg = currentFunction.arguments[k];
-									code = replace(code, arg, args[k]);
+									char *tmp = replace(code, arg, args[k]);
+									free(code);
+									code = strdup(tmp);
+									free(tmp);
 								}
 							}
 
@@ -121,10 +129,13 @@ void execute(char *line, char *after, int *functionCount, int lineNumber)
 							{
 								char *after = getAfter(code, lines, i, lines.length);
 								execute(trim(lines.array[i]), after, functionCount, lineNumber + i + 1);
+								free(lines.array[i]);
+								free(after);
 							}
-							free(lines.array);
 
+							free(lines.array);
 							free(code);
+
 							break;
 						}
 					}
@@ -180,6 +191,4 @@ void execute(char *line, char *after, int *functionCount, int lineNumber)
 			}
 		}
 	}
-
-	free(lineCopy);
 }

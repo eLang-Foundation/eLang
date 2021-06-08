@@ -41,14 +41,14 @@ int main(int argc, char *argv[])
 	else
 	{
 		printf("Usage: elang filename.elang\n");
-		return 0;
+		return 1;
 	}
 
 	// if user wants to get the version of eLang
 	if (!strcmp(FILENAME, "--version"))
 	{
 		printf("eLang 0.0.9 C\n");
-		return 1;
+		return 0;
 	}
 
 	// if file was not successfully opened
@@ -122,18 +122,25 @@ int main(int argc, char *argv[])
 
 		free(after);
 		free(line);
+		free(LINES.array[i]);
 	}
 
 	// freeing the allocated memory
 	free(CONTENTS);
+	free(LINES.array);
 
 	for (ui i = 0; i < *functionCount; i++)
 	{
 		Function function = FUNCTIONS[i];
+		
+		for (int j = 0; j < function.argumentsNumber; j++)
+			free(function.arguments[j]);
+
 		free(function.arguments);
 		free(function.code);
 		free(function.name);
 	}
+	free(FUNCTIONS);
 
-	exit(EXIT_SUCCESS);
+	return 0;
 }
