@@ -28,6 +28,8 @@
 #include "helpers/splitIntoLines.c"
 
 // eLang functions
+#include "stdlib/type.c"
+#include "stdlib/toString.c"
 #include "stdlib/print.c"
 
 // the execute function
@@ -55,11 +57,11 @@ int main(int argc, char *argv[])
 	if (access(FILENAME, F_OK) != 0)
 	{
 		// creating a string that will be printed in a console
-		char str[] = "Unable to open \"";
-		strcat(str, FILENAME);
-		strcat(str, "\"");
+		char error[] = "Unable to open \"";
+		strcat(error, FILENAME);
+		strcat(error, "\"");
 		// raising the error
-		raiseError("eLang", str, NULL, 0, FILENAME);
+		raiseError("eLang", error, NULL, 0, FILENAME);
 	}
 
 	// opening the file

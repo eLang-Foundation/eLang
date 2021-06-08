@@ -151,13 +151,13 @@ void execute(char *line, char *after, int *functionCount, int *variableCount, in
 
 								if (!strcmp(functionName, "print"))
 								{
-									print(args, numberOfArguments);
+									print(args, numberOfArguments, *variableCount);
 									break;
 								}
 
 								if (!strcmp(functionName, "println"))
 								{
-									println(args, numberOfArguments);
+									println(args, numberOfArguments, *variableCount);
 									break;
 								}
 							}
@@ -213,6 +213,7 @@ void execute(char *line, char *after, int *functionCount, int *variableCount, in
 					Variable var;
 					var.name = strdup(varName);
 					var.value = strdup(varValue);
+					var.type = type(varValue);
 
 					// appending the variable to the array of variables
 					VARIABLES = appendVariable(VARIABLES, var, *variableCount);

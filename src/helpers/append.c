@@ -70,5 +70,3 @@ Variable *appendVariable(Variable *variables, Variable variable, int variableCou
 
 	return variables;
 }
-
-

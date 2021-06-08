@@ -22,4 +22,8 @@ fun 3rd(123var) {
 
 hello = "hello, world"
 
+println(hello)
+
 hello = "hello again"
+
+println(hello)

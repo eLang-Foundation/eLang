@@ -1,4 +1,4 @@
-void print(char **args, int numberOfArguments)
+void print(char **args, int numberOfArguments, int numberOfVariables)
 {
 	// this string will be printed
 	char *string = malloc(1);
@@ -10,12 +10,7 @@ void print(char **args, int numberOfArguments)
 
 		int length = (int) strlen(currentArgument);
 
-		int index = length - 1;
-
-		if ((currentArgument[0] == '"' && currentArgument[index] == '"') ||
-			(currentArgument[0] == '\'' && currentArgument[index] == '\'') ||
-			(currentArgument[0] == '`' && currentArgument[index] == '`'))
-		{
+		if (!strcmp(type(currentArgument), "strmp")) {
 			for (int h = 1, l = length; h < l - 1; h++)
 			{
 				string = appendChar(string, currentArgument[h]);
@@ -24,8 +19,12 @@ void print(char **args, int numberOfArguments)
 		}
 		else
 		{
-			if (strcmp(currentArgument, ""))
+			char *convertedToString = toString(currentArgument, numberOfVariables);
+			if (strcmp(convertedToString, ""))
+				string = appendString(string, convertedToString);
+			else
 				raiseError(INV, "Types other than strings are not supported yet", NULL, 0, FILENAME);
+			free(convertedToString);
 		}
 	}
 
@@ -33,8 +32,8 @@ void print(char **args, int numberOfArguments)
 	free(string);
 }
 
-void println(char **args, int numberOfArguments)
+void println(char **args, int numberOfArguments, int numberOfVariables)
 {
-	print(args, numberOfArguments);
+	print(args, numberOfArguments, numberOfeLangFunctions);
 	printf("\n");
 }

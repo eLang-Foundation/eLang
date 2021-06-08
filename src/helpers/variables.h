@@ -31,6 +31,7 @@ typedef struct
 {
 	char *name;
 	char *value;
+	char *type;
 } Variable;
 
 // global variables
