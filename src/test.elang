@@ -3,6 +3,8 @@ fun main() {
 	greet("eLang")
 	hello("name")
 	3rd("123")
+	test_var = "just a test"
+	println(test_var)
 }
 
 fun greet(name) {
