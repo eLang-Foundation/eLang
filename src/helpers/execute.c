@@ -201,6 +201,7 @@ void execute(char *line, char *after, int *functionCount, int *variableCount, in
 				{
 					if (!strcmp(VARIABLES[i].name, varName))
 					{
+						free(VARIABLES[i].value);
 						VARIABLES[i].value = strdup(varValue);
 						exists = true;
 						break;
