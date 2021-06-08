@@ -6,6 +6,8 @@ char *replace(char *s1, char *r, char *s2)
 	int length2 = (int) strlen(s2);
 
 	bool matched = false;
+	int numberOfMatches = 0;
+	bool done = false;
 
 	char *returnString = malloc(1);
 	strcpy(returnString, "");
@@ -27,25 +29,39 @@ char *replace(char *s1, char *r, char *s2)
 
 		if (matched)
 		{
-			int j = 0;
+			numberOfMatches++;
 
-			for (; j < i; j++)
+			if (!done)
 			{
-				returnString = appendChar(returnString, s1[j]);
+				int j = 0;
+
+				for (; j < i; j++)
+				{
+					returnString = appendChar(returnString, s1[j]);
+				}
+
+				for (j = 0; j < length2; j++)
+				{
+					returnString = appendChar(returnString, s2[j]);
+				}
+
+				int index = i + rLength;
+				for (j = index; j < length; j++)
+				{
+					returnString = appendChar(returnString, s1[j]);
+				}
+				done = true;
 			}
 
-			for (j = 0; j < length2; j++)
-			{
-				returnString = appendChar(returnString, s2[j]);
-			}
-
-			int index = i + rLength;
-			for (j = index; j < length; j++)
-			{
-				returnString = appendChar(returnString, s1[j]);
-			}
+			matched = false;
 		}
 	}
+
+	for (int i = 0; i < numberOfMatches - 1; i++)
+	{
+		returnString = replace(returnString, r, s2);
+	}
+
 
 	return returnString;
 }
