@@ -59,7 +59,10 @@ char *replace(char *s1, char *r, char *s2)
 
 	for (int i = 0; i < numberOfMatches - 1; i++)
 	{
-		returnString = replace(returnString, r, s2);
+		char *tmp = replace(returnString, r, s2);
+		free(returnString);
+		returnString = strdup(tmp);
+		free(tmp);
 	}
 
 
