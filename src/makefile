@@ -1,6 +1,9 @@
-compile: elang.c
-	make lib
+compile:
 	gcc -L. -Wall -o elang elang.c helpers/libRe.so
+
+compileAll:
+	make lib
+	make
 
 lib:
 	(cd helpers && g++ -c -Wall -Werror -fPIC re.cpp)

@@ -1,4 +1,4 @@
-void print(char **args, int numberOfArguments, int numberOfVariables)
+void print(char **args, int numberOfArguments)
 {
 	// this string will be printed
 	char *string = malloc(1);
@@ -32,8 +32,8 @@ void print(char **args, int numberOfArguments, int numberOfVariables)
 	free(string);
 }
 
-void println(char **args, int numberOfArguments, int numberOfVariables)
+void println(char **args, int numberOfArguments)
 {
-	print(args, numberOfArguments, numberOfeLangFunctions);
+	print(args, numberOfArguments);
 	printf("\n");
 }

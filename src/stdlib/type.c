@@ -10,10 +10,15 @@ char *type(char *value)
 		return "string";
 	}
 
-	else if (numberable(value))
+	if (numberable(value))
 	{
 		return "number";
 	}
+
+	if (!strcmp(value, "true") || !strcmp(value, "false"))
+	{
+		return "bool";
+	}	
 
 	return "undefined";
 }

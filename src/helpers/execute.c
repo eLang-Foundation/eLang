@@ -2,7 +2,7 @@ extern char *get(char *, char *);
 extern bool match(char *, char *);
 
 // this function executed the given code
-void execute(char *line, char *after, int *functionCount, int *variableCount, int lineNumber)
+void execute(char *line, char *after, int lineNumber)
 {
 	if (line[0] == ';') return;
 
@@ -19,19 +19,19 @@ void execute(char *line, char *after, int *functionCount, int *variableCount, in
 			// if a function was defined
 			if (!strcmp(firstWord, functionKeyword))
 			{
-				if (*functionCount == 0)
+				if (numberOfFunctions == 0)
 				{
 					FUNCTIONS = malloc(1 * sizeof(Function));
 				}
 				
 				// getting the name of the function
-				char *functionName = get(after, "fun\\s+([\\w_\\d]+)\\s*[\\(\\{]+");
+				char *functionName = get(line, "fun\\s+([\\w_\\d]+)\\s*[\\(\\{]+");
 
 				// getting the code inside of the function
 				char *code = getContents(after, '{', '}');
 
 				// getting the arguments of the function
-				char *arguments = get(after, "\\(([\\w\\W]*?)\\)\\s*\\{");
+				char *arguments = getContents(line, '(', ')');
 
 				strArray array = getArguments(trim(arguments));
 
@@ -40,12 +40,10 @@ void execute(char *line, char *after, int *functionCount, int *variableCount, in
 				f.name = strdup(trim(functionName));
 				f.arguments = array.array;
 				f.code = strdup(trim(code));
-				f.argumentsNumber = array.length;
+				f.argumentsNumber = strcmp(arguments, "") ? array.length : 0;
 
 				// appending the function to the array of functions
-				FUNCTIONS = appendFunction(FUNCTIONS, f, *functionCount);
-				// incrementing the number of functions
-				*functionCount = (*functionCount + 1);
+				FUNCTIONS = appendFunction(FUNCTIONS, f);
 
 				// checking if the next line of code is inside of a function
 				ignore = false;
@@ -81,13 +79,13 @@ void execute(char *line, char *after, int *functionCount, int *variableCount, in
 				// an array of arguments will be stored in this variable
 				strArray array = getArguments(trim(arguments));
 				char **args = array.array;
-				int numberOfArguments = array.length;
+				int numberOfArguments = strcmp(arguments, "") ? array.length : 0;
 
 				// if the function name was provided
 				if (strcmp(functionName, ""))
 				{
 					// if the function was defined by the user
-					for (int j = 0; j < *functionCount; j++)
+					for (int j = 0; j < numberOfFunctions; j++)
 					{
 						Function currentFunction = FUNCTIONS[j];
 						if (!strcmp(functionName, currentFunction.name))
@@ -128,7 +126,7 @@ void execute(char *line, char *after, int *functionCount, int *variableCount, in
 							for (int i = 0, l = lines.length; i < l; i++)
 							{
 								char *after = getAfter(lines, i);
-								execute(trim(lines.array[i]), after, functionCount, variableCount, lineNumber + i + 1);
+								execute(trim(lines.array[i]), after, lineNumber + i + 1);
 								free(lines.array[i]);
 								free(after);
 							}
@@ -151,13 +149,13 @@ void execute(char *line, char *after, int *functionCount, int *variableCount, in
 
 								if (!strcmp(functionName, "print"))
 								{
-									print(args, numberOfArguments, *variableCount);
+									print(args, numberOfArguments);
 									break;
 								}
 
 								if (!strcmp(functionName, "println"))
 								{
-									println(args, numberOfArguments, *variableCount);
+									println(args, numberOfArguments);
 									break;
 								}
 							}
@@ -187,7 +185,7 @@ void execute(char *line, char *after, int *functionCount, int *variableCount, in
 			// if a variable was created or changed
 			else if (match(line, "[\\w_\\d]+\\s*=\\s*[\\w\\W]+"))
 			{
-				if (*variableCount == 0)
+				if (numberOfVariables == 0)
 				{
 					VARIABLES = malloc(1 * sizeof(Variable));
 				}
@@ -197,7 +195,7 @@ void execute(char *line, char *after, int *functionCount, int *variableCount, in
 
 				bool exists = false;
 
-				for (int i = 0; i < *variableCount; i++)
+				for (int i = 0; i < numberOfVariables; i++)
 				{
 					if (!strcmp(VARIABLES[i].name, varName))
 					{
@@ -217,13 +215,35 @@ void execute(char *line, char *after, int *functionCount, int *variableCount, in
 					var.type = type(varValue);
 
 					// appending the variable to the array of variables
-					VARIABLES = appendVariable(VARIABLES, var, *variableCount);
-					// incrementing the number of variables
-					*variableCount = (*variableCount + 1);
+					VARIABLES = appendVariable(VARIABLES, var);
 				}
 
 				free(varName);
 				free(varValue);
+			}
+
+			// if the following code is an if statement
+			else if (match(line, "if\\s+[\\w\\W]+\\s*\\{"))
+			{
+				char *expression = trim(get(line, "if\\s+([\\w\\W]+)\\s*\\{"));
+
+				char *code = getContents(after, '{', '}');
+
+				if (!strcmp(toBool(expression), "false"))
+				{
+					// checking if the next line of code is inside of a function
+					ignore = false;
+					for (int i = 0, l = (int) strlen(code); i < l; i++)
+					{
+						if (code[i] == '\n')
+						{
+							ignore = true;
+							break;
+						}
+					}
+				}
+
+				free(expression);
 			}
 
 			// invalid syntax

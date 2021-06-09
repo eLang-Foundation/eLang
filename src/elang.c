@@ -33,6 +33,7 @@
 #include "stdlib/numberable.c"
 #include "stdlib/type.c"
 #include "stdlib/toString.c"
+#include "stdlib/toBool.c"
 #include "stdlib/print.c"
 
 // the execute function
@@ -92,16 +93,13 @@ int main(int argc, char *argv[])
 	// splitting the code into lines
 	LINES = splitIntoLines(CONTENTS);
 
-	int functionCountVariable = 0, variableCountVariable = 0;
-	int *functionCount = &functionCountVariable, *variableCount = &variableCountVariable;
-
 	// executing each line of code
 	for (ui i = 0; i < LINES.length; i++)
 	{
 		char *line = strdup(LINES.array[i]);
 		int wait = 0;
 
-		// checking if the following code is inside of a function
+		// checking if the following code is inside of a function or an if statement or a loop
 		if (ignore)
 		{
 			for (int j = 0, l = (int) strlen(line); j < l; j++)
@@ -126,7 +124,7 @@ int main(int argc, char *argv[])
 		// checking for syntax errors
 		checkClosed(i, after);
 
-		execute(trim(line), after, functionCount, variableCount, i + 1);
+		execute(trim(line), after, i + 1);
 
 		free(after);
 		free(line);
@@ -137,29 +135,7 @@ int main(int argc, char *argv[])
 	free(CONTENTS);
 	free(LINES.array);
 
-	// freeing all functions
-	for (ui i = 0; i < *functionCount; i++)
-	{
-		Function function = FUNCTIONS[i];
-		
-		for (int j = 0; j < function.argumentsNumber; j++)
-			free(function.arguments[j]);
-
-		free(function.arguments);
-		free(function.code);
-		free(function.name);
-	}
-	free(FUNCTIONS);
-
-	// freeing all variables
-	for (ui i = 0; i < *variableCount; i++)
-	{
-		Variable variable = VARIABLES[i];
-		
-		free(variable.name);
-		free(variable.value);
-	}
-	free(VARIABLES);
+	freeAll();
 
 	return 0;
 }
