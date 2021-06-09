@@ -25,7 +25,7 @@ jobs:
           git submodule sync --recursive
           git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive --depth=1
       - name: Compiling the source code
-        run: (cd src && make)
+        run: (cd src && make compileAll)
       - name: Compiling tests
         run: (cd tests && make)
       - name: Executing tests
