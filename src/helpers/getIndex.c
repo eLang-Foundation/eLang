@@ -4,6 +4,7 @@
 int getIndex(const char *string, char chr)
 {
 	int counter = 0;
-	for (; string[counter] != chr; counter++);
+	int length = (int) strlen(string);
+	for (; counter < length && string[counter] != chr; counter++);
 	return counter;
 }
