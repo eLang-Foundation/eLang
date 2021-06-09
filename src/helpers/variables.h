@@ -47,3 +47,5 @@ bool ignore = false;
 
 Function *FUNCTIONS;
 Variable *VARIABLES;
+
+int numberOfFunctions, numberOfVariables;

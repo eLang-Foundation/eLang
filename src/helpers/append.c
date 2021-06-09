@@ -30,19 +30,19 @@ char *appendString(char *string, char *string2)
 }
 
 // this function appends the given Function to the given Functions array
-Function *appendFunction(Function *functions, Function function, int functionCount)
+Function *appendFunction(Function *functions, Function function)
 {
-	Function tmp[functionCount + 1];
+	Function tmp[numberOfFunctions + 1];
 
-	for (int i = 0; i < functionCount; i++)
+	for (int i = 0; i < numberOfFunctions; i++)
 	{
 		tmp[i] = functions[i];
 	}
-	tmp[functionCount++] = function;
+	tmp[numberOfFunctions++] = function;
 
-	functions = realloc(functions, functionCount * sizeof(Function));
+	functions = realloc(functions, numberOfFunctions * sizeof(Function));
 
-	for (int i = 0; i < functionCount; i++)
+	for (int i = 0; i < numberOfFunctions; i++)
 	{
 		functions[i] = tmp[i];
 	}
@@ -51,19 +51,19 @@ Function *appendFunction(Function *functions, Function function, int functionCou
 }
 
 // this function appends the given Variable to the given Variables array
-Variable *appendVariable(Variable *variables, Variable variable, int variableCount)
+Variable *appendVariable(Variable *variables, Variable variable)
 {
-	Variable tmp[variableCount + 1];
+	Variable tmp[numberOfVariables + 1];
 
-	for (int i = 0; i < variableCount; i++)
+	for (int i = 0; i < numberOfVariables; i++)
 	{
 		tmp[i] = variables[i];
 	}
-	tmp[variableCount++] = variable;
+	tmp[numberOfVariables++] = variable;
 
-	variables = realloc(variables, variableCount * sizeof(Function));
+	variables = realloc(variables, numberOfVariables * sizeof(Function));
 
-	for (int i = 0; i < variableCount; i++)
+	for (int i = 0; i < numberOfVariables; i++)
 	{
 		variables[i] = tmp[i];
 	}

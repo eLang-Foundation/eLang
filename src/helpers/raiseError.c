@@ -1,6 +1,7 @@
 // function for raising errors
 void raiseError(char *errorType, char *error, char *line, int lineNumber, char *filename)
 {
+	freeAll();
 	// if the incorrect line of code was given
 	if (line != NULL)
 	{

@@ -11,5 +11,8 @@ char *toBool(char *value)
 		return "false";
 	}
 
-	return "true";
+	if (numberable(value) || toString(value, 1))
+		return "true";
+
+	return "false";
 }

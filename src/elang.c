@@ -14,6 +14,7 @@
 
 // helper files
 #include "helpers/variables.h"
+#include "helpers/freeAll.c"
 #include "helpers/raiseError.c"
 #include "helpers/insideQuotes.c"
 #include "helpers/count.c"
@@ -92,9 +93,6 @@ int main(int argc, char *argv[])
 	// splitting the code into lines
 	LINES = splitIntoLines(CONTENTS);
 
-	int functionCountVariable = 0, variableCountVariable = 0;
-	int *functionCount = &functionCountVariable, *variableCount = &variableCountVariable;
-
 	// executing each line of code
 	for (ui i = 0; i < LINES.length; i++)
 	{
@@ -126,7 +124,7 @@ int main(int argc, char *argv[])
 		// checking for syntax errors
 		checkClosed(i, after);
 
-		execute(trim(line), after, functionCount, variableCount, i + 1);
+		execute(trim(line), after, i + 1);
 
 		free(after);
 		free(line);
@@ -137,29 +135,7 @@ int main(int argc, char *argv[])
 	free(CONTENTS);
 	free(LINES.array);
 
-	// freeing all functions
-	for (ui i = 0; i < *functionCount; i++)
-	{
-		Function function = FUNCTIONS[i];
-		
-		for (int j = 0; j < function.argumentsNumber; j++)
-			free(function.arguments[j]);
-
-		free(function.arguments);
-		free(function.code);
-		free(function.name);
-	}
-	free(FUNCTIONS);
-
-	// freeing all variables
-	for (ui i = 0; i < *variableCount; i++)
-	{
-		Variable variable = VARIABLES[i];
-		
-		free(variable.name);
-		free(variable.value);
-	}
-	free(VARIABLES);
+	freeAll();
 
 	return 0;
 }
