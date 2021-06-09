@@ -11,6 +11,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <stdbool.h>
+#include <math.h>
 
 // C++ functions
 extern char *get(char *, char *);
@@ -36,6 +37,7 @@ extern bool match(char *, char *);
 
 // eLang functions
 #include "stdlib/numberable.c"
+#include "stdlib/toNumber.c"
 #include "stdlib/type.c"
 #include "stdlib/toString.c"
 #include "stdlib/toBool.c"
