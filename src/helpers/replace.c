@@ -65,6 +65,5 @@ char *replace(char *s1, char *r, char *s2)
 		free(tmp);
 	}
 
-
 	return returnString;
 }
