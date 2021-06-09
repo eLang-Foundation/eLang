@@ -129,9 +129,7 @@ int main(int argc, char *argv[])
 		// checking for syntax errors
 		checkClosed(i, after);
 
-		lineNumber = i + 1;
-
-		execute(trim(line), after, lineNumber);
+		execute(trim(line), after, i + 1);
 
 		free(after);
 		free(line);

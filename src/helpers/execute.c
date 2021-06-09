@@ -252,4 +252,3 @@ void execute(char *line, char *after, int lineNumber)
 		}
 	}
 }
-
