@@ -1,5 +1,5 @@
 // this function converts the given variable to string
-char *toString(char *var, int numberOfVariables)
+char *toString(char *var)
 {
 	for (int i = 0; i < numberOfVariables; i++)
 	{
