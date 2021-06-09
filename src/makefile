@@ -1,5 +1,5 @@
 compile:
-	gcc -L. -Wall -o elang elang.c helpers/libRe.so
+	gcc -L. -Wall -o elang elang.c -lm helpers/libRe.so
 
 compileAll:
 	make lib
@@ -24,4 +24,4 @@ memcheck:
 
 debug:
 	make lib
-	gcc -g -L.-Wall -o elang elang.c helpers/libRe.so
+	gcc -g -L.-Wall -o elang elang.c -lm helpers/libRe.so
