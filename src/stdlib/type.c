@@ -2,11 +2,18 @@
 char *type(char *value)
 {
 	int index = strlen(value) - 1;
+
 	if ((value[0] == '"' && value[index] == '"') ||
 		(value[0] == '\'' && value[index] == '\'') ||
 		(value[0] == '`' && value[index] == '`'))
 	{
 		return "string";
 	}
+
+	else if (numberable(value))
+	{
+		return "number";
+	}
+
 	return "undefined";
 }

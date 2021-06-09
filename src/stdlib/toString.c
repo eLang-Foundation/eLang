@@ -16,6 +16,11 @@ char *toString(char *var, int numberOfVariables)
 				}
 				return string;
 			}
+
+			else if (numberable(currentVariable.value))
+			{
+				return strdup(currentVariable.value);
+			}
 		}
 	}
 
