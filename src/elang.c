@@ -28,6 +28,7 @@
 #include "helpers/splitIntoLines.c"
 
 // eLang functions
+#include "stdlib/numberable.c"
 #include "stdlib/type.c"
 #include "stdlib/toString.c"
 #include "stdlib/print.c"
