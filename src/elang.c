@@ -120,6 +120,9 @@ int main(int argc, char *argv[])
 		// getting an array of lines that are after the current line
 		char *after = getAfter(LINES, i);
 
+		// checking for syntax errors
+		checkClosed(i, after);
+
 		execute(trim(line), after, functionCount, variableCount, i + 1);
 
 		free(after);
