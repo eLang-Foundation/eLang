@@ -26,6 +26,7 @@
 #include "helpers/replace.c"
 #include "helpers/getAfter.c"
 #include "helpers/splitIntoLines.c"
+#include "helpers/convertValueToString.c"
 
 // eLang functions
 #include "stdlib/numberable.c"
