@@ -15,7 +15,7 @@ char *type(char *value)
 		return "number";
 	}
 
-	if (!strcmp(value, "true") || !strcmp(value, "false"))
+	if (!strcmp(value, "true") || !strcmp(value, "false") || match(value, "[\\w\\W]+[<>=]+[\\w\\W]+"))
 	{
 		return "bool";
 	}	
