@@ -118,7 +118,7 @@ int main(int argc, char *argv[])
 		}
 
 		// getting an array of lines that are after the current line
-		char *after = getAfter(CONTENTS, LINES, i, LINES.length);
+		char *after = getAfter(LINES, i, LINES.length);
 
 		execute(trim(line), after, functionCount, variableCount, i + 1);
 

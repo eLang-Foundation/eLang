@@ -127,7 +127,7 @@ void execute(char *line, char *after, int *functionCount, int *variableCount, in
 
 							for (int i = 0, l = lines.length; i < l; i++)
 							{
-								char *after = getAfter(code, lines, i, lines.length);
+								char *after = getAfter(lines, i, lines.length);
 								execute(trim(lines.array[i]), after, functionCount, variableCount, lineNumber + i + 1);
 								free(lines.array[i]);
 								free(after);
