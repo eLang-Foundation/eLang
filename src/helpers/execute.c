@@ -226,6 +226,30 @@ void execute(char *line, char *after, int *functionCount, int *variableCount, in
 				free(varValue);
 			}
 
+			// if the following code is an if statement
+			else if (match(line, "if\\s+[\\w\\W]+\\s*\\{"))
+			{
+				char *expression = trim(get(line, "if\\s+([\\w\\W]+)\\s*\\{"));
+
+				char *code = getContents(after, '{', '}');
+
+				if (!strcmp(toBool(expression), "false"))
+				{
+					// checking if the next line of code is inside of a function
+					ignore = false;
+					for (int i = 0, l = (int) strlen(code); i < l; i++)
+					{
+						if (code[i] == '\n')
+						{
+							ignore = true;
+							break;
+						}
+					}
+				}
+
+				free(expression);
+			}
+
 			// invalid syntax
 			else if (strcmp(line, "}"))
 			{

@@ -1,33 +1,3 @@
-; the main function
-fun main() {
-	greet("eLang")
-	hello("name")
-	3rd("123")
-	test_var = "just a test"
-	println(test_var)
+if 0 {
+	println("hello, world")
 }
-
-fun greet(name) {
-	println("Hello,", name)
-	println(name)
-}
-
-fun hello(name) {
-	println("hello,", name)
-}
-
-fun 3rd(123var) {
-	println(123var)
-}
-
-main()
-
-hello = "hello, world"
-
-println(hello)
-
-hello = "hello again"
-
-println(hello)
-
-println(1234)

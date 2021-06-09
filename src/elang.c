@@ -32,6 +32,7 @@
 #include "stdlib/numberable.c"
 #include "stdlib/type.c"
 #include "stdlib/toString.c"
+#include "stdlib/toBool.c"
 #include "stdlib/print.c"
 
 // the execute function
@@ -100,7 +101,7 @@ int main(int argc, char *argv[])
 		char *line = strdup(LINES.array[i]);
 		int wait = 0;
 
-		// checking if the following code is inside of a function
+		// checking if the following code is inside of a function or an if statement or a loop
 		if (ignore)
 		{
 			for (int j = 0, l = (int) strlen(line); j < l; j++)
