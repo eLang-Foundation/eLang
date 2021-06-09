@@ -1,3 +1,12 @@
-if 0 {
-	println("hello, world")
+; the main function
+fun main {
+	greet("eLang")
+	test_var = "just a test"
+	println(test_var)
 }
+
+fun greet(name) {
+	println("Hello,", name)
+}
+
+main()
