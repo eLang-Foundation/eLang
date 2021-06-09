@@ -1,6 +1,3 @@
-extern char *get(char *, char *);
-extern bool match(char *, char *);
-
 // this function executed the given code
 void execute(char *line, char *after, int lineNumber)
 {
@@ -223,7 +220,7 @@ void execute(char *line, char *after, int lineNumber)
 			}
 
 			// if the following code is an if statement
-			else if (match(line, "if\\s+[\\w\\W]+\\s*\\{"))
+			else if (!strcmp(firstWord, "if"))
 			{
 				char *expression = trim(get(line, "if\\s+([\\w\\W]+)\\s*\\{"));
 
@@ -244,6 +241,7 @@ void execute(char *line, char *after, int lineNumber)
 				}
 
 				free(expression);
+				free(code);
 			}
 
 			// invalid syntax

@@ -12,6 +12,10 @@
 #include <unistd.h>
 #include <stdbool.h>
 
+// C++ functions
+extern char *get(char *, char *);
+extern bool match(char *, char *);
+
 // helper files
 #include "helpers/variables.h"
 #include "helpers/freeAll.c"
@@ -28,6 +32,7 @@
 #include "helpers/getAfter.c"
 #include "helpers/splitIntoLines.c"
 #include "helpers/convertValueToString.c"
+#include "helpers/getValue.c"
 
 // eLang functions
 #include "stdlib/numberable.c"
