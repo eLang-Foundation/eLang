@@ -14,6 +14,7 @@
 
 // helper files
 #include "helpers/variables.h"
+#include "helpers/freeAll.c"
 #include "helpers/raiseError.c"
 #include "helpers/insideQuotes.c"
 #include "helpers/count.c"
