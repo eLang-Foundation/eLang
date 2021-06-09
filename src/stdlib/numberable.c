@@ -7,7 +7,7 @@ bool numberable(char *value)
 
 	for (int i = 0; i < length; i++)
 	{
-		if ((int) value[i] >= 48 || (int) value[i] <= 57 || (int) value[i] == 46)
+		if (((int) value[i] >= 48 && (int) value[i] <= 57) || (int) value[i] == 46)
 		{
 			numberable = true;
 		}
