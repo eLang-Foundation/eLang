@@ -226,7 +226,9 @@ void execute(char *line, char *after, int lineNumber)
 
 				char *code = getContents(after, '{', '}');
 
-				if (!strcmp(toBool(expression), "false"))
+				char *result = evaluate(expression);
+
+				if (!strcmp(toBool(result), "false"))
 				{
 					// checking if the next line of code is inside of a function
 					ignore = false;
@@ -242,6 +244,7 @@ void execute(char *line, char *after, int lineNumber)
 
 				free(expression);
 				free(code);
+				free(result);
 			}
 
 			// invalid syntax
