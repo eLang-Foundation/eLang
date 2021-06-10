@@ -179,7 +179,7 @@ void execute(char *line, char *after, int lineNumber)
 				free(arguments);
 			}
 
-			// if a variable was created or changed
+			// if a variable was created or updated
 			else if (match(line, "[\\w_\\d]+\\s*=\\s*[\\w\\W]+"))
 			{
 				if (numberOfVariables == 0)
