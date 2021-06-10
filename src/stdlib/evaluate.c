@@ -17,6 +17,6 @@ char *evaluate(char *expression)
 		return strdup(returnString);
 	}
 
-	return strdup("");
+	return strdup(expression);
 
 }
