@@ -1,39 +1,79 @@
 // this function calculates the given expression
 double calculate(char *expression)
 {
-	char *tmp1 = get(expression, "([\\w\\W]+?)[\\+\\-\\*\\/]+");
-	char *operator = get(expression, "[\\w\\W]+?([\\+\\-\\*\\/]+)");
-	char *tmp2 = get(expression, "[\\+\\-\\*\\/]+([\\w\\W]+)");
+	size_t length = strlen(expression);
 
-	double number1 = toNumber(getValue(trim(tmp1)));
-	double number2 = toNumber(getValue(trim(tmp2)));
+	char operators[count('+', expression) + count('-', expression) + count('*', expression) + count('/', expression)];
 
-	free(tmp1);
-	free(tmp2);
+	int numberOfOperators = 0, numberOfNumbers = 0;
 
-	if (!strcmp(operator, "+"))
+	double *numbers = calloc(1, sizeof(double));
+
+	bool skipNext = false;
+
+	for (int i = 0; i < length; i++)
 	{
-		free(operator);
-		return number1 + number2;
+		switch (expression[i])
+		{
+			case '+':
+				operators[numberOfOperators++] = '+';
+				skipNext = false;
+				break;
+			case '-':
+				operators[numberOfOperators++] = '-';
+				skipNext = false;
+				break;
+			case '*':
+				operators[numberOfOperators++] = '*';
+				skipNext = false;
+				break;
+			case '/':
+				operators[numberOfOperators++] = '/';
+				skipNext = false;
+				break;
+			default:
+				if (!skipNext)
+				{
+					char number[100];
+					int j = 0;
+					for (; j < length; j++)
+					{
+						if (expression[i + j] == '+' || expression[i + j] == '-' || expression[i + j] == '*' || expression[i + j] == '/')
+							break;
+						number[j] = expression[i + j];
+					}
+					number[j] = '\0';
+					double num = toNumber(trim((char *) &number));
+					numbers = realloc(numbers, ++numberOfNumbers * sizeof(double));
+					numbers[numberOfNumbers - 1] = num;
+					skipNext = true;
+				}
+				break;
+		}
 	}
 
-	if (!strcmp(operator, "-"))
+	double returnValue = 0;
+
+	for (int i = 0; i < numberOfOperators; i++)
 	{
-		free(operator);
-		return number1 - number2;
+		switch (operators[i])
+		{
+			case '+':
+				returnValue += numbers[i ? i + 1 : 0] + numbers[i ? i + 2 : 1];
+				break;
+			case '-':
+				returnValue += numbers[i ? i + 1 : 0] - numbers[i ? i + 2 : 1];
+				break;
+			case '*':
+				returnValue += numbers[i ? i + 1 : 0] * numbers[i ? i + 2 : 1];
+				break;
+			case '/':
+				returnValue += numbers[i ? i + 1 : 0] / numbers[i ? i + 2 : 1];
+				break;
+		}
 	}
 
-	if (!strcmp(operator, "*"))
-	{
-		free(operator);
-		return number1 * number2;
-	}
+	free(numbers);
 
-	if (!strcmp(operator, "/"))
-	{
-		free(operator);
-		return number1 / number2;
-	}
-
-	return 0;
+	return returnValue;
 }
