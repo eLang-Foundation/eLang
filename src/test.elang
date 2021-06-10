@@ -2,7 +2,7 @@ if 0 + 1 {
 	println("hello")
 }
 
-hello = "test"
+hello = "just a test"
 
 test = hello
 
@@ -12,4 +12,4 @@ number = 1234 * 12345
 
 println(number)
 
-println(123 + 123)
+println(123 + 123 + 5)
