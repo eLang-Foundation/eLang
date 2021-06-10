@@ -1,5 +1,5 @@
 /*
- * eLang 1.0.0
+ * eLang 0.0.9 C
  *
  * This is the first version of eLang written in C and C++
  *
@@ -42,8 +42,6 @@ extern bool match(char *, char *);
 #include "stdlib/toString.c"
 #include "stdlib/toBool.c"
 #include "stdlib/print.c"
-#include "stdlib/calculate.c"
-#include "stdlib/evaluate.c"
 
 // the execute function
 #include "helpers/execute.c"
