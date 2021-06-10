@@ -7,17 +7,17 @@ char *type(char *value)
 		(value[0] == '\'' && value[index] == '\'') ||
 		(value[0] == '`' && value[index] == '`'))
 	{
-		return "string";
+		return "String";
 	}
 
 	if (numberable(value))
 	{
-		return "number";
+		return "Number";
 	}
 
 	if (!strcmp(value, "true") || !strcmp(value, "false") || match(value, "[\\w\\W]+[<>=]+[\\w\\W]+"))
 	{
-		return "bool";
+		return "Bool";
 	}	
 
 	return "undefined";
