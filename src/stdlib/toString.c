@@ -7,7 +7,7 @@ char *toString(char *var)
 
 		if (!strcmp(currentVariable.name, var))
 		{
-			if (!strcmp(type(currentVariable.value), "string"))
+			if (!strcmp(type(currentVariable.value), "String"))
 			{
 				return convertValueToString(currentVariable.value);
 			}
@@ -20,7 +20,7 @@ char *toString(char *var)
 		return strdup(var);
 	}
 
-	if (!strcmp(type(var), "string"))
+	if (!strcmp(type(var), "String"))
 	{
 		return convertValueToString(var);
 	}
