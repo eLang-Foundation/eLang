@@ -4,7 +4,7 @@ char *toBool(char *string)
 	if (!strcmp(string, "true") || !strcmp(string, "false"))
 		return string;
 
-	if (!strcmp(string, "0") || !strcmp(string, "undefined") || !strcmp(string, "null"))
+	if (match(string, "[0\\.]+") || !strcmp(string, "undefined") || !strcmp(string, "null"))
 		return "false";
 
 	char *tmp = toString(string);
@@ -23,8 +23,8 @@ char *toBool(char *string)
 		char *operator = get(string, "[\\w\\W]+?([<>=]+)[\\w\\W]+");
 		char *tmp2 = get(string, "[<>=]+([\\w\\W]+)");
 
-		char *value1 = trim(getValue(tmp1));
-		char *value2 = trim(getValue(tmp2));
+		char *value1 = getValue(trim(tmp1));
+		char *value2 = getValue(trim(tmp2));
 
 		if (numberable(value1) && numberable(value2))
 		{
