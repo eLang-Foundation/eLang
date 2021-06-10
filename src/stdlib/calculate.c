@@ -13,21 +13,25 @@ double calculate(char *expression)
 
 	if (!strcmp(operator, "+"))
 	{
+		free(operator);
 		return number1 + number2;
 	}
 
 	if (!strcmp(operator, "-"))
 	{
+		free(operator);
 		return number1 - number2;
 	}
 
 	if (!strcmp(operator, "*"))
 	{
+		free(operator);
 		return number1 * number2;
 	}
 
 	if (!strcmp(operator, "/"))
 	{
+		free(operator);
 		return number1 / number2;
 	}
 
