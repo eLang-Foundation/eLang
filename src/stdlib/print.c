@@ -8,14 +8,12 @@ void print(char **args, int numberOfArguments)
 	{
 		char *currentArgument = args[k];
 
-		int length = (int) strlen(currentArgument);
+		currentArgument = getValue(currentArgument);
 
-		if (!strcmp(type(currentArgument), "string")) {
-			for (int h = 1, l = length; h < l - 1; h++)
-			{
-				string = appendChar(string, currentArgument[h]);
-			}
-			if (k < numberOfArguments - 1) string = appendChar(string, ' ');
+		if (!strcmp(type(currentArgument), "String"))
+		{
+			free(string);
+			string = convertValueToString(currentArgument);
 		}
 		else
 		{
