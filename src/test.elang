@@ -7,3 +7,9 @@ hello = "test"
 test = hello
 
 println(test)
+
+number = 1234 * 12345
+
+println(number)
+
+println(123 + 123)
