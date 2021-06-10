@@ -190,6 +190,8 @@ void execute(char *line, char *after, int lineNumber)
 				char *varName = get(line, "([\\w_\\d]+?)\\s*=");
 				char *varValue = get(line, "[\\w_\\d]+\\s*=\\s*([\\w\\W]+)");
 
+				char *value = getValue(varValue);
+
 				bool exists = false;
 
 				for (int i = 0; i < numberOfVariables; i++)
@@ -197,7 +199,7 @@ void execute(char *line, char *after, int lineNumber)
 					if (!strcmp(VARIABLES[i].name, varName))
 					{
 						free(VARIABLES[i].value);
-						VARIABLES[i].value = strdup(varValue);
+						VARIABLES[i].value = strdup(value);
 						exists = true;
 						break;
 					}
@@ -208,7 +210,7 @@ void execute(char *line, char *after, int lineNumber)
 					// creating a variable
 					Variable var;
 					var.name = strdup(varName);
-					var.value = strdup(varValue);
+					var.value = strdup(value);
 					var.type = type(varValue);
 
 					// appending the variable to the array of variables
