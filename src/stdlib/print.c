@@ -19,7 +19,9 @@ void print(char **args, int numberOfArguments)
 		}
 		else
 		{
-			char *convertedToString = toString(currentArgument);
+			char *tmp = evaluate(currentArgument);
+			char *convertedToString = toString(getValue(tmp));
+			free(tmp);
 			if (strcmp(convertedToString, ""))
 				string = appendString(string, convertedToString);
 			else
