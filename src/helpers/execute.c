@@ -190,7 +190,8 @@ void execute(char *line, char *after, int lineNumber)
 				char *varName = get(line, "([\\w_\\d]+?)\\s*=");
 				char *varValue = get(line, "[\\w_\\d]+\\s*=\\s*([\\w\\W]+)");
 
-				char *value = getValue(varValue);
+				char *tmp = evaluate(varValue);
+				char *value = getValue(tmp);
 
 				bool exists = false;
 
@@ -219,6 +220,7 @@ void execute(char *line, char *after, int lineNumber)
 
 				free(varName);
 				free(varValue);
+				free(tmp);
 			}
 
 			// if the following code is an if statement
