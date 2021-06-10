@@ -37,13 +37,13 @@ extern bool match(char *, char *);
 
 // eLang functions
 #include "stdlib/numberable.c"
-#include "stdlib/toNumber.c"
 #include "stdlib/type.c"
+#include "stdlib/toNumber.c"
 #include "stdlib/toString.c"
 #include "stdlib/toBool.c"
-#include "stdlib/print.c"
 #include "stdlib/calculate.c"
 #include "stdlib/evaluate.c"
+#include "stdlib/print.c"
 
 // the execute function
 #include "helpers/execute.c"
