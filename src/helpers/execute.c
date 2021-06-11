@@ -226,29 +226,17 @@ void execute(char *line, char *after, int lineNumber)
 			// if the following code is an if statement
 			else if (!strcmp(firstWord, "if"))
 			{
-				char *expression = trim(get(line, "if\\s+([\\w\\W]+)\\s*\\{"));
+				ifStatement(line, after);
+			}
 
-				char *code = getContents(after, '{', '}');
-
-				char *result = evaluate(expression);
-
-				if (!strcmp(toBool(result), "false"))
+			// if the following code is an else statement
+			else if (!strcmp(firstWord, "else"))
+			{
+				if (lastIfStatement == 1)
 				{
-					// checking if the next line of code is inside of an if statement
-					ignore = false;
-					for (int i = 0, l = (int) strlen(code); i < l; i++)
-					{
-						if (code[i] == '\n')
-						{
-							ignore = true;
-							break;
-						}
-					}
+					ifStatement(line, after);
+					lastIfStatement = -1;
 				}
-
-				free(expression);
-				free(code);
-				free(result);
 			}
 
 			// invalid syntax

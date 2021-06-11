@@ -45,6 +45,8 @@ extern bool match(char *, char *);
 #include "stdlib/evaluate.c"
 #include "stdlib/print.c"
 
+// the if statement function
+#include "helpers/ifStatement.c"
 // the execute function
 #include "helpers/execute.c"
 

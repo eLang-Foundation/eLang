@@ -49,3 +49,5 @@ Function *FUNCTIONS;
 Variable *VARIABLES;
 
 int numberOfFunctions, numberOfVariables, lineNumber;
+
+int lastIfStatement = -1;
