@@ -234,7 +234,7 @@ void execute(char *line, char *after, int lineNumber)
 
 				if (!strcmp(toBool(result), "false"))
 				{
-					// checking if the next line of code is inside of a function
+					// checking if the next line of code is inside of an if statement
 					ignore = false;
 					for (int i = 0, l = (int) strlen(code); i < l; i++)
 					{
