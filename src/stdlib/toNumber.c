@@ -3,7 +3,6 @@ double toNumber(char *string)
 {
     if (numberable(string))
 	{
-		puts(string);
 		double number;
 		char *ptr;
 		number = strtod(string, &ptr);
