@@ -17,11 +17,11 @@ char *toBool(char *string)
 
 	free(tmp);
 
-	if (match(string, "[\\w\\W]+?[<>=]+[\\w\\W]+?"))
+	if (match(string, "[\\w\\W]+?[<>=-]+[\\w\\W]+?"))
 	{
-		char *tmp1 = get(string, "([\\w\\W]+?)[<>=]+");
-		char *operator = get(string, "[\\w\\W]+?([<>=]+)[\\w\\W]+");
-		char *tmp2 = get(string, "[<>=]+([\\w\\W]+)");
+		char *tmp1 = get(string, "([\\w\\W]+?)[<>=-]+");
+		char *operator = get(string, "[\\w\\W]+?([<>=-]+)[\\w\\W]+");
+		char *tmp2 = get(string, "[<>=-]+([\\w\\W]+)");
 
 		char *value1 = getValue(trim(tmp1));
 		char *value2 = getValue(trim(tmp2));
@@ -62,6 +62,42 @@ char *toBool(char *string)
 			{
 				free(operator);
 				return number1 == number2 ? "true" : "false";
+			}
+
+			else if (!strcmp(operator, "<-"))
+			{
+				free(operator);
+				return number1 - 1 < number2;
+			}
+
+			else if (!strcmp(operator, ">-"))
+			{
+				free(operator);
+				return number1 - 1 > number2;
+			}
+
+			else if (!strcmp(operator, "<+"))
+			{
+				free(operator);
+				return number1 + 1 < number2;
+			}
+
+			else if (!strcmp(operator, ">+"))
+			{
+				free(operator);
+				return number1 + 1 > number2;
+			}
+
+			else if (!strcmp(operator, "=-"))
+			{
+				free(operator);
+				return number1 - 1 == number2;
+			}
+
+			else if (!strcmp(operator, "=+"))
+			{
+				free(operator);
+				return number1 + 1 == number2;
 			}
 
 			else
