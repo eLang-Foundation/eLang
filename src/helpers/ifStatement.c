@@ -1,5 +1,5 @@
 // this function does the if statement stuff
-void ifStatement(char *line, char *after)
+void ifStatement(char *line, char *after, bool elseStatement)
 {
 	char *expression = trim(get(line, "if\\s+([\\w\\W]+)\\s*\\{"));
 
@@ -7,7 +7,13 @@ void ifStatement(char *line, char *after)
 
 	char *result = evaluate(expression);
 
-	if (!strcmp(toBool(result), "false"))
+	bool skipNext = false;
+
+	if (elseStatement && lastIfStatement == 0) skipNext = false;
+	if (elseStatement && lastIfStatement == 1) skipNext = true;
+	if (!elseStatement && !strcmp(toBool(result), "false")) skipNext = true;
+
+	if (skipNext)
 	{
 		// checking if the next line of code is inside of an if statement
 		ignore = false;
@@ -19,6 +25,11 @@ void ifStatement(char *line, char *after)
 				break;
 			}
 		}
+		lastIfStatement = 0;
+	}
+	else
+	{
+		lastIfStatement = 1;
 	}
 
 	free(expression);

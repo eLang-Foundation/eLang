@@ -226,17 +226,19 @@ void execute(char *line, char *after, int lineNumber)
 			// if the following code is an if statement
 			else if (!strcmp(firstWord, "if"))
 			{
-				ifStatement(line, after);
+				ifStatement(line, after, false);
 			}
 
 			// if the following code is an else statement
 			else if (!strcmp(firstWord, "else"))
 			{
-				if (lastIfStatement == 1)
-				{
-					ifStatement(line, after);
-					lastIfStatement = -1;
-				}
+				ifStatement(line, after, true);
+			}
+
+			// if the following code is an elif statement
+			else if (!strcmp(firstWord, "elif"))
+			{
+				ifStatement(line, after, false);
 			}
 
 			// invalid syntax

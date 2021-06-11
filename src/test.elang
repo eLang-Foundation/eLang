@@ -2,6 +2,9 @@
 if 1 >- 0 {
 	println("1 - 1 > 0")
 }
+elif 1 + 1 {
+	println("this could should be reachable")
+}
 else {
 	println("testing else statements...")
 }
@@ -9,6 +12,9 @@ else {
 ; true
 if 1 =- 0 {
 	println("1 - 1 == 0")
+}
+else {
+	println("this code should not be reachable")
 }
 
 ; true
