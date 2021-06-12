@@ -126,6 +126,18 @@ void execute(char *line, char *after, int lineNumber)
 				ifStatement(line, after, false);
 			}
 
+			// if the following code is a return statement
+			else if (!strcmp(firstWord, "return"))
+			{
+				char *returnExpression = get(line, "return\\s+([\\w\\W]+)");
+
+				char *tmp = evaluate(returnExpression);
+
+				lastReturnValue = getValue(tmp);
+
+				free(returnExpression);
+			}
+
 			// invalid syntax
 			else if (strcmp(line, "}"))
 			{

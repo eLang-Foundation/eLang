@@ -8,7 +8,7 @@ void functionCall(char *line, char *after)
 	}
 
 	char *functionName = get(line, "([\\w\\d]+)\\s*\\(");
-	char *arguments = get(after, "\\(([\\w\\W]*?)\\)");
+	char *arguments = get(after, "\\(([\\w\\W]*)\\)");
 
 	bool definedByUser = false;
 	bool eLangFunction = false;

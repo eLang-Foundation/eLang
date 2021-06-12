@@ -51,3 +51,5 @@ Variable *VARIABLES;
 int numberOfFunctions, numberOfVariables, lineNumber;
 
 int lastIfStatement = -1;
+
+char *lastReturnValue;
