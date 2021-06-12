@@ -19,13 +19,23 @@ void print(char **args, int numberOfArguments)
 		else
 		{
 			char *tmp = evaluate(currentArgument);
-			char *convertedToString = toString(getValue(tmp));
-			free(tmp);
-			if (strcmp(convertedToString, ""))
-				string = appendString(string, convertedToString);
+			if (strcmp(tmp, ""))
+			{
+				char *convertedToString = toString(getValue(tmp));
+				free(tmp);
+				if (strcmp(convertedToString, ""))
+				{
+					string = appendString(string, convertedToString);
+					free(convertedToString);
+				}
+				else
+				{
+					free(convertedToString);
+					raiseError(INV, "Types other than strings are not supported yet", NULL, 0, FILENAME);
+				}
+			}
 			else
-				raiseError(INV, "Types other than strings are not supported yet", NULL, 0, FILENAME);
-			free(convertedToString);
+				free(tmp);
 		}
 	}
 
