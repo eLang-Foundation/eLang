@@ -14,31 +14,31 @@ void checkClosed(unsigned int number, char *code)
 
 		switch (chr)
 		{
-		default:
-			strcat(error, &chr);
-			strcat(error, "\" is not recognized");
-			raiseError("eLang", error, NULL, 0, FILENAME);
-			break;
-		case '"':
-			charName = "double quote";
-			counter += count(chr, code);
-			break;
-		case '\'':
-			charName = "single quote";
-			counter += count(chr, code);
-			break;
-		case '{':
-			charName = "curly bracket";
-			counter += count('}', code);
-			break;
-		case '(':
-			charName = "parentheses";
-			counter += count(')', code);
-			break;
-		case '[':
-			charName = "square bracket";
-			counter += count(']', code);
-			break;
+			default:
+				strcat(error, &chr);
+				strcat(error, "\" is not recognized");
+				raiseError("eLang", error, NULL, 0, FILENAME);
+				break;
+			case '"':
+				charName = "double quote";
+				counter += count(chr, code);
+				break;
+			case '\'':
+				charName = "single quote";
+				counter += count(chr, code);
+				break;
+			case '{':
+				charName = "curly bracket";
+				counter += count('}', code);
+				break;
+			case '(':
+				charName = "parentheses";
+				counter += count(')', code);
+				break;
+			case '[':
+				charName = "square bracket";
+				counter += count(']', code);
+				break;
 		}
 		// if number is not even
 		if (counter % 2 != 0 && counter != 0)
