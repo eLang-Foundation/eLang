@@ -45,10 +45,14 @@ extern bool match(char *, char *);
 #include "stdlib/evaluate.c"
 #include "stdlib/print.c"
 
+void functionCall(char *line, char *after);
+
 // the if statement function
 #include "helpers/ifStatement.c"
 // the execute function
 #include "helpers/execute.c"
+// the functionCall function
+#include "helpers/functionCall.c"
 
 int main(int argc, char *argv[])
 {
