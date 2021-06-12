@@ -45,6 +45,7 @@ extern bool match(char *, char *);
 #include "stdlib/evaluate.c"
 #include "stdlib/print.c"
 
+// the function call prototype
 void functionCall(char *line, char *after);
 
 // the if statement function

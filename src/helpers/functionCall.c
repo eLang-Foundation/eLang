@@ -1,3 +1,4 @@
+// this function does the function call stuff
 void functionCall(char *line, char *after)
 {
 	// if the function was just a part of a string and not a function
