@@ -23,7 +23,8 @@ char *evaluate(char *expression)
 	if (match(expression, "[\\w\\d_]+\\([\\w\\W]*\\)"))
 	{
 		functionCall(expression, expression);
-		return strdup(lastReturnValue);
+		if (strcmp((char *) &lastReturnValue, "")) return strdup(lastReturnValue);
+		return strdup("");
 	}
 
 	return strdup(expression);
