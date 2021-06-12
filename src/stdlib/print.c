@@ -1,8 +1,7 @@
 void print(char **args, int numberOfArguments)
 {
 	// this string will be printed
-	char *string = malloc(1);
-	strcpy(string, "");
+	char *string = strdup("");
 
 	for (int k = 0; k < numberOfArguments; k++)
 	{
@@ -12,8 +11,10 @@ void print(char **args, int numberOfArguments)
 
 		if (!strcmp(type(currentArgument), "String"))
 		{
-			free(string);
-			string = convertValueToString(currentArgument);
+			char *tmp = convertValueToString(currentArgument);
+			string = appendString(string, tmp);
+			free(tmp);
+			string = appendChar(string, ' ');
 		}
 		else
 		{
