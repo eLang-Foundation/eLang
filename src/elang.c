@@ -17,6 +17,9 @@
 extern char *get(char *, char *);
 extern bool match(char *, char *);
 
+// the function call prototype
+void functionCall(char *line, char *after);
+
 // helper files
 #include "helpers/variables.h"
 #include "helpers/freeAll.c"
@@ -44,9 +47,6 @@ extern bool match(char *, char *);
 #include "stdlib/calculate.c"
 #include "stdlib/evaluate.c"
 #include "stdlib/print.c"
-
-// the function call prototype
-void functionCall(char *line, char *after);
 
 // the if statement function
 #include "helpers/ifStatement.c"
