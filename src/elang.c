@@ -138,7 +138,7 @@ int main(int argc, char *argv[])
 		char *after = getAfter(LINES, i);
 
 		// checking for syntax errors
-		checkClosed(i, after);
+		checkClosed(i, CONTENTS);
 
 		lineNumber = i + 1;
 
