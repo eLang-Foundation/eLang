@@ -61,7 +61,7 @@ void execute(char *line, char *after, int lineNumber)
 			// if a function was called
 			else if (match(line, "[\\w\\d_]+\\s*\\([\\w\\W]*\\)[\\w\\W]*"))
 			{
-				functionCall(line, after);
+				functionCall(line, line);
 			}
 
 			// if a variable was created or updated
