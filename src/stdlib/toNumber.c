@@ -1,11 +1,11 @@
 // this function converts the given string to a number
 double toNumber(char *string)
 {
-    if (numberable(string))
+    if (numberable(trim(string)))
 	{
 		double number;
 		char *ptr;
-		number = strtod(string, &ptr);
+		number = strtod(trim(string), &ptr);
 		return number;
 	}
 
