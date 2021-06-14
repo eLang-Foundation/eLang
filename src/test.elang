@@ -1,5 +1,10 @@
 fun greet(name) {
-	return name
+	println("Hello, ", name)
+	test_var = 123.321
 }
 
-println(greet("eLang"))
+test = "123"
+
+greet("eLang")
+
+; println(test_var) - will not work
