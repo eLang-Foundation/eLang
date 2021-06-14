@@ -25,7 +25,6 @@ typedef struct
 	char **arguments;
 	char *code;
 	int argumentsNumber;
-	char *scope;
 } Function;
 
 typedef struct
