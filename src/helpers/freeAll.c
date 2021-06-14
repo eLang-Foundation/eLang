@@ -22,6 +22,8 @@ void freeAll(void)
 		
 		free(variable.name);
 		free(variable.value);
+		free(variable.scope);
 	}
 	free(VARIABLES);
+	free(SCOPE);
 }

@@ -21,6 +21,7 @@ extern bool match(char *, char *);
 void functionCall(char *line, char *after);
 char *evaluate(char *expression);
 char *trim(char *string);
+char *type(char *value);
 
 // helper files
 #include "helpers/variables.h"
@@ -38,6 +39,7 @@ char *trim(char *string);
 #include "helpers/getAfter.c"
 #include "helpers/splitIntoLines.c"
 #include "helpers/convertValueToString.c"
+#include "helpers/removeLast.c"
 #include "helpers/getValue.c"
 
 // eLang functions
@@ -110,6 +112,9 @@ int main(int argc, char *argv[])
 
 	// splitting the code into lines
 	LINES = splitIntoLines(CONTENTS);
+
+	// initializing SCOPE
+	SCOPE = strdup("");
 
 	// executing each line of code
 	for (ui i = 0; i < LINES.length; i++)

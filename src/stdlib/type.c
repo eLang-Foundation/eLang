@@ -20,5 +20,21 @@ char *type(char *value)
 		return "Bool";
 	}	
 
-	return "undefined";
+	for (int i = 0; i < numberOfeLangFunctions; i++)
+	{
+		if (!strcmp(value, ELANG_FUNCTIONS[i]))
+		{
+			return "Function";
+		}
+	}
+
+	for (int i = 0; i < numberOfFunctions; i++)
+	{
+		if (!strcmp(value, FUNCTIONS[i].name))
+		{
+			return "Function";
+		}
+	}
+
+	return "Undefined";
 }
