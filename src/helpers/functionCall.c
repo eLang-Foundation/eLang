@@ -10,6 +10,9 @@ void functionCall(char *line, char *after)
 	char *functionName = get(line, "([\\w\\d]+)\\s*\\(");
 	char *arguments = get(after, "\\(([\\w\\W]*)\\)");
 
+	SCOPE = appendString(SCOPE, " -> ");
+	SCOPE = appendString(SCOPE, functionName);
+
 	bool definedByUser = false;
 	bool eLangFunction = false;
 
@@ -49,6 +52,7 @@ void functionCall(char *line, char *after)
 					var.name = strdup(currentFunction.arguments[i]);
 					var.value = strdup(args[i]);
 					var.type = type(args[i]);
+					var.scope = strdup(SCOPE);
 
 					VARIABLES = appendVariable(VARIABLES, var);
 				}
@@ -115,4 +119,6 @@ void functionCall(char *line, char *after)
 
 	free(functionName);
 	free(arguments);
+
+	removeLast();
 }
