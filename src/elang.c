@@ -118,7 +118,7 @@ int main(int argc, char *argv[])
 		int wait = 0;
 
 		// checking if the following code is inside of a function or an if statement or a loop
-		if (ignore)
+		if (!ignore)
 		{
 			for (int j = 0, l = (int) strlen(line); j < l; j++)
 			{
