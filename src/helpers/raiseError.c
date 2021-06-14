@@ -7,7 +7,7 @@ void raiseError(char *errorType, char *error, char *line, int lineNumber, char *
 	{
 		printf("File \"%s\"", filename);
 		printf(", line %i\n", lineNumber);
-		printf("    %s\n", line);
+		printf("    %s\n", trim(line));
 	}
 	// printing the error
 	printf("%s: %s\n", errorType, error);
