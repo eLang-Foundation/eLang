@@ -5,9 +5,23 @@ char *getValue(char *string)
 	{
 		if (!strcmp(VARIABLES[i].name, string))
 		{
-			return VARIABLES[i].value;
+			char *scope = strdup(VARIABLES[i].scope);
+			scope = appendString(scope, "[\\w\\W]*");
+			if (match(SCOPE, scope))
+			{
+				free(scope);
+				return VARIABLES[i].value;
+			}
+			free(scope);
 		}
 	}
 
-	return string;
+	if (strcmp(type(string), "Undefined"))
+		return string;
+
+	char error[] = "Name \"";
+	strcat(error, string);
+	strcat(error, "\" is not defined");
+	raiseError(NND, error, LINES.array[lineNumber - 1], lineNumber, FILENAME);
+	return NULL;
 }
