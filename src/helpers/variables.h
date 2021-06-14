@@ -1,9 +1,9 @@
 #define ui unsigned int
 #define ERROR_MSG "Error"
 #define FND "Undefined function"
-#define VND "Undefined variable"
 #define INV "Invalid value"
 #define INS "Invalid syntax"
+#define NND "Name not defined"
 
 // structs
 typedef struct
@@ -25,6 +25,7 @@ typedef struct
 	char **arguments;
 	char *code;
 	int argumentsNumber;
+	char *scope;
 } Function;
 
 typedef struct
@@ -32,6 +33,7 @@ typedef struct
 	char *name;
 	char *value;
 	char *type;
+	char *scope;
 } Variable;
 
 // global variables
@@ -53,3 +55,5 @@ int numberOfFunctions, numberOfVariables, lineNumber;
 int lastIfStatement = -1;
 
 char *lastReturnValue;
+
+char *SCOPE = "";
