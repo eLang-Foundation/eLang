@@ -30,7 +30,10 @@ void print(char **args, int numberOfArguments)
 				else
 				{
 					free(convertedToString);
-					raiseError(INV, "Types other than strings are not supported yet", NULL, 0, FILENAME);
+					char error[] = "Name \"";
+					strcat(error, currentArgument);
+					strcat(error, "\" is not defined");
+					raiseError(INS, error, LINES.array[lineNumber - 1], lineNumber, FILENAME);
 				}
 			}
 			else
