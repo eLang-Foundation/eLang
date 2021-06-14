@@ -98,6 +98,7 @@ void execute(char *line, char *after, int lineNumber)
 					var.name = strdup(varName);
 					var.value = strdup(value);
 					var.type = type(varValue);
+					var.scope = strdup(SCOPE);
 
 					// appending the variable to the array of variables
 					VARIABLES = appendVariable(VARIABLES, var);
@@ -138,8 +139,15 @@ void execute(char *line, char *after, int lineNumber)
 				free(returnExpression);
 			}
 
+			// if a codeblock was closed
+			else if (!strcmp(line, "}"))
+			{
+				// updating the scope
+				removeLast();
+			}
+
 			// invalid syntax
-			else if (strcmp(line, "}"))
+			else
 			{
 				raiseError(ERROR_MSG, INS, line, lineNumber, FILENAME);
 			}
