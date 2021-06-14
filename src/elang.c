@@ -17,8 +17,10 @@
 extern char *get(char *, char *);
 extern bool match(char *, char *);
 
-// the function call prototype
+// function prototypes
 void functionCall(char *line, char *after);
+char *evaluate(char *expression);
+char *trim(char *string);
 
 // helper files
 #include "helpers/variables.h"
