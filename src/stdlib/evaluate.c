@@ -20,7 +20,7 @@ char *evaluate(char *expression)
 	}
 
 	// if a function was called
-	if (match(expression, "[\\w\\d_]+\\([\\w\\W]*\\)"))
+	if (match(expression, "[\\w\\d_]+?\\([\\w\\W]*\\)"))
 	{
 		functionCall(expression, expression);
 		if (strcmp((char *) &lastReturnValue, "")) return strdup(lastReturnValue);
