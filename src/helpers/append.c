@@ -32,6 +32,14 @@ char *appendString(char *string, char *string2)
 // this function appends the given Function to the given Functions array
 Function *appendFunction(Function *functions, Function function)
 {
+	if (match(function.name, "[\\d\\.]+"))
+	{
+		char error[] = "Coudln't use name \"";
+		strcat(error, function.name);
+		strcat(error, "\" as a function name");
+		raiseError(INS, error, LINES.array[lineNumber - 1], lineNumber, FILENAME);
+	}
+
 	Function tmp[numberOfFunctions + 1];
 
 	for (int i = 0; i < numberOfFunctions; i++)
@@ -53,6 +61,14 @@ Function *appendFunction(Function *functions, Function function)
 // this function appends the given Variable to the given Variables array
 Variable *appendVariable(Variable *variables, Variable variable)
 {
+	if (match(variable.name, "[\\d\\.]+"))
+	{
+		char error[] = "Coudln't use name \"";
+		strcat(error, variable.name);
+		strcat(error, "\" as a variable name");
+		raiseError(INS, error, LINES.array[lineNumber - 1], lineNumber, FILENAME);
+	}
+
 	Variable tmp[numberOfVariables + 1];
 
 	for (int i = 0; i < numberOfVariables; i++)
