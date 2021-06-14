@@ -14,7 +14,6 @@ void print(char **args, int numberOfArguments)
 			char *tmp = convertValueToString(currentArgument);
 			string = appendString(string, tmp);
 			free(tmp);
-			if (numberOfArguments > 1 && k != numberOfArguments - 1) string = appendChar(string, ' ');
 		}
 		else
 		{
