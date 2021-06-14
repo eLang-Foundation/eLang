@@ -42,21 +42,19 @@ void functionCall(char *line, char *after)
 
 				definedByUser = true;
 
+				// making the given arguments variables
+				for (int i = 0; i < numberOfArguments; i++)
+				{
+					Variable var;
+					var.name = strdup(currentFunction.arguments[i]);
+					var.value = strdup(args[i]);
+					var.type = type(args[i]);
+
+					VARIABLES = appendVariable(VARIABLES, var);
+				}
+
 				// getting the body of the function
 				char *code = strdup(currentFunction.code);
-
-				if (strcmp(arguments, ""))
-				{
-					// replacing the argument variables with given arguments
-					for (int k = 0; k < numberOfArguments; k++)
-					{
-						char *arg = currentFunction.arguments[k];
-						char *tmp = replace(code, arg, args[k]);
-						free(code);
-						code = strdup(tmp);
-						free(tmp);
-					}
-				}
 
 				strArray lines = splitIntoLines(code);
 				
