@@ -59,11 +59,22 @@ char *type(char *value);
 // the functionCall function
 #include "helpers/functionCall.c"
 
+// logo in ascii
+#include "../logo/logo.h"
+
+// cli
+#include "cli/main.c"
+
 int main(int argc, char *argv[])
 {
 	// if the number of arguments is 2
 	if (argc == 2)
 		FILENAME = argv[1];
+	else if (argc == 1)
+	{
+		cli();
+		return 0;
+	}
 	else
 	{
 		printf("Usage: elang filename.elang\n");
@@ -74,6 +85,12 @@ int main(int argc, char *argv[])
 	if (!strcmp(FILENAME, "--version"))
 	{
 		printf("eLang 0.0.9 C\n");
+		return 0;
+	}
+
+	if (!strcmp(FILENAME, "--logo"))
+	{
+		printf("%s", logo);
 		return 0;
 	}
 
