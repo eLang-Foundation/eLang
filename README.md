@@ -13,10 +13,10 @@ Right now you are on `master` branch. Here only C code is included. If you want 
 Just grab the latest release for your operating system from _releases_ section, add it to the path (recommended), and you are good to go.
 
 # Quick overview of syntax
-eLang's syntax is similar to JavaScript and Python. Here is a sample greet program:
+Here is an example of a function that says hello to the given name:
 ```
 fun greet(name) {
-	println("Hello,", name)
+	println("Hello, ", name)
 }
 greet("eLang")
 ```
