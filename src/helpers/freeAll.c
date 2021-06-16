@@ -1,7 +1,6 @@
-// this function frees most of the variables
-void freeAll(void)
+// this function frees the functions
+void freeFunctions(void)
 {
-	// freeing all functions
 	for (ui i = 0; i < numberOfFunctions; i++)
 	{
 		Function function = FUNCTIONS[i];
@@ -14,8 +13,11 @@ void freeAll(void)
 		free(function.name);
 	}
 	free(FUNCTIONS);
+}
 
-	// freeing all variables
+// this function frees the variables
+void freeVariables(void)
+{
 	for (ui i = 0; i < numberOfVariables; i++)
 	{
 		Variable variable = VARIABLES[i];
@@ -25,5 +27,13 @@ void freeAll(void)
 		free(variable.scope);
 	}
 	free(VARIABLES);
+}
+
+// this function frees most of the variables
+void freeAll(void)
+{
+	freeFunctions();
+	freeVariables();
+
 	free(SCOPE);
 }
