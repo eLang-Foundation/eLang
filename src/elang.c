@@ -39,7 +39,7 @@ char *type(char *value);
 #include "helpers/getAfter.c"
 #include "helpers/splitIntoLines.c"
 #include "helpers/convertValueToString.c"
-#include "helpers/removeLast.c"
+#include "helpers/remove.c"
 #include "helpers/getValue.c"
 
 // eLang functions
@@ -61,6 +61,9 @@ char *type(char *value);
 
 // logo in ascii
 #include "../logo/logo.h"
+
+// the setup file
+#include "helpers/setup.c"
 
 // cli
 #include "cli/main.c"
@@ -84,7 +87,7 @@ int main(int argc, char *argv[])
 	// if user wants to get the version of eLang
 	if (!strcmp(FILENAME, "--version"))
 	{
-		printf("eLang 0.0.9 C\n");
+		printf("eLang 1.0.0\n");
 		return 0;
 	}
 
@@ -93,6 +96,8 @@ int main(int argc, char *argv[])
 		printf("%s", logo);
 		return 0;
 	}
+
+	setup();
 
 	// if file was not successfully opened
 	if (access(FILENAME, F_OK) != 0)
@@ -130,9 +135,6 @@ int main(int argc, char *argv[])
 	// splitting the code into lines
 	LINES = splitIntoLines(CONTENTS);
 
-	// initializing SCOPE
-	SCOPE = strdup("");
-
 	// executing each line of code
 	for (ui i = 0; i < LINES.length; i++)
 	{
@@ -140,20 +142,20 @@ int main(int argc, char *argv[])
 		int wait = 0;
 
 		// checking if the following code is inside of a function or an if statement or a loop
-			for (int j = 0, l = (int) strlen(line); j < l; j++)
+		for (int j = 0, l = (int) strlen(line); j < l; j++)
+		{
+			// if the character represents the start of a code block
+			// and it is not a part of a string
+			if (line[j] == '{' && !insideQuotes(j, line))
+				wait++;
+			if (line[j] == '}' && !insideQuotes(j, line))
 			{
-				// if the character represents the start of a code block
-				// and it is not a part of a string
-				if (line[j] == '{' && !insideQuotes(j, line))
-					wait++;
-				if (line[j] == '}' && !insideQuotes(j, line))
-				{
-					if (wait)
-						wait--;
-					else
-						ignore = false;
-				}
+				if (wait)
+					wait--;
+				else
+					ignore = false;
 			}
+		}
 
 		// getting an array of lines that are after the current line
 		char *after = getAfter(LINES, i);
