@@ -65,19 +65,11 @@ char *type(char *value);
 // the setup file
 #include "helpers/setup.c"
 
-// cli
-#include "cli/main.c"
-
 int main(int argc, char *argv[])
 {
 	// if the number of arguments is 2
 	if (argc == 2)
 		FILENAME = argv[1];
-	else if (argc == 1)
-	{
-		cli();
-		return 0;
-	}
 	else
 	{
 		printf("Usage: elang filename.elang\n");
