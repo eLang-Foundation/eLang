@@ -16,8 +16,15 @@ char *getValue(char *string)
 		}
 	}
 
-	if (strcmp(type(string), "Undefined"))
+	char *tmp = evaluate(string);
+
+	if (strcmp(type(tmp), "Undefined"))
+	{
+		free(tmp);
 		return string;
+	}
+
+	free(tmp);
 
 	char error[] = "Name \"";
 	strcat(error, string);
