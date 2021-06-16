@@ -56,3 +56,5 @@ int lastIfStatement = -1;
 char *lastReturnValue;
 
 char *SCOPE = "";
+
+bool EXIT_WHEN_ERROR = true;
