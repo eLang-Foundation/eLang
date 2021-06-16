@@ -1,12 +1,13 @@
 // this function evaluates the given expression
 char *evaluate(char *expression)
 {
+
 	// if a boolean expression
 	if (match(expression, "[\\w\\W]+?[<>=]+[\\w\\W]+?"))
 	{
 		return strdup(toBool(expression));
 	}
-	
+
 	// if a mathematical expression
 	if (match(expression, "[\\w\\W]+?[\\+\\-\\*\\/]+[\\w\\W]+?"))
 	{
