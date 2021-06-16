@@ -1,5 +1,5 @@
 // function that checks whether or not all parentheses, brackets and so forth are closed
-void checkClosed(unsigned int number, char *code)
+bool checkClosed(unsigned int number, char *code)
 {
 	char chars[] = {'"', '\'', '{', '(', '['};
 
@@ -43,18 +43,24 @@ void checkClosed(unsigned int number, char *code)
 		// if number is not even
 		if (counter % 2 != 0 && counter != 0)
 		{
-			// getting the line
-			char *line = LINES.array[number];
-			if (line)
+			if (EXIT_WHEN_ERROR)
 			{
-				// displaying the error
-				if (strchr(line, chr) != NULL)
+				// getting the line
+				char *line = LINES.array[number];
+				if (line)
 				{
-					char str[] = "Unclosed ";
-					strcat(str, charName);
-					raiseError(INS, str, line, (int) number + 1, FILENAME);
+					// displaying the error
+					if (strchr(line, chr) != NULL)
+					{
+						char str[] = "Unclosed ";
+						strcat(str, charName);
+						raiseError(INS, str, line, (int) number + 1, FILENAME);
+						return false;
+					}
 				}
 			}
+			return false;
 		}
 	}
+	return true;
 }
