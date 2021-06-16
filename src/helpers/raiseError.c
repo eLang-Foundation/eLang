@@ -1,7 +1,7 @@
 // function for raising errors
 void raiseError(char *errorType, char *error, char *line, int lineNumber, char *filename)
 {
-	freeAll();
+	if (EXIT_WHEN_ERROR) freeAll();
 	// if the incorrect line of code was given
 	if (line != NULL)
 	{
@@ -12,5 +12,5 @@ void raiseError(char *errorType, char *error, char *line, int lineNumber, char *
 	// printing the error
 	printf("%s: %s\n", errorType, error);
 	// exiting the program
-	exit(EXIT_FAILURE);
+	if (EXIT_WHEN_ERROR) exit(EXIT_FAILURE);
 }
