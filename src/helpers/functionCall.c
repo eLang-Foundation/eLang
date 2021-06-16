@@ -24,6 +24,10 @@ void functionCall(char *line, char *after)
 	// if the function name was provided
 	if (strcmp(functionName, ""))
 	{
+		// creating an array that will store the variables in the function
+		Variable *variables = calloc(1, sizeof(Variable));
+		int variableCounter = 0;
+
 		// if the function was defined by the user
 		for (int j = 0; j < numberOfFunctions; j++)
 		{
@@ -55,6 +59,9 @@ void functionCall(char *line, char *after)
 					var.scope = strdup(SCOPE);
 
 					VARIABLES = appendVariable(VARIABLES, var);
+
+					variables = realloc(variables, sizeof(Variable) * ++variableCounter);
+					variables[variableCounter - 1] = var;
 				}
 
 				// getting the body of the function
@@ -100,6 +107,15 @@ void functionCall(char *line, char *after)
 				}
 			}
 		}
+
+		for (int i = 0; i < variableCounter; i++)
+		{
+			removeVariable(variables[i]);
+			free(variables[i].name);
+			free(variables[i].value);
+			free(variables[i].scope);
+		}
+		free(variables);
 	}
 
 	for (int i = 0; i < numberOfArguments; i++)
