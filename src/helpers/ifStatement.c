@@ -5,7 +5,7 @@ void ifStatement(char *line, char *after, bool elseStatement)
 
 	char *code = getContents(after, '{', '}');
 
-	char *result = evaluate(expression);
+	char *result = evaluate(expression, true);
 
 	bool skipNext = false;
 
