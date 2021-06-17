@@ -31,6 +31,8 @@ char *toBool(char *string)
 			int number1 = toNumber(value1);
 			int number2 = toNumber(value2);
 
+			free(value1);
+			free(value2);
 			free(tmp1);
 			free(tmp2);
 
