@@ -4,6 +4,7 @@ void addNumber(double *numbers, char *currentNumberString, int *numberOfNumbers)
 	currentNumberString = getValue(currentNumberString);
 
 	double number = toNumber(currentNumberString);
+	free(currentNumberString);
 
 	numbers = realloc(numbers, ++*numberOfNumbers * sizeof(double));
 	numbers[*numberOfNumbers - 1] = number;
