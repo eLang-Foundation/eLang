@@ -1,10 +1,9 @@
 void addNumber(double *numbers, char *currentNumberString, int *numberOfNumbers)
 {
-	currentNumberString = evaluate(trim(currentNumberString));
+	currentNumberString = trim(currentNumberString);
 	currentNumberString = getValue(currentNumberString);
 
 	double number = toNumber(currentNumberString);
-	free(currentNumberString);
 
 	numbers = realloc(numbers, ++*numberOfNumbers * sizeof(double));
 	numbers[*numberOfNumbers - 1] = number;
@@ -35,15 +34,20 @@ double calculate(char *expression)
 		{
 			currentNumberString = appendChar(currentNumberString, currentChar);
 
-			if (currentChar == '(' && !insideQuotes(i, expression))
+			if (!insideQuotes(i, expression))
 			{
-				wait++;
-			}
+				if (currentChar == '(')
+				{
+					wait++;
+				}
 
-			if (currentChar == ')' && !insideQuotes(i, expression))
-			{
-				if (!--wait)
-					skipNext = false;
+				if (currentChar == ')')
+				{
+					if (wait)
+						wait--;
+					else
+						skipNext = false;
+				}
 			}
 		}
 
