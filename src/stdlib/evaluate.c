@@ -24,8 +24,7 @@ char *evaluate(char *expression)
 	if (match(expression, "[\\w\\d_]+?\\([\\w\\W]*\\)"))
 	{
 		functionCall(expression, expression);
-		if (strcmp((char *) &lastReturnValue, "")) return strdup(lastReturnValue);
-		return strdup("");
+		return strdup(lastReturnValue);
 	}
 
 	return strdup(expression);
