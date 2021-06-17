@@ -25,5 +25,10 @@ char *toString(char *var)
 		return convertValueToString(var);
 	}
 
+	if (!strcmp(type(var), "Null"))
+	{
+		return strdup(var);
+	}
+
 	return strdup("");
 }
