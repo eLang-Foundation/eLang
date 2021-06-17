@@ -68,13 +68,29 @@ void functionCall(char *line, char *after)
 				char *code = strdup(currentFunction.code);
 
 				strArray lines = splitIntoLines(code);
+
+				bool returned = false;
 				
 				for (int i = 0, l = lines.length; i < l; i++)
 				{
 					char *after = getAfter(lines, i);
-					execute(trim(lines.array[i]), after, lineNumber + i + 1);
+
+					char *lineCopy = strdup(lines.array[i]);
+					lineCopy = trim(lineCopy);
+
+					execute(lineCopy, after, lineNumber + i + 1);
+
+					char *first = strtok(lineCopy, " ");
+					if (!strcmp(first, "return")) returned = true;
+
+					free(lineCopy);
 					free(lines.array[i]);
 					free(after);
+				}
+
+				if (!returned)
+				{
+					lastReturnValue = "Null";
 				}
 
 				free(lines.array);
