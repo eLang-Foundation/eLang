@@ -4,6 +4,7 @@
 #define INV "Invalid value"
 #define INS "Invalid syntax"
 #define NND "Name not defined"
+#define WARN "Warning"
 
 // structs
 typedef struct
@@ -33,6 +34,7 @@ typedef struct
 	char *value;
 	char *type;
 	char *scope;
+	bool constant;
 } Variable;
 
 // global variables

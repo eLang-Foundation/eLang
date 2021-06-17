@@ -78,7 +78,6 @@ void execute(char *line, char *after, int lineNumber)
 				char *value = getValue(varValue);
 
 				bool exists = false;
-
 				for (int i = 0; i < numberOfVariables; i++)
 				{
 					if (!strcmp(VARIABLES[i].name, varName))
@@ -86,18 +85,30 @@ void execute(char *line, char *after, int lineNumber)
 						free(VARIABLES[i].value);
 						VARIABLES[i].value = value;
 						exists = true;
+						// if (VARIABLES[i].constant)
+						// {
+							// char *error = strdup("Updating the value of a constant variable \"");
+							// error = appendString(error, varName);
+							// error = appendChar(error, '"');
+							// raiseError(WARN, error, line, lineNumber, FILENAME);
+							// free(error);
+						// }
 						break;
 					}
 				}
 
 				if (!exists)
 				{
+					// bool constant = false;
+					// if (match(varName, "[A-Z_\\d]+")) constant = true;
+
 					// creating a variable
 					Variable var;
 					var.name = strdup(varName);
 					var.value = value;
 					var.type = type(varValue);
 					var.scope = strdup(SCOPE);
+					// var.constant = constant;
 
 					// appending the variable to the array of variables
 					VARIABLES = appendVariable(VARIABLES, var);
@@ -150,3 +161,4 @@ void execute(char *line, char *after, int lineNumber)
 		}
 	}
 }
+

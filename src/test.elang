@@ -1,10 +1,22 @@
 fun greet(name) {
-	println("Hello, ", name)
-	test_var = 123.321
+	println("Hello, ", name, "!")
 }
 
-test = "123"
+fun sayHello {
+	println("hello, world")
+}
 
 greet("eLang")
+; println(10 + 10)
+; sayHello()
 
-; println(test_var) - will not work
+; CONST_VAR123 = "123"
+; CONST_VAR123 = 123
+
+; CONST_VAR123 = 1
+
+; 2ND_CONST_TEST = 123
+; 2ND_CONST_TEST = 321
+
+; NoT_A_CONSTANT = 1
+; NoT_A_CONSTANT = 2
