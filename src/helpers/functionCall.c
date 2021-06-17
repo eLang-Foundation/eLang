@@ -17,7 +17,7 @@ void functionCall(char *line, char *after)
 	bool eLangFunction = false;
 
 	// an array of arguments will be stored in this variable
-	strArray array = getArguments(trim(arguments));
+	strArray array = getArguments(trim(arguments), false);
 	char **args = array.array;
 	int numberOfArguments = strcmp(arguments, "") ? array.length : 0;
 
@@ -75,15 +75,15 @@ void functionCall(char *line, char *after)
 				{
 					char *after = getAfter(lines, i);
 
-					char *lineCopy = strdup(lines.array[i]);
-					lineCopy = trim(lineCopy);
+					char *tmp = strdup(lines.array[i]);
+					char *lineCopy = trim(tmp);
 
 					execute(lineCopy, after, lineNumber + i + 1);
 
 					char *first = strtok(lineCopy, " ");
 					if (!strcmp(first, "return")) returned = true;
 
-					free(lineCopy);
+					free(tmp);
 					free(lines.array[i]);
 					free(after);
 				}
