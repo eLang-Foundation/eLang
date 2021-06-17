@@ -1,6 +1,6 @@
 ![Logo](logo/eLang.png)
 # eLang
-[![Line count](https://img.shields.io/tokei/lines/github/BekhruzSNiyazov/eLang)](https://github.com/BekhruzSNiyazov/eLang)
+[![Line count](https://img.shields.io/tokei/lines/github/eLang-Foundation/eLang)](https://github.com/eLang-Foundation/eLang)
 [![Open issues](https://img.shields.io/github/issues/BekhruzSNiyazov/eLang)](https://github.com/BekhruzSNiyazov/eLang/issues)
 [![License](https://img.shields.io/github/license/BekhruzSNiyazov/eLang)](https://github.com/BekhruzSNiyazov/eLang/blob/master/LICENSE)
 
