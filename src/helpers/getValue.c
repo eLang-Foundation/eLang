@@ -10,7 +10,7 @@ char *getValue(char *string)
 			if (match(SCOPE, scope))
 			{
 				free(scope);
-				return VARIABLES[i].value;
+				return strdup(VARIABLES[i].value);
 			}
 			free(scope);
 		}
@@ -19,8 +19,7 @@ char *getValue(char *string)
 	char *tmp = evaluate(string);
 	if (strcmp(type(tmp), "Undefined"))
 	{
-		free(tmp);
-		return string;
+		return tmp;
 	}
 
 	free(tmp);
