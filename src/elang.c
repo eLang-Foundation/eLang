@@ -138,14 +138,19 @@ int main(int argc, char *argv[])
 		{
 			// if the character represents the start of a code block
 			// and it is not a part of a string
-			if (line[j] == '{' && !insideQuotes(j, line))
-				wait++;
-			if (line[j] == '}' && !insideQuotes(j, line))
+			if (!insideQuotes(j, line))
 			{
-				if (wait)
-					wait--;
-				else
-					ignore = false;
+				if (line[j] == '{')
+				{
+					wait++;
+				}
+				else if (line[j] == '}')
+				{
+					if (wait)
+						wait--;
+					else
+						ignore = false;
+				}
 			}
 		}
 
