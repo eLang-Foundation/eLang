@@ -53,7 +53,7 @@ int numberOfFunctions, numberOfVariables, lineNumber;
 
 int lastIfStatement = -1;
 
-char *lastReturnValue;
+char *lastReturnValue = "Null";
 
 char *SCOPE = "";
 
