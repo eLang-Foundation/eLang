@@ -19,9 +19,11 @@ extern bool match(char *, char *);
 
 // function prototypes
 void functionCall(char *line, char *after);
-char *evaluate(char *expression);
+char *evaluate(char *expression, bool mathematicalExpression);
 char *trim(char *string);
 char *type(char *value);
+char *getValue(char *string);
+double calculate(char *expression);
 
 // helper files
 #include "helpers/variables.h"
@@ -127,12 +129,13 @@ int main(int argc, char *argv[])
 	// splitting the code into lines
 	LINES = splitIntoLines(CONTENTS);
 
+	int wait = 0;
 	// executing each line of code
 	for (ui i = 0; i < LINES.length; i++)
 	{
 		char *line = strdup(LINES.array[i]);
-		int wait = 0;
 
+		if (!wait) ignore = false;
 		// checking if the following code is inside of a function or an if statement or a loop
 		for (int j = 0, l = (int) strlen(line); j < l; j++)
 		{
