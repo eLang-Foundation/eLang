@@ -1,5 +1,5 @@
 // an array of arguments will be stored in this variable
-strArray getArguments(char *arguments)
+strArray getArguments(char *arguments, bool init)
 {
 	int length = count(',', arguments) + 1;
 	char **args = malloc(length * sizeof(char *));
@@ -19,7 +19,12 @@ strArray getArguments(char *arguments)
 		{
 			if (strcmp(trim(argument), ""))
 			{
-				args[argCounter++] = strdup(trim(argument));
+				if (init) args[argCounter++] = strdup(trim(argument));
+				else
+				{
+					char *arg = evaluate(trim(argument), true);
+					args[argCounter++] = arg;
+				}
 				free(argument);
 				argument = malloc(1);
 				strcpy(argument, "");
