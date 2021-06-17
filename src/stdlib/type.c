@@ -36,5 +36,10 @@ char *type(char *value)
 		}
 	}
 
+	if (!strcmp(value, "Null"))
+	{
+		return "Null";
+	}
+
 	return "Undefined";
 }
