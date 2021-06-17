@@ -1,4 +1,4 @@
-// this function executed the given code
+// this function executes the given code
 void execute(char *line, char *after, int lineNumber)
 {
 	if (line[0] == ';') return;
@@ -30,7 +30,7 @@ void execute(char *line, char *after, int lineNumber)
 				// getting the arguments of the function
 				char *arguments = getContents(line, '(', ')');
 
-				strArray array = getArguments(trim(arguments));
+				strArray array = getArguments(trim(arguments), true);
 
 				// creating a function
 				Function f;
