@@ -1,5 +1,5 @@
 // this function evaluates the given expression
-char *evaluate(char *expression)
+char *evaluate(char *expression, bool mathematicalExpression)
 {
 
 	// if a boolean expression
@@ -8,16 +8,18 @@ char *evaluate(char *expression)
 		return strdup(toBool(expression));
 	}
 
-	// if a mathematical expression
-	if (match(expression, "[\\w\\W]+?[\\+\\-\\*\\/]+[\\w\\W]+?"))
+	if (mathematicalExpression)
 	{
-		double result = calculate(expression);
+		if (match(expression, "[\\w\\W]+?[\\+\\-\\*\\/]+[\\w\\W]+?"))
+		{
+			double result = calculate(expression);
 
-		char returnString[100];
+			char returnString[100];
 
-		sprintf(returnString, "%f", result);
+			sprintf(returnString, "%f", result);
 
-		return strdup(returnString);
+			return strdup(returnString);
+		}
 	}
 
 	// if a function was called
