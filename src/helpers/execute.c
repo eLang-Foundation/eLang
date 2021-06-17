@@ -75,8 +75,7 @@ void execute(char *line, char *after, int lineNumber)
 				char *varName = get(line, "([\\w_\\d]+?)\\s*=");
 				char *varValue = get(line, "[\\w_\\d]+\\s*=\\s*([\\w\\W]+)");
 
-				char *tmp = evaluate(varValue);
-				char *value = getValue(tmp);
+				char *value = getValue(varValue);
 
 				bool exists = false;
 
@@ -85,7 +84,7 @@ void execute(char *line, char *after, int lineNumber)
 					if (!strcmp(VARIABLES[i].name, varName))
 					{
 						free(VARIABLES[i].value);
-						VARIABLES[i].value = strdup(value);
+						VARIABLES[i].value = value;
 						exists = true;
 						break;
 					}
@@ -96,7 +95,7 @@ void execute(char *line, char *after, int lineNumber)
 					// creating a variable
 					Variable var;
 					var.name = strdup(varName);
-					var.value = strdup(value);
+					var.value = value;
 					var.type = type(varValue);
 					var.scope = strdup(SCOPE);
 
@@ -106,7 +105,6 @@ void execute(char *line, char *after, int lineNumber)
 
 				free(varName);
 				free(varValue);
-				free(tmp);
 			}
 
 			// if the following code is an if statement
@@ -132,9 +130,7 @@ void execute(char *line, char *after, int lineNumber)
 			{
 				char *returnExpression = get(line, "return\\s+([\\w\\W]+)");
 
-				char *tmp = evaluate(returnExpression);
-
-				lastReturnValue = getValue(tmp);
+				lastReturnValue = getValue(returnExpression);
 
 				free(returnExpression);
 			}
