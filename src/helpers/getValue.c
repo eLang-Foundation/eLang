@@ -16,7 +16,7 @@ char *getValue(char *string)
 		}
 	}
 
-	char *tmp = evaluate(string);
+	char *tmp = evaluate(string, true);
 	if (strcmp(type(tmp), "Undefined"))
 	{
 		return tmp;
