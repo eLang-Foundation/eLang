@@ -43,6 +43,7 @@ double calculate(char *expression);
 #include "helpers/convertValueToString.c"
 #include "helpers/remove.c"
 #include "helpers/getValue.c"
+#include "helpers/calculate.c"
 
 // eLang functions
 #include "stdlib/numberable.c"
@@ -50,7 +51,6 @@ double calculate(char *expression);
 #include "stdlib/toNumber.c"
 #include "stdlib/toString.c"
 #include "stdlib/toBool.c"
-#include "stdlib/calculate.c"
 #include "stdlib/evaluate.c"
 #include "stdlib/print.c"
 
