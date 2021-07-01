@@ -158,12 +158,12 @@ int main(int argc, char *argv[])
 		}
 
 		// getting an array of lines that are after the current line
-		char *after = getAfter(LINES, i);
+		char *after = getAfter(LINES, (int) i);
 
 		// checking for syntax errors
 		checkClosed(i, CONTENTS);
 
-		lineNumber = i + 1;
+		lineNumber = (int) i + 1;
 
 		execute(trim(line), after, lineNumber);
 
