@@ -24,6 +24,7 @@ char *trim(char *string);
 char *type(char *value);
 char *getValue(char *string);
 double calculate(char *expression);
+double toNumber(char *string);
 
 // helper files
 #include "helpers/variables.h"
