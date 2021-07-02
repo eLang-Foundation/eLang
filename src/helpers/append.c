@@ -34,7 +34,7 @@ Function *appendFunction(Function *functions, Function function)
 {
 	if (match(function.name, "[\\d\\.]+"))
 	{
-		char error[] = "Coudln't use name \"";
+		char error[] = "Couldn't use name \"";
 		strcat(error, function.name);
 		strcat(error, "\" as a function name");
 		raiseError(INS, error, LINES.array[lineNumber - 1], lineNumber, FILENAME);
