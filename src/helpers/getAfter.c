@@ -6,7 +6,7 @@ char *getAfter(strArray lines, int index)
 	strcpy(after, "");
 	for (ui j = index; j < numberOfLines; j++)
 	{
-		if (strcmp(lines.array[j], ""))
+		if (strcmp(lines.array[j], "") != 0)
 		{
 			char *currentLine = strdup(lines.array[j]);
 			after = appendString(after, currentLine);
