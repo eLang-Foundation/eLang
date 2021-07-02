@@ -34,7 +34,7 @@ double calculate(char *expression)
 		{
 			currentNumberString = appendChar(currentNumberString, currentChar);
 
-			if (!insideQuotes(i, expression))
+			if (!insideQuotes((int) i, expression))
 			{
 				if (currentChar == '(')
 				{
