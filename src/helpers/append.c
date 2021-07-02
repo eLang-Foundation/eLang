@@ -63,7 +63,7 @@ Variable *appendVariable(Variable *variables, Variable variable)
 {
 	if (match(variable.name, "[\\d\\.]+"))
 	{
-		char error[] = "Coudln't use name \"";
+		char error[] = "Couldn't use name \"";
 		strcat(error, variable.name);
 		strcat(error, "\" as a variable name");
 		raiseError(INS, error, LINES.array[lineNumber - 1], lineNumber, FILENAME);
