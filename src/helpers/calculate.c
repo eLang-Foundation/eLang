@@ -1,3 +1,7 @@
+/// \param numbers A pointer to an array of variables of type double
+/// \param currentNumberString A number or expression of type char *
+/// \param numberOfNumbers Number of numbers in array of numbers numbers
+/// \author Bekhruz Niyazov
 void addNumber(double *numbers, char *currentNumberString, int *numberOfNumbers)
 {
 	currentNumberString = trim(currentNumberString);
@@ -9,7 +13,9 @@ void addNumber(double *numbers, char *currentNumberString, int *numberOfNumbers)
 	numbers[*numberOfNumbers - 1] = number;
 }
 
-// this function calculates the given expression
+/// \param expression An expression that needs to be calculated of type char *
+/// \return Calculated result of the given expression of type double
+/// \author Bekhruz Niyazov
 double calculate(char *expression)
 {
 	size_t length = strlen(expression);
