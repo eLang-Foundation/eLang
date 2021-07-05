@@ -1,8 +1,9 @@
 #include "../../tests/count.h"
 #include "../../tests/insideQuotes.h"
 
-// this function counts the number of the occurrences of the given character in the given string
-// (excludes the ones that are inside of quotes)
+/// \param chr A character the number of occurrences of which needs to be counted
+/// \param contents A string in which the number of chars will be counted
+/// \return A number of occurrences of chr in contents
 int count(char chr, char *contents)
 {
 	int counter = 0;
