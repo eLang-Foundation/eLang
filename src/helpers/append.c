@@ -1,6 +1,8 @@
-#include "../../tests/append.h"
-
-// this function appends the given character to the given string
+/// \param string The given string
+/// \param chr The given character
+/// \return The given string with given character at the end
+/// \attention The return value needs to be freed after call
+/// \author Bekhruz Niyazov
 char *appendChar(char *string, char chr)
 {
 	size_t length = strlen(string);
@@ -12,7 +14,14 @@ char *appendChar(char *string, char chr)
 	return strdup(tmp);
 }
 
-// this function appends the given string to the given string
+#include "../../tests/append.h"
+
+/// \param string The first string
+/// \param string2 The second string
+/// \return The first string with the second string appended at the end
+/// \attention 1. string1 parameter should be allocated
+/// \attention 2. The return value needs to be freed after call
+/// \author Bekhruz Niyazov
 char *appendString(char *string, char *string2)
 {
 	size_t length = strlen(string);
@@ -29,7 +38,10 @@ char *appendString(char *string, char *string2)
 	return string;
 }
 
-// this function appends the given Function to the given Functions array
+/// \param functions A pointer to an array of variables of type Function
+/// \param function A variable of type Function
+/// \return functions with function appended at the end
+/// \author Bekhruz Niyazov
 Function *appendFunction(Function *functions, Function function)
 {
 	if (match(function.name, "[\\d\\.]+"))
@@ -58,7 +70,10 @@ Function *appendFunction(Function *functions, Function function)
 	return functions;
 }
 
-// this function appends the given Variable to the given Variables array
+/// \param variables A pointer to an array of variables of type Variable
+/// \param variable A variable of type Variable
+/// \return variables with variable appended at the end
+/// \author Bekhruz Niyazov
 Variable *appendVariable(Variable *variables, Variable variable)
 {
 	if (match(variable.name, "[\\d\\.]+"))
