@@ -3,7 +3,7 @@
 /// \param string The given string
 /// \param chr The given character
 /// \return The given string with given character at the end
-/// \attention The return value needs to be freed after call
+/// \attention Return value should be freed after usage
 /// \author Bekhruz Niyazov
 char *appendChar(char *string, char chr)
 {
@@ -19,8 +19,8 @@ char *appendChar(char *string, char chr)
 /// \param string The first string
 /// \param string2 The second string
 /// \return The first string with the second string appended at the end
-/// \attention 1. string1 parameter should be allocated
-/// \attention 2. The return value needs to be freed after call
+/// \attention 1. string1 parameter should be a pointer to an allocated memory
+/// \attention 2. Return value should be freed after usage
 /// \author Bekhruz Niyazov
 char *appendString(char *string, char *string2)
 {
