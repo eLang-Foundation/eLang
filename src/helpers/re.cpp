@@ -22,7 +22,6 @@ char *get(char *string, char *pattern)
 	return strdup("");
 }
 
-// this function checks if the given string matches the given pattern
 /// \param string The main string to which the pattern will be applied
 /// \param pattern The regex pattern using which the match will be checked
 /// \return true if the given string matches the given pattern; else false
