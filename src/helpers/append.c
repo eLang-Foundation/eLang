@@ -32,10 +32,9 @@ char *appendString(char *string, char *string2)
 	{
 		tmp[length++] = string2[i];
 	}
-	tmp[length++] = '\0';
-	string = realloc(string, length);
-	strcpy(string, tmp);
-	return string;
+	tmp[length] = '\0';
+	free(string);
+	return strdup(tmp);
 }
 
 /// \param functions A pointer to an array of variables of type Function
