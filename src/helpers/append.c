@@ -1,3 +1,5 @@
+#include "../../tests/append.h"
+
 /// \param string The given string
 /// \param chr The given character
 /// \return The given string with given character at the end
@@ -13,8 +15,6 @@ char *appendChar(char *string, char chr)
 	free(string);
 	return strdup(tmp);
 }
-
-#include "../../tests/append.h"
 
 /// \param string The first string
 /// \param string2 The second string
