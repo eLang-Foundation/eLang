@@ -7,7 +7,7 @@ char *appendChar(char *string, char chr)
 	char tmp[length + 2];
 	strcpy(tmp, string);
 	tmp[length++] = chr;
-	tmp[length++] = '\0';
+	tmp[length] = '\0';
 	free(string);
 	return strdup(tmp);
 }
