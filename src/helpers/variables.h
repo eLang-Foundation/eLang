@@ -1,11 +1,3 @@
-#define ui unsigned int
-#define ERROR_MSG "Error"
-#define FND "Undefined function"
-#define INV "Invalid value"
-#define INS "Invalid syntax"
-#define NND "Name not defined"
-#define WARN "Warning"
-
 // structs
 typedef struct
 {
