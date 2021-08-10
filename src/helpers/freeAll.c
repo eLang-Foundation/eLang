@@ -1,4 +1,4 @@
-// this function frees the functions
+/// \author Bekhruz Niyazov
 void freeFunctions(void)
 {
 	for (ui i = 0; i < numberOfFunctions; i++)
@@ -15,7 +15,7 @@ void freeFunctions(void)
 	free(FUNCTIONS);
 }
 
-// this function frees the variables
+/// \author Bekhruz Niyazov
 void freeVariables(void)
 {
 	for (ui i = 0; i < numberOfVariables; i++)
@@ -29,7 +29,7 @@ void freeVariables(void)
 	free(VARIABLES);
 }
 
-// this function frees most of the variables
+/// \author Bekhruz Niyazov
 void freeAll(void)
 {
 	freeFunctions();

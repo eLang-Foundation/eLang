@@ -91,7 +91,7 @@ Variable *appendVariable(Variable *variables, Variable variable)
 	}
 	tmp[numberOfVariables++] = variable;
 
-	variables = realloc(variables, numberOfVariables * sizeof(Function));
+	variables = realloc(variables, numberOfVariables * sizeof(Variable));
 
 	for (int i = 0; i < numberOfVariables; i++)
 	{

@@ -75,8 +75,6 @@ void execute(char *line, char *after, int lnNumber)
 					VARIABLES = malloc(1 * sizeof(Variable));
 				}
 
-				printf("here: line: %s\n", line);
-				printf("%s\n", get(line, "([\\w_\\d]+?)\\s*="));
 				char *varName = get(line, "([\\w_\\d]+?)\\s*=");
 				char *varValue = get(line, "[\\w_\\d]+?\\s*=\\s*([\\w\\W]+)");
 
@@ -91,30 +89,30 @@ void execute(char *line, char *after, int lnNumber)
 						VARIABLES[i].value = value;
 						VARIABLES[i].type = type(value);
 						exists = true;
-//						if (VARIABLES[i].constant)
-//						{
-//							char *warning = strdup("Updating the value of a constant variable \"");
-//							warning = appendString(warning, varName);
-//							warning = appendChar(warning, '"');
-//							raiseError(WARN, warning, line, lnNumber, FILENAME);
-//							free(warning);
-//						}
+						if (VARIABLES[i].constant)
+						{
+							char *warning = strdup("Updating the value of a constant variable \"");
+							warning = appendString(warning, varName);
+							warning = appendChar(warning, '"');
+							raiseError(WARN, warning, line, lnNumber, FILENAME);
+							free(warning);
+						}
 						break;
 					}
 				}
 
 				if (!exists)
 				{
-//					 bool constant = false;
-//					 if (match(varName, "[A-Z_\\d]+")) constant = true;
+					bool constant = false;
+					if (match(varName, "[A-Z_\\d]+")) constant = true;
 
-					 // creating a variable
-					 Variable var;
-					 var.name = strdup(varName);
-					 var.value = value;
-					 var.type = type(varValue);
-					 var.scope = strdup(SCOPE);
-//					 var.constant = constant;
+					// creating a variable
+					Variable var;
+					var.name = strdup(varName);
+					var.value = value;
+					var.type = type(varValue);
+					var.scope = strdup(SCOPE);
+					var.constant = constant;
 
 					// appending the variable to the array of variables
 					VARIABLES = appendVariable(VARIABLES, var);
