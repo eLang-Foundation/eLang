@@ -1,3 +1,6 @@
+/// \param args Arguments to be printed
+/// \param numberOfArguments Number of given arguments
+/// \author Bekhruz Niyazov
 void print(char **args, int numberOfArguments)
 {
 	// this string will be printed
@@ -19,7 +22,7 @@ void print(char **args, int numberOfArguments)
 		{
 			char *convertedToString = toString(currentArgument);
 			free(currentArgument);
-			if (strcmp(convertedToString, ""))
+			if (strcmp(convertedToString, "") != 0)
 			{
 				string = appendString(string, convertedToString);
 				free(convertedToString);
@@ -39,6 +42,9 @@ void print(char **args, int numberOfArguments)
 	free(string);
 }
 
+/// \param args Arguments to be printed
+/// \param numberOfArguments Number of given arguments
+/// \author Bekhruz Niyazov
 void println(char **args, int numberOfArguments)
 {
 	print(args, numberOfArguments);

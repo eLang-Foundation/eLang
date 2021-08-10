@@ -22,7 +22,7 @@ void functionCall(char *line, char *after)
 	int numberOfArguments = strcmp(arguments, "") ? array.length : 0;
 
 	// if the function name was provided
-	if (strcmp(functionName, ""))
+	if (strcmp(functionName, "") != 0)
 	{
 		// creating an array that will store the variables in the function
 		Variable *variables = calloc(1, sizeof(Variable));

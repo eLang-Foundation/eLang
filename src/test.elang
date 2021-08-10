@@ -1,27 +1,24 @@
-fun greet(name) {
-	println("Hello, ", name, "!")
+fun check(number) {
+    if number == 1 {
+        println(1)
+        return "Okay"
+    }
+    elif number == 2 {
+        println(2)
+        return "Okay"
+    }
+    else {
+        println("Argument is not 1 nor 2")
+        return "Error"
+    }
 }
 
-fun sayHello {
-	println("hello, world")
+; check(1)
+; check(2)
+; check(3)
+
+fun getReturnValue {
+    return 1 == 1
 }
 
-greet("eLang")
-println(10 + 10)
-sayHello()
-
-CONST_VAR123 = "123"
-CONST_VAR123 = 123
-CONST_VAR123 = "hello"
-
-; ANOTHER_CONSTANT = 1
-; ANOTHER_CONSTANT = 2
-
-; 2ND_CONST_TEST = 123
-; 2ND_CONST_TEST = 321
-
-NoT_A_CONSTANT = 1
-NoT_A_CONSTANT = 2
-
-JUST_A_CONSTANT = 1
-JUST_A_CONSTANT = 2
+println(getReturnValue())

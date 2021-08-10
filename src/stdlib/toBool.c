@@ -9,7 +9,7 @@ char *toBool(char *string)
 
 	char *tmp = toString(string);
 
-	if (strcmp(tmp, ""))
+	if (strcmp(tmp, "") != 0)
 	{
 		free(tmp);
 		return "true";

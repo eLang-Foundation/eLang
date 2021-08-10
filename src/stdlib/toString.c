@@ -30,5 +30,10 @@ char *toString(char *var)
 		return strdup(var);
 	}
 
+	if (!strcmp(type(var), "Bool"))
+	{
+		return strdup(var);
+	}
+
 	return strdup("");
 }
