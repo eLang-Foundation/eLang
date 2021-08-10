@@ -26,7 +26,7 @@ typedef struct
 	char *value;
 	char *type;
 	char *scope;
-//	bool constant;
+	bool constant;
 } Variable;
 
 // global variables
