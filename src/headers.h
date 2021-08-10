@@ -1,4 +1,4 @@
-// just want to disable CLion's warnings for strdup
+// just want to disable CLion's warnings when using strdup
 #define _GNU_SOURCE
 
 #define ui unsigned int
@@ -8,7 +8,6 @@
 #define INS "Invalid syntax"
 #define NND "Name not defined"
 #define WARN "Warning"
-
 
 // libraries
 #include <stdio.h>
@@ -52,7 +51,7 @@ double toNumber(char *string);
 #include "helpers/getValue.c"
 #include "helpers/calculate.c"
 
-// eLang functions
+// standard library
 #include "stdlib/numberable.c"
 #include "stdlib/type.c"
 #include "stdlib/toNumber.c"

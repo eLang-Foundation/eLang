@@ -1,5 +1,8 @@
-// this function executes the given code
-void execute(char *line, char *after, int lineNumber)
+/// \param line A string which needs to be executed
+/// \param after A code that follows after the given line (including line)
+/// \param lnNumber An integer used for raising errors
+/// \author Bekhruz Niyazov
+void execute(char *line, char *after, int lnNumber)
 {
 	if (line[0] == ';') return;
 
@@ -24,7 +27,7 @@ void execute(char *line, char *after, int lineNumber)
 				// getting the name of the function
 				char *functionName = get(line, "fun\\s+([\\w_\\d]+)\\s*[\\(\\{]+");
 
-				// getting the code inside of the function
+				// getting the code inside the function
 				char *code = getContents(after, '{', '}');
 
 				// getting the arguments of the function
@@ -42,7 +45,7 @@ void execute(char *line, char *after, int lineNumber)
 				// appending the function to the array of functions
 				FUNCTIONS = appendFunction(FUNCTIONS, f);
 
-				// checking if the next line of code is inside of a function
+				// checking if the next line of code is inside a function
 				ignore = false;
 				for (int i = 0, l = (int) strlen(code); i < l; i++)
 				{
@@ -72,8 +75,10 @@ void execute(char *line, char *after, int lineNumber)
 					VARIABLES = malloc(1 * sizeof(Variable));
 				}
 
+				printf("here: line: %s\n", line);
+				printf("%s\n", get(line, "([\\w_\\d]+?)\\s*="));
 				char *varName = get(line, "([\\w_\\d]+?)\\s*=");
-				char *varValue = get(line, "[\\w_\\d]+\\s*=\\s*([\\w\\W]+)");
+				char *varValue = get(line, "[\\w_\\d]+?\\s*=\\s*([\\w\\W]+)");
 
 				char *value = getValue(varValue);
 
@@ -84,31 +89,32 @@ void execute(char *line, char *after, int lineNumber)
 					{
 						free(VARIABLES[i].value);
 						VARIABLES[i].value = value;
+						VARIABLES[i].type = type(value);
 						exists = true;
-						// if (VARIABLES[i].constant)
-						// {
-							// char *error = strdup("Updating the value of a constant variable \"");
-							// error = appendString(error, varName);
-							// error = appendChar(error, '"');
-							// raiseError(WARN, error, line, lineNumber, FILENAME);
-							// free(error);
-						// }
+//						if (VARIABLES[i].constant)
+//						{
+//							char *warning = strdup("Updating the value of a constant variable \"");
+//							warning = appendString(warning, varName);
+//							warning = appendChar(warning, '"');
+//							raiseError(WARN, warning, line, lnNumber, FILENAME);
+//							free(warning);
+//						}
 						break;
 					}
 				}
 
 				if (!exists)
 				{
-					// bool constant = false;
-					// if (match(varName, "[A-Z_\\d]+")) constant = true;
+//					 bool constant = false;
+//					 if (match(varName, "[A-Z_\\d]+")) constant = true;
 
-					// creating a variable
-					Variable var;
-					var.name = strdup(varName);
-					var.value = value;
-					var.type = type(varValue);
-					var.scope = strdup(SCOPE);
-					// var.constant = constant;
+					 // creating a variable
+					 Variable var;
+					 var.name = strdup(varName);
+					 var.value = value;
+					 var.type = type(varValue);
+					 var.scope = strdup(SCOPE);
+//					 var.constant = constant;
 
 					// appending the variable to the array of variables
 					VARIABLES = appendVariable(VARIABLES, var);
@@ -146,7 +152,7 @@ void execute(char *line, char *after, int lineNumber)
 				free(returnExpression);
 			}
 
-			// if a codeblock was closed
+			// if a code block was closed
 			else if (!strcmp(line, "}"))
 			{
 				// updating the scope
@@ -156,9 +162,8 @@ void execute(char *line, char *after, int lineNumber)
 			// invalid syntax
 			else
 			{
-				raiseError(ERROR_MSG, INS, line, lineNumber, FILENAME);
+				raiseError(ERROR_MSG, INS, line, lnNumber, FILENAME);
 			}
 		}
 	}
 }
-

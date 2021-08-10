@@ -17,6 +17,7 @@ char *get(char *string, char *pattern)
 	if (std::regex_search(s, m, e))
 	{
 		char *returnValue = strdup(m.str(1).c_str());
+		std::cout << "from c++ - the return value " << returnValue << std::endl;
 		return returnValue;
 	}
 	return strdup("");

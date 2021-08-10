@@ -7,16 +7,21 @@ fun sayHello {
 }
 
 greet("eLang")
-; println(10 + 10)
-; sayHello()
+println(10 + 10)
+sayHello()
 
-; CONST_VAR123 = "123"
-; CONST_VAR123 = 123
+CONST_VAR123 = "123"
+CONST_VAR123 = 123
+CONST_VAR123 = "hello"
 
-; CONST_VAR123 = 1
+; ANOTHER_CONSTANT = 1
+; ANOTHER_CONSTANT = 2
 
 ; 2ND_CONST_TEST = 123
 ; 2ND_CONST_TEST = 321
 
-; NoT_A_CONSTANT = 1
-; NoT_A_CONSTANT = 2
+NoT_A_CONSTANT = 1
+NoT_A_CONSTANT = 2
+
+JUST_A_CONSTANT = 1
+JUST_A_CONSTANT = 2
