@@ -71,29 +71,30 @@ void functionCall(char *line, char *after)
 
 				bool returned = false;
 				
-				for (int i = 0, l = lines.length; i < l; i++)
+				for (int i = 0; i < lines.length; i++)
 				{
-					char *after = getAfter(lines, i);
+					char *innerAfter = getAfter(lines, i);
 
 					char *tmp = strdup(lines.array[i]);
 					char *lineCopy = trim(tmp);
 
-					execute(lineCopy, after, lineNumber + i + 1);
+					execute(lineCopy, innerAfter, lineNumber + i + 1);
 
 					char *first = strtok(lineCopy, " ");
 					if (!strcmp(first, "return")) returned = true;
 
 					free(tmp);
-					free(lines.array[i]);
-					free(after);
+//					free(lines.array[i]);
+					free(innerAfter);
 				}
 
 				if (!returned)
 				{
-					lastReturnValue = "Null";
+					free(lastReturnValue);
+					lastReturnValue = strdup("Null");
 				}
 
-				free(lines.array);
+//				free(lines.array);
 				free(code);
 
 				break;

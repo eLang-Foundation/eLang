@@ -36,4 +36,5 @@ void freeAll(void)
 	freeVariables();
 
 	free(SCOPE);
+	free(lastReturnValue);
 }

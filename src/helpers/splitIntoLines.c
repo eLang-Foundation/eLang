@@ -4,10 +4,9 @@ strArray splitIntoLines(char *code)
 	strArray lines;
 	char **array = calloc(count('\n', code), sizeof(char *));
 
-	ui numberOfLines = 0;
-	char *ln = malloc(1);
-	strcpy(ln, "");
-	for (ui i = 0, l = (int) strlen(code); i < l; i++)
+	int numberOfLines = 0;
+	char *ln = strdup("");
+	for (int i = 0, l = (int) strlen(code); i < l; i++)
 	{
 		if (code[i] != '\n')
 		{
@@ -16,11 +15,9 @@ strArray splitIntoLines(char *code)
 
 		if (code[i] == '\n' || i == l - 1)
 		{
-			array[numberOfLines] = strdup(ln);
-			numberOfLines++;
+			array[numberOfLines++] = strdup(ln);
 			free(ln);
-			ln = malloc(1);
-			strcpy(ln, "");
+			ln = strdup("");
 		}
 	}
 	free(ln);

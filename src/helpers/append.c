@@ -34,7 +34,9 @@ char *appendString(char *string, char *string2)
 	}
 	tmp[length] = '\0';
 	free(string);
-	return strdup(tmp);
+	char *anotherTmp = malloc(length + 1);
+	strcpy(anotherTmp, tmp);
+	return anotherTmp;
 }
 
 /// \param functions A pointer to an array of variables of type Function

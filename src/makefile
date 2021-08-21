@@ -24,4 +24,4 @@ memcheck:
 
 debug:
 	make lib
-	gcc -g -L.-Wall -o elang elang.c -lm helpers/libRe.so
+	gcc -g -L. -Wall -o elang elang.c -lm helpers/libRe.so

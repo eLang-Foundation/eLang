@@ -17,7 +17,7 @@ strArray getArguments(char *arguments, bool init)
 
 		if ((!insideQuotes(i + 1, arguments) && arguments[i + 1] == ',') || (i == l - 1))
 		{
-			if (strcmp(trim(argument), ""))
+			if (strcmp(trim(argument), "") != 0)
 			{
 				if (init) args[argCounter++] = strdup(trim(argument));
 				else
@@ -36,8 +36,7 @@ strArray getArguments(char *arguments, bool init)
 
 	strArray array;
 	array.array = args;
-	array.allocated = true;
-	array.length = argCounter; 
+	array.length = argCounter;
 
 	return array;
 }

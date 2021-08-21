@@ -1,14 +1,7 @@
 // structs
 typedef struct
 {
-	char *value;
-	bool allocated;
-} str;
-
-typedef struct
-{
 	char **array;
-	bool allocated;
 	int length;
 } strArray;
 
@@ -47,7 +40,7 @@ int numberOfFunctions, numberOfVariables, lineNumber;
 
 int lastIfStatement = -1;
 
-char *lastReturnValue = "Null";
+char *lastReturnValue;
 
 char *SCOPE = "";
 

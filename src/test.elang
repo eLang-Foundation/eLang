@@ -1,24 +1,9 @@
-fun check(number) {
-    if number == 1 {
-        println(1)
-        return "Okay"
-    }
-    elif number == 2 {
-        println(2)
-        return "Okay"
-    }
-    else {
-        println("Argument is not 1 nor 2")
-        return "Error"
-    }
+if 1 > 2 {
+	println("what the heck is going on")
 }
-
-; check(1)
-; check(2)
-; check(3)
-
-fun getReturnValue {
-    return 1 == 1
+elif 1 < 2 {
+	println("seems to be correct now")
 }
-
-println(getReturnValue())
+else {
+	println("this should not be reachable")
+}

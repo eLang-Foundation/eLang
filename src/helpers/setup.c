@@ -1,5 +1,6 @@
-// this function initializes all needed variables
+/// \author Bekhruz Niyazov
 void setup(void)
 {
 	SCOPE = strdup("");
+	lastReturnValue = strdup("Null");
 }

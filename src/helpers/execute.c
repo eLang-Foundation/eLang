@@ -145,6 +145,7 @@ void execute(char *line, char *after, int lnNumber)
 			{
 				char *returnExpression = get(line, "return\\s+([\\w\\W]+)");
 
+				free(lastReturnValue);
 				lastReturnValue = getValue(returnExpression);
 
 				free(returnExpression);

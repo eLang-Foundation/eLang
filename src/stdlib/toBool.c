@@ -1,4 +1,5 @@
-// this function converts the given string to a boolen
+/// \param string A string which needs to be converted to a boolean
+/// \author Bekhruz Niyazov
 char *toBool(char *string)
 {
 	if (!strcmp(string, "true") || !strcmp(string, "false"))
@@ -6,16 +7,6 @@ char *toBool(char *string)
 
 	if (match(string, "[0\\.]+") || !strcmp(string, "undefined") || !strcmp(string, "null"))
 		return "false";
-
-	char *tmp = toString(string);
-
-	if (strcmp(tmp, "") != 0)
-	{
-		free(tmp);
-		return "true";
-	}
-
-	free(tmp);
 
 	if (match(string, "[\\w\\W]+?[\\<\\>\\=\\-\\+]+[\\w\\W]+?"))
 	{
@@ -28,8 +19,8 @@ char *toBool(char *string)
 
 		if (numberable(value1) && numberable(value2))
 		{
-			int number1 = toNumber(value1);
-			int number2 = toNumber(value2);
+			double number1 = toNumber(value1);
+			double number2 = toNumber(value2);
 
 			free(value1);
 			free(value2);
@@ -114,7 +105,7 @@ char *toBool(char *string)
 		}
 		else
 		{
-			if (strcmp(operator, "=="))
+			if (strcmp(operator, "==") != 0)
 			{
 				char error[] = "Couldn't compare values ";
 				strcat(error, value1);
@@ -130,6 +121,14 @@ char *toBool(char *string)
 			}
 		}
 	}
+
+	char *tmp = toString(string);
+	if (strcmp(tmp, "") != 0)
+	{
+		free(tmp);
+		return "true";
+	}
+	free(tmp);
 
 	return "false";
 }
