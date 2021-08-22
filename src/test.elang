@@ -1,9 +1,17 @@
-if 1 > 2 {
-	println("what the heck is going on")
+fun test {
+	if 1 > 2 {
+		println("what the heck is going on")
+	}
+	if 1 < 2 {
+		println("correct")
+	}
+	else {
+		println("should be fixed")
+	}
+
+	if 1 =- 2 {
+		println("just testing")
+	}
 }
-elif 1 < 2 {
-	println("seems to be correct now")
-}
-else {
-	println("this should not be reachable")
-}
+
+test()

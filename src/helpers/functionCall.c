@@ -1,4 +1,6 @@
-// this function does the function call stuff
+/// \param line Line of code on which the function call is located
+/// \param after Code after the line (including the line)
+/// \author	Bekhruz Niyazov
 void functionCall(char *line, char *after)
 {
 	// if the function was just a part of a string and not a function
@@ -81,10 +83,10 @@ void functionCall(char *line, char *after)
 					execute(lineCopy, innerAfter, lineNumber + i + 1);
 
 					char *first = strtok(lineCopy, " ");
-					if (!strcmp(first, "return")) returned = true;
+					if (first && !strcmp(first, "return")) returned = true;
 
 					free(tmp);
-//					free(lines.array[i]);
+					free(lines.array[i]);
 					free(innerAfter);
 				}
 
@@ -94,7 +96,7 @@ void functionCall(char *line, char *after)
 					lastReturnValue = strdup("Null");
 				}
 
-//				free(lines.array);
+				free(lines.array);
 				free(code);
 
 				break;
