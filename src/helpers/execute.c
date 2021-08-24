@@ -16,14 +16,15 @@ void execute(char *line, char *after, int lnNumber)
 	{
 		if (!ignore)
 		{
+			EXECUTE:
 			// if a function was defined
-			EXECUTE: if (!strcmp(firstWord, functionKeyword))
+			if (!strcmp(firstWord, functionKeyword))
 			{
 				if (numberOfFunctions == 0)
 				{
 					FUNCTIONS = malloc(1 * sizeof(Function));
 				}
-				
+
 				// getting the name of the function
 				char *functionName = get(line, "fun\\s+([\\w_\\d]+)\\s*[\\(\\{]+");
 
