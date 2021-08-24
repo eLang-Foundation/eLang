@@ -17,7 +17,7 @@ void execute(char *line, char *after, int lnNumber)
 		if (!ignore)
 		{
 			// if a function was defined
-			if (!strcmp(firstWord, functionKeyword))
+			EXECUTE: if (!strcmp(firstWord, functionKeyword))
 			{
 				if (numberOfFunctions == 0)
 				{
@@ -49,7 +49,7 @@ void execute(char *line, char *after, int lnNumber)
 				ignore = false;
 				for (int i = 0, l = (int) strlen(code); i < l; i++)
 				{
-					if (code[i] == '\n')
+					if (code[i] == '\n' || code[i] == NEW_LINE_SEPARATOR)
 					{
 						ignore = true;
 						break;
@@ -122,8 +122,8 @@ void execute(char *line, char *after, int lnNumber)
 				free(varValue);
 			}
 
-			// if the following code is an if statement
-			else if (!strcmp(firstWord, "if"))
+			// if the following code is an if or elif statement
+			else if (!strcmp(firstWord, "if") || !strcmp(firstWord, "elif"))
 			{
 				ifStatement(line, after, false);
 			}
@@ -132,12 +132,6 @@ void execute(char *line, char *after, int lnNumber)
 			else if (!strcmp(firstWord, "else"))
 			{
 				ifStatement(line, after, true);
-			}
-
-			// if the following code is an elif statement
-			else if (!strcmp(firstWord, "elif"))
-			{
-				ifStatement(line, after, false);
 			}
 
 			// if the following code is a return statement
@@ -162,6 +156,14 @@ void execute(char *line, char *after, int lnNumber)
 			else
 			{
 				raiseError(ERROR_MSG, INS, line, lnNumber, FILENAME);
+			}
+		}
+		else
+		{
+			if (!strcmp(line, "}") && IF_STATEMENT)
+			{
+				ignore = false;
+				goto EXECUTE;
 			}
 		}
 	}

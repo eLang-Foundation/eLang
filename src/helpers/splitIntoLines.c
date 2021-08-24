@@ -2,18 +2,18 @@
 strArray splitIntoLines(char *code)
 {
 	strArray lines;
-	char **array = calloc(count('\n', code), sizeof(char *));
+	char **array = calloc(count('\n', code) + count(NEW_LINE_SEPARATOR, code), sizeof(char *));
 
 	int numberOfLines = 0;
 	char *ln = strdup("");
 	for (int i = 0, l = (int) strlen(code); i < l; i++)
 	{
-		if (code[i] != '\n')
+		if (code[i] != '\n' && code[i] != NEW_LINE_SEPARATOR)
 		{
 			ln = appendChar(ln, code[i]);
 		}
 
-		if (code[i] == '\n' || i == l - 1)
+		if (code[i] == '\n' || code[i] == NEW_LINE_SEPARATOR || i == l - 1)
 		{
 			array[numberOfLines++] = strdup(ln);
 			free(ln);

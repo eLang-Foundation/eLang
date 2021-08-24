@@ -72,7 +72,7 @@ void functionCall(char *line, char *after)
 				strArray lines = splitIntoLines(code);
 
 				bool returned = false;
-				
+
 				for (int i = 0; i < lines.length; i++)
 				{
 					char *innerAfter = getAfter(lines, i);

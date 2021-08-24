@@ -1,19 +1,16 @@
 /// \param line The current line of code
-/// \param after The code that follows after the current line (including the current line)
-/// \param elseStatement If the following line is an if statement or not
+/// \param after The code that follows the current line (including the current line)
+/// \param elseStatement Whether the following line is an else statement or not
 /// \author Bekhruz Niyazov
 void ifStatement(char *line, char *after, bool elseStatement)
 {
 	char *expression = trim(get(line, "if\\s+([\\w\\W]+)\\s*\\{"));
-
 	char *code = getContents(after, '{', '}');
-
 	char *result = evaluate(expression, true);
 
 	bool skipNext = false;
 
-	if (elseStatement && lastIfStatement == 0) skipNext = false;
-	else if ((elseStatement && lastIfStatement == 1) || (!elseStatement && !strcmp(result, "false"))) skipNext = true;
+	if ((elseStatement && lastIfStatement == 1) || (!elseStatement && !strcmp(result, "false"))) skipNext = true;
 
 	if (skipNext)
 	{
@@ -21,17 +18,19 @@ void ifStatement(char *line, char *after, bool elseStatement)
 		ignore = false;
 		for (int i = 0, l = (int) strlen(code); i < l; i++)
 		{
-			if (code[i] == '\n')
+			if (code[i] == '\n' || code[i] == NEW_LINE_SEPARATOR)
 			{
 				ignore = true;
 				break;
 			}
 		}
 		lastIfStatement = 0;
+		IF_STATEMENT = true;
 	}
 	else
 	{
 		lastIfStatement = 1;
+		IF_STATEMENT = false;
 	}
 
 	free(expression);
