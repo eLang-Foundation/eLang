@@ -1,4 +1,7 @@
-// an array of arguments will be stored in this variable
+/// \param arguments Arguments of the function
+/// \param init I have no idea what that is; gotta check that later
+/// \return An array of strings each of which represents an argument
+/// \author Bekhruz Niyazov
 strArray getArguments(char *arguments, bool init)
 {
 	int length = count(',', arguments) + 1;
@@ -6,8 +9,7 @@ strArray getArguments(char *arguments, bool init)
 
 	int argCounter = 0;
 
-	char *argument = malloc(1);
-	strcpy(argument, "");
+	char *argument = strdup("");
 
 	// the following code splits the arguments string into separate arguments and adds them to the args array
 	for (int i = 0, l = (int) strlen(arguments); i < l; i++)
@@ -22,7 +24,7 @@ strArray getArguments(char *arguments, bool init)
 				if (init) args[argCounter++] = strdup(trim(argument));
 				else
 				{
-					char *arg = evaluate(trim(argument), true);
+					char *arg = evaluate(trim(argument), true, false);
 					args[argCounter++] = arg;
 				}
 				free(argument);

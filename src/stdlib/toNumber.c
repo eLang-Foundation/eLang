@@ -1,6 +1,14 @@
-// this function converts the given string to a number
+/// \param string The string that needs to be converted
+/// \return String converted to double
+/// \author Bekhruz Niyazov
 double toNumber(char *string)
 {
+	if (!strcmp(string, "true"))
+		return 1;
+
+	if (!strcmp(string, "false"))
+		return 0;
+
     if (numberable(trim(string)))
 	{
 		double number;

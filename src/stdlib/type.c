@@ -1,4 +1,6 @@
-// this function returns the type of the given value
+/// \param value The value, type of which needs to be checked
+/// \return The type of the given value
+/// \author Bekhruz Niyazov
 char *type(char *value)
 {
 	int index = (int) strlen(value) - 1;

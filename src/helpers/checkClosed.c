@@ -1,4 +1,7 @@
-// function that checks whether or not all parentheses, brackets and so forth are closed
+/// \param number Represents the current line of code
+/// \param code All code to be checked
+/// \return true if success false if error
+/// \author Bekhruz Niyazov
 bool checkClosed(unsigned int number, char *code)
 {
 	char chars[] = {'"', '\'', '{', '(', '['};
