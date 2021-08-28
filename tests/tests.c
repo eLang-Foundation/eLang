@@ -29,7 +29,9 @@ int main(void) {
 	}
 	else
 	{
+		free(results);
 		printf("Failed some of if statement tests ❌\n");
+		return 1;
 	}
 
 	free(results);

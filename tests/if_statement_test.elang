@@ -36,7 +36,7 @@ if false {
 	println("error on line 36")
 }
 elif true {
-	println("correct")
+	println("corret")
 }
 
 ; testing if conversion to booleans work
