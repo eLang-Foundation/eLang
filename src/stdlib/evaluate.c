@@ -1,5 +1,6 @@
 /// \param expression The expression to be evaluated
 /// \param mathematicalExpression If the expression is an mathematical expression or not
+/// \attention The return value should be freed after usage
 /// \author Bekhruz Niyazov
 char *evaluate(char *expression, bool mathematicalExpression, bool booleanExpression)
 {
@@ -27,7 +28,7 @@ char *evaluate(char *expression, bool mathematicalExpression, bool booleanExpres
 	if (match(expression, "[\\w\\d_]+?\\([\\w\\W]*\\)"))
 	{
 		functionCall(expression, expression);
-		return lastReturnValue;
+		return strdup(lastReturnValue);
 	}
 
 	return strdup(expression);
