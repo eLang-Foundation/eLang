@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
 	// if user wants to get the version of eLang
 	if (!strcmp(FILENAME, "--version"))
 	{
-		printf("eLang 1.0.0\n");
+		printf("eLang 0.1\n");
 		return 0;
 	}
 
