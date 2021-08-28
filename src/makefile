@@ -20,7 +20,7 @@ clean:
 
 memcheck:
 	make
-	valgrind --track-origins=yes --leak-check=full --show-leak-kinds=all ./elang ../tests/if_statement_test.elang
+	valgrind --track-origins=yes --leak-check=full --show-leak-kinds=all ./elang test.elang
 
 debug:
 	make lib
