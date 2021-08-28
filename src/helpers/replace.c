@@ -1,4 +1,8 @@
-// this function replaces each r in s1 with s2
+/// \param s1 The string which needs to be processed
+/// \param r The string which needs to be replaced
+/// \param s2 The string which r needs to be replaced with
+/// \return Processed string
+/// \author Bekhruz Niyazov
 char *replace(char *s1, char *r, char *s2)
 {
 	int length = (int) strlen(s1);

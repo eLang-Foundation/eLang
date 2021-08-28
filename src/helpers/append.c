@@ -1,5 +1,3 @@
-#include "../../tests/append.h"
-
 /// \param string The given string
 /// \param chr The given character
 /// \return The given string with given character at the end

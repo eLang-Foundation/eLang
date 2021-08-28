@@ -1,4 +1,4 @@
-// this function removes the last element of the SCOPE
+/// \author Bekhruz Niyazov
 void removeLast(void)
 {
 	char *blocks[count('>', SCOPE)];
@@ -31,13 +31,14 @@ void removeLast(void)
 	}
 }
 
-// this function removes the last variable from the array of variables
+/// \param variable The variable which needs to be removed from the array
+/// \author Bekhruz Niyazov
 void removeVariable(Variable variable)
 {
 	int counter = 0;
 	for (ui i = 0; i < numberOfVariables; i++)
 	{
-		if (strcmp(VARIABLES[i].name, variable.name) || strcmp(VARIABLES[i].scope, variable.scope))
+		if (strcmp(VARIABLES[i].name, variable.name) != 0 || strcmp(VARIABLES[i].scope, variable.scope) != 0)
 		{
 			VARIABLES[counter++] = VARIABLES[i];
 		}

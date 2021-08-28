@@ -123,16 +123,22 @@ void execute(char *line, char *after, int lnNumber)
 				free(varValue);
 			}
 
-			// if the following code is an if or elif statement
-			else if (!strcmp(firstWord, "if") || !strcmp(firstWord, "elif"))
+			// if the following code is an if statement
+			else if (!strcmp(firstWord, "if"))
 			{
-				ifStatement(line, after, false);
+				ifStatement(line, after, false, false);
+			}
+
+			// if the following code is an elif statement
+			else if (!strcmp(firstWord, "elif"))
+			{
+				ifStatement(line, after, true, false);
 			}
 
 			// if the following code is an else statement
 			else if (!strcmp(firstWord, "else"))
 			{
-				ifStatement(line, after, true);
+				ifStatement(line, after, false, true);
 			}
 
 			// if the following code is a return statement

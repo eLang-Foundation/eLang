@@ -1,5 +1,6 @@
-#include "../../tests/trim.h"
-// this function removes whitespace around the string
+/// \param string The string which needs to be trimmed
+/// \return The trimmed string
+/// \author Bekhruz Niyazov
 char *trim(char *string)
 {
 	size_t size;

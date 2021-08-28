@@ -25,7 +25,7 @@ extern bool match(char *, char *);
 
 // function prototypes
 void functionCall(char *line, char *after);
-char *evaluate(char *expression, bool mathematicalExpression);
+char *evaluate(char *expression, bool mathematicalExpression, bool booleanExpression);
 char *trim(char *string);
 char *type(char *value);
 char *getValue(char *string);

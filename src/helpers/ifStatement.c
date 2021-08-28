@@ -2,11 +2,11 @@
 /// \param after The code that follows the current line (including the current line)
 /// \param elseStatement Whether the following line is an else statement or not
 /// \author Bekhruz Niyazov
-void ifStatement(char *line, char *after, bool elseStatement)
+void ifStatement(char *line, char *after, bool elifStatement, bool elseStatement)
 {
 	char *expression = trim(get(line, "if\\s+([\\w\\W]+)\\s*\\{"));
 	char *code = getContents(after, '{', '}');
-	char *result = evaluate(expression, true);
+	char *result = evaluate(expression, false, true);
 
 	bool skipNext = false;
 
@@ -24,7 +24,7 @@ void ifStatement(char *line, char *after, bool elseStatement)
 				break;
 			}
 		}
-		lastIfStatement = 0;
+		if (!elifStatement) lastIfStatement = 0;
 		IF_STATEMENT = true;
 	}
 	else

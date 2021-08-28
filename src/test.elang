@@ -1,16 +1,7 @@
+; testing if if statements work inside of functions
 fun test {
-	if 1 > 2 {
-		println("wrong")
-	}
-	if 1 < 2 {
-		println("correct")
-	}
-	else {
-		println("should be fixed")
-	}
-
-	if 2 =- 1 {
-		println("just testing")
+	if 0 {
+		println("hello")
 	}
 }
 

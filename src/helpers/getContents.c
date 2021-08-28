@@ -1,6 +1,8 @@
-#include "../../tests/getContents.h"
-
-// this function gets text in between the given characters in the given string
+/// \param string The string which will be processed
+/// \param openCharacter The character that represents the start of the contents
+/// \param closeCharacter The character that represents the end of the contents
+/// \return The contents got from the string
+/// \author Bekhruz Niyazov
 char *getContents(char *string, char openCharacter, char closeCharacter)
 {
 	char returnString[strlen(string)];

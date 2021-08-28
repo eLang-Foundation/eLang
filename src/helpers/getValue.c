@@ -1,4 +1,6 @@
-// this function returns the value of the given string
+/// \param string Some expression which needs to be converted to a raw value
+/// \return The value of the expression
+/// \author Bekhruz Niyazov
 char *getValue(char *string)
 {
 	for (int i = 0; i < numberOfVariables; i++)
@@ -16,7 +18,7 @@ char *getValue(char *string)
 		}
 	}
 
-	char *tmp = evaluate(string, true);
+	char *tmp = evaluate(string, true, false);
 	if (strcmp(type(tmp), "Undefined") != 0)
 	{
 		return tmp;
