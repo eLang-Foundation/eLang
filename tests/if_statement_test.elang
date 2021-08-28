@@ -65,3 +65,26 @@ else {
 	println("correct")
 }
 
+; testing if variables work
+hello = 1
+if hello {
+	println("correct")
+}
+else {
+	println("error on line 74")
+}
+
+this_is_false = false
+if hello & false {
+	println("error on line 79")
+}
+else {
+	println("correct")
+}
+
+if hello | false {
+	println("correct")
+}
+else {
+	println("error on line 89")
+}

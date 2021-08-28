@@ -23,6 +23,9 @@ int main(void) {
 	                     "correct\n"
 	                     "correct\n"
 	                     "correct\n"
+	                     "correct\n"
+	                     "correct\n"
+	                     "correct\n"
 	                     "correct\n"))
 	{
 		printf("Passed all if statement tests ✔️\n");
