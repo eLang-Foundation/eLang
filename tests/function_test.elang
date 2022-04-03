@@ -19,10 +19,17 @@
 
 ; multiple_arguments("Bekhruz", "Niyazov")
 
+fun test(i) {
+	if i == 1 {
+		println("Hello, world!")
+	}
+}
+test(0)
+
 ; testing return statements
 fun return(i) {
 	if i == 1 {
-		return "hello, world"
+		return "hell, world"
 	}
 	else {
 		return "goodbye world"

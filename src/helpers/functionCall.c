@@ -96,7 +96,7 @@ void functionCall(char *line, char *after)
 					lastReturnValue = strdup("Null");
 				}
 
-				free(lines.array);
+//				free(lines.array);
 				free(code);
 
 				break;
@@ -153,7 +153,7 @@ void functionCall(char *line, char *after)
 	}
 
 	free(functionName);
-	free(arguments);
+//	free(arguments);
 
 	removeLast();
 }

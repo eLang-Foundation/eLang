@@ -4,6 +4,8 @@
 /// \author Bekhruz Niyazov
 void ifStatement(char *line, char *after, bool elifStatement, bool elseStatement)
 {
+	printf("here we go: %s\n", get(line, "(\\w)"));
+	printf("line: %s\n", line);
 	char *expression = trim(get(line, "if\\s+([\\w\\W]+)\\s*\\{"));
 	char *code = getContents(after, '{', '}');
 	char *result = evaluate(expression, false, true);
