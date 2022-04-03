@@ -3,7 +3,7 @@
 #include <string.h>
 
 int main(void) {
-	system("cd ../src && ./elang ../tests/if_statement_test.elang > ../tests/if_statement_test_results.txt");
+	system("echo IF STATEMENT TEST && cd ../src && ./elang ../tests/if_statement_test.elang > ../tests/if_statement_test_results.txt");
 
 	// reading the test results file
 	FILE *ifStatementTestResultsFile = fopen("if_statement_test_results.txt", "r");
@@ -39,6 +39,7 @@ int main(void) {
 
 	free(results);
 
+	system("echo FUNCTION TEST && cd ../src && ./elang ../tests/function_test.elang > ../tests/function_test_results.txt");
 
 	return 0;
 }

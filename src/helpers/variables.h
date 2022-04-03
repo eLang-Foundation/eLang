@@ -46,6 +46,6 @@ char *SCOPE = "";
 
 bool EXIT_WHEN_ERROR = true;
 
-char NEW_LINE_SEPARATOR = '!';
+char NEW_LINE_SEPARATOR = '~';
 
 bool IF_STATEMENT = false;
