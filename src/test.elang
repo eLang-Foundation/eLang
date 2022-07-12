@@ -1,8 +1,3 @@
-; testing if if statements work inside of functions
-fun test {
-	if 0 {
-		println("hello")
-	}
-}
-
-test()
+repeat 100
+	println("hello")
+end
