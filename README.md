@@ -1,3 +1,6 @@
+# News
+*I'm planning on rewriting eLang from scratch in Rust. Stay tuned. The current version will be archived and I am not going to continue working on it.*
+
 ![Logo](logo/eLang.png)
 # eLang
 [![Line count](https://img.shields.io/tokei/lines/github/eLang-Foundation/eLang)](https://github.com/eLang-Foundation/eLang)
