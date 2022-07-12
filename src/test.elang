@@ -1,3 +1,0 @@
-repeat 100
-	println("hello")
-end
