@@ -1,2 +1,2 @@
 build:
-	g++ main.cpp headers.h -o elang
+	g++ main.cpp -o elang
